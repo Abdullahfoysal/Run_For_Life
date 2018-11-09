@@ -3,6 +3,81 @@
 #include<string>
 
 using namespace sf;
+sf::Vector2i soldier_source(0,0);
+ int placeEnemySoldier=1;
+ bool downpressed=false;
+
+class bulet
+{
+public:
+    Sprite s_bulet;
+    bulet(Texture *texture,Vector2f pos)
+    {
+        if(soldier_source.y==0)///right
+        {
+
+        /*  if(downpressed)
+          {
+
+              pos.x=pos.x+120;
+              pos.y=pos.y+400;
+              // std::cout<<"down shoot";
+          }
+          else
+          {
+                pos.x=pos.x+110;
+                pos.y=pos.y+55;
+          }*/
+
+        }
+        else //(soldier_source.y==2)///left
+        {
+
+          /* if(downpressed)
+            {
+
+              pos.x=pos.x+120;
+              pos.y=pos.y+400;
+
+            }
+            else
+            {
+                 pos.x=pos.x-20;
+                pos.y=pos.y+55;
+            }*/
+
+        }
+
+        s_bulet.setTexture(*texture);
+        s_bulet.setScale(1,1);
+        s_bulet.setPosition(pos);
+      //
+
+
+    }
+};
+
+class enemybulet
+{
+    public:
+    Sprite s_enemybulet;
+    enemybulet(Texture *texture,Vector2f pos)
+    {
+        if(placeEnemySoldier==1)
+        {
+            pos.x=pos.x-20;
+            pos.y=pos.y+30;
+        }
+        else
+        {
+              pos.x=pos.x+110;
+            pos.y=pos.y+30;
+        }
+         s_enemybulet.setTexture(*texture);
+        s_enemybulet.setScale(1,2);
+        s_enemybulet.setPosition(pos);
+    }
+};
 
 
 int main()
@@ -15,14 +90,32 @@ int main()
     window.setKeyRepeatEnabled(false);
     int screenWidth=4160;
 
+
     window.setPosition(Vector2i(200,0));
 
 
     enum Direction {Right,Down,Left,Up};
 
-    Texture t_background,t_soldier,t_man,t_animal,t_coin,t_dragon,t_enemySoldier,t_bulet;
-    Sprite s_background,s_soldier,s_man,s_animal,s_coin,s_dragon,s_enemySoldier,s_bulet;
-    std::cout<<"All move works ,Let's Play with arrow key";
+    Texture t_background,t_soldier,t_man,t_animal,t_coin,t_dragon,t_enemySoldier,t_bulet,t_mybulet,t_enemybulet,t_enemybulet1,t_mybulet1;
+    Sprite s_background,s_soldier,s_man,s_animal,s_coin,s_dragon,s_enemySoldier,s_bulet,s_mybulet,s_enemybulet,s_enemybulet1,s_mybulet1;
+
+    std::cout<<"All move works ,Let's Play with arrow key\n";
+    std::cout<<"shoot with S button\n";
+
+     std::vector<bulet>buletPosition;
+     t_mybulet.loadFromFile("Resources/mybulet1.png");
+     s_mybulet.setTexture(t_mybulet);
+     t_mybulet1.loadFromFile("Resources/mybulet0.png");
+     s_mybulet1.setTexture(t_mybulet1);
+
+     std::vector<enemybulet>enemybuletPosition;
+     t_enemybulet.loadFromFile("Resources/enemybulet0.png");
+      //s_enemybulet.setTexture(t_enemybulet);
+
+     t_enemybulet1.loadFromFile("Resources/enemybulet1.png");
+
+     s_enemybulet1.setTexture(t_enemybulet1);
+
 
 ///load image
     if(!t_background.loadFromFile("Resources/background.png"))
@@ -40,7 +133,7 @@ int main()
 ///soldier
     t_soldier.loadFromFile("Resources/soldier.png");
 // t_soldierSeatDown.loadFromFile("soldierSeatDownShoot.png");
-    Vector2i soldier_source(0,0);
+    //Vector2i soldier_source(0,0);
 
 //s_soldierSeatDown.setTexture(t_soldierSeatDown);
 
@@ -92,14 +185,14 @@ int main()
     s_enemySoldier.setTexture(t_enemySoldier);
     Vector2f enemySoldierPosition(soldierCurrrentPosition.x+600,soldierCurrrentPosition.y);
     s_enemySoldier.setPosition(enemySoldierPosition.x,enemySoldierPosition.y);
-    int placeEnemySoldier=1;
+
     float enemySoldierSpeed=30.0f;
 
     ///bulet
 
     t_bulet.loadFromFile("Resources/bulet.png");
     s_bulet.setTexture(t_bulet);
- s_bulet.setPosition(soldierCurrrentPosition.x+700-150,soldierCurrrentPosition.y+50);
+   s_bulet.setPosition(soldierCurrrentPosition.x+700-150,soldierCurrrentPosition.y+50);
     float buletSpeed=200.0f;
     int buletMove=0;
      s_bulet.setTextureRect(IntRect(buletMove*25,7*20,25,20));
@@ -107,15 +200,22 @@ int main()
 
 
 
-    Clock clock;
-    Time time=seconds(0),time2=seconds(0),time3=seconds(0),Diedtime=seconds(0),enemyTime=seconds(0),buletTime=seconds(0);
+    Clock clock,mybuletclock,downshootclock;
+    Time time=seconds(0),time2=seconds(0),time3=seconds(0),Diedtime=seconds(0),enemyTime=seconds(0),buletTime=seconds(0),enemybuletTime=seconds(0),mybuletTime1=seconds(0);
     float movespeed=100.0f;
     float frameCounter=0,switchFrame=100,frameSpeed=600;
     float jumpSpeed=50.0f;
 
+
+
     View view;
     view.reset(FloatRect(0,0,screenDimentions.x,screenDimentions.y));
     view.setViewport(FloatRect(0,0,1.0f,1.0f));
+
+
+    ///menu bar
+    bool menu=true;
+    Text Gamename,newgame,exit,selectArea,About,life;
 
     while(window.isOpen())
     {
@@ -135,16 +235,53 @@ int main()
             }
 
         }
-
-
-        if(Keyboard::isKeyPressed(Keyboard::Down))
+        if(menu)
         {
-            if(event.type==Event::KeyReleased && event.key.code==Keyboard::S)
+           window.draw(s_background);
+            menu=0;
+        }
+
+            float mybuletTime=0.f;
+            float downshoot=0.f;
+
+        mybuletTime=mybuletclock.getElapsedTime().asSeconds();
+        downshoot=downshootclock.getElapsedTime().asSeconds();
+        //mybuletclock.restart();
+
+///Down button
+           if(Keyboard::isKeyPressed(Keyboard::Down) && Keyboard::isKeyPressed(Keyboard::S))
             {
+
+
                 if(soldier_source.y==Right)s_soldier.setTextureRect(IntRect(soldier_source.x*130,8*180,130,180));
                 else s_soldier.setTextureRect(IntRect(soldier_source.x*130,9*180,130,180));
+              if(downshoot>0.2)
+              {
+
+                   if(s_enemySoldier.getPosition().x>s_soldier.getPosition().x)
+                   {
+                       Vector2f soldierbuletPosition(s_soldier.getPosition().x+110,s_soldier.getPosition().y+100);
+                        buletPosition.push_back(bulet(&t_mybulet,soldierbuletPosition));
+                   }
+
+
+                   else
+                   {
+                        Vector2f soldierbuletPosition(s_soldier.getPosition().x-20,s_soldier.getPosition().y+100);
+                         buletPosition.push_back(bulet(&t_mybulet1,soldierbuletPosition));
+                   }
+
+
+                   downshootclock.restart();
+
+              }
+
+
             }
-            else if(Keyboard::isKeyPressed(Keyboard::Right))s_soldier.setTextureRect(IntRect(soldier_source.x*130,6*180,130,180));
+        else if(Keyboard::isKeyPressed(Keyboard::Down))
+        {
+
+             if(Keyboard::isKeyPressed(Keyboard::Right))s_soldier.setTextureRect(IntRect(soldier_source.x*130,6*180,130,180));
             else if(Keyboard::isKeyPressed(Keyboard::Left))s_soldier.setTextureRect(IntRect(soldier_source.x*130,7*180,130,180));
             else
             {
@@ -180,12 +317,129 @@ int main()
         }
         else if(Keyboard::isKeyPressed(Keyboard::S))
         {
+
             if(soldier_source.y==Right)s_soldier.setTextureRect(IntRect(soldier_source.x*130,4*180,130,180));
             else s_soldier.setTextureRect(IntRect(soldier_source.x*130,5*180,130,180));
+            if( mybuletTime>0.2)
+            {
+                 if(s_enemySoldier.getPosition().x>s_soldier.getPosition().x)
+                 {
+                     Vector2f soldierbuletPosition(s_soldier.getPosition().x+110,s_soldier.getPosition().y+55);
+                     buletPosition.push_back(bulet(&t_mybulet,soldierbuletPosition));
+                 }
+
+                 else
+                 {
+                     Vector2f soldierbuletPosition(s_soldier.getPosition().x-10,s_soldier.getPosition().y+55);
+                     buletPosition.push_back(bulet(&t_mybulet1,soldierbuletPosition));
+                 }
+                 mybuletclock.restart();
+
+            }
+
         }
         else  s_soldier.setTextureRect(IntRect(soldier_source.x,soldier_source.y*180,130,180));
-
+///my soldier bulet
 ///texture crop & movement
+///bulet move + collision
+for(int i=0;i<buletPosition.size();i++)
+  {
+     if(  s_enemySoldier.getPosition().x>s_soldier.getPosition().x && soldier_source.y==Right)buletPosition[i].s_bulet.move(1.f,0.f);
+    else if(  s_enemySoldier.getPosition().x<s_soldier.getPosition().x && soldier_source.y==Left)
+        buletPosition[i].s_bulet.move(-1.f,0.f);
+    else  buletPosition.erase(buletPosition.begin()+i);
+
+  }
+
+    ///remove bulet from vector
+   for(int i=0;i<buletPosition.size();i++)
+    {
+        if(soldier_source.y==Right)
+      {
+           if(buletPosition[i].s_bulet.getGlobalBounds().intersects(s_enemySoldier.getGlobalBounds()))
+            buletPosition.erase(buletPosition.begin()+i);
+
+          else if(buletPosition[i].s_bulet.getPosition().x>s_soldier.getPosition().x+600)
+            buletPosition.erase(buletPosition.begin()+i);
+
+           /*  if(buletPosition[i].s_bulet.getGlobalBounds().intersects(s_enemybulet.getGlobalBounds()))
+            {
+                buletPosition.erase(buletPosition.begin()+i);
+            }
+            */
+      }
+      else
+      {
+            if(buletPosition[i].s_bulet.getGlobalBounds().intersects(s_enemySoldier.getGlobalBounds()))
+            buletPosition.erase(buletPosition.begin()+i);
+
+            else if(buletPosition[i].s_bulet.getPosition().x<s_soldier.getPosition().x-600)
+            buletPosition.erase(buletPosition.begin()+i);
+/*
+             if(buletPosition[i].s_bulet.getGlobalBounds().intersects(s_enemybulet.getGlobalBounds()))
+            {
+                buletPosition.erase(buletPosition.begin()+i);
+            }
+            */
+
+      }
+
+    }
+    ///enemy bulet
+
+    enemybuletTime+=clock.getElapsedTime();
+    if(enemybuletTime.asSeconds()>0.4 && abs(s_enemySoldier.getPosition().x-s_soldier.getPosition().x)<400 && abs(s_enemySoldier.getPosition().x-s_soldier.getPosition().x)>90)
+    {
+        enemybuletTime=seconds(0);
+        if(placeEnemySoldier==1)
+        enemybuletPosition.push_back(enemybulet(&t_enemybulet,s_enemySoldier.getPosition()));
+        else enemybuletPosition.push_back(enemybulet(&t_enemybulet1,s_enemySoldier.getPosition()));
+
+    }
+    ///bulet move
+    for(int i=0;i<enemybuletPosition.size();i++)
+    {
+         if(placeEnemySoldier==1 )enemybuletPosition[i].s_enemybulet.move(-1.f,0.f);
+         else if(placeEnemySoldier==0) enemybuletPosition[i].s_enemybulet.move(1.f,0.f);
+         else  enemybuletPosition.erase(enemybuletPosition.begin()+i);
+    }
+
+    ///remove bulet
+      for(int i=0;i<enemybuletPosition.size();i++)
+    {
+        if( s_enemySoldier.getPosition().x>s_soldier.getPosition().x )
+         {
+           if(enemybuletPosition[i].s_enemybulet.getGlobalBounds().intersects(s_soldier.getGlobalBounds()))
+            enemybuletPosition.erase(enemybuletPosition.begin()+i);
+            if(enemybuletPosition[i].s_enemybulet.getGlobalBounds().intersects(s_mybulet.getGlobalBounds()))
+            {
+                enemybuletPosition.erase(enemybuletPosition.begin()+i);
+            }
+
+
+
+          /*else if(buletPosition[i].s_bulet.getPosition().x>s_soldier.getPosition().x+600)
+            buletPosition.erase(buletPosition.begin()+i);
+            */
+         }
+      else
+          {
+            if(enemybuletPosition[i].s_enemybulet.getGlobalBounds().intersects(s_soldier.getGlobalBounds()))
+            enemybuletPosition.erase(enemybuletPosition.begin()+i);
+             if(enemybuletPosition[i].s_enemybulet.getGlobalBounds().intersects(s_mybulet.getGlobalBounds()))
+            {
+                enemybuletPosition.erase(enemybuletPosition.begin()+i);
+            }
+
+
+          /*  else if(buletPosition[i].s_bulet.getPosition().x<s_soldier.getPosition().x-600)
+            buletPosition.erase(buletPosition.begin()+i);
+            */
+         }
+
+    }
+
+
 
 
 
@@ -517,10 +771,23 @@ int main()
         if(enemyTime.asSeconds()<20.0)
         {
             window.draw(s_enemySoldier);
-            window.draw(s_bulet);
+          //  window.draw(s_bulet);
         }
-        if(abs(s_soldier.getPosition().x-s_enemySoldier.getPosition().x)<300)///shoot
+     /*   if(abs(s_soldier.getPosition().x-s_enemySoldier.getPosition().x)<300)///shoot
         window.draw(s_bulet);
+        */
+
+         for(int i=0;i<enemybuletPosition.size();i++)
+        {
+            window.draw(enemybuletPosition[i].s_enemybulet);
+        }
+        for(int i=0;i<buletPosition.size();i++)
+        {
+            window.draw(buletPosition[i].s_bulet);
+           std:: cout<<"Loop";
+        }
+
+        if(enemybuletPosition.size()>3)enemybuletPosition.clear();
 
 
 
