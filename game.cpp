@@ -49,7 +49,7 @@ public:
         }
 
         s_bulet.setTexture(*texture);
-        s_bulet.setScale(1,1);
+        s_bulet.setScale(1,2);
         s_bulet.setPosition(pos);
       //
 
@@ -66,12 +66,12 @@ class enemybulet
         if(placeEnemySoldier==1)
         {
             pos.x=pos.x-20;
-            pos.y=pos.y+30;
+            pos.y=pos.y+40;
         }
         else
         {
               pos.x=pos.x+110;
-            pos.y=pos.y+30;
+            pos.y=pos.y+40;
         }
          s_enemybulet.setTexture(*texture);
         s_enemybulet.setScale(1,2);
@@ -96,11 +96,12 @@ int main()
 
     enum Direction {Right,Down,Left,Up};
 
-    Texture t_background,t_soldier,t_man,t_animal,t_coin,t_dragon,t_enemySoldier,t_bulet,t_mybulet,t_enemybulet,t_enemybulet1,t_mybulet1;
-    Sprite s_background,s_soldier,s_man,s_animal,s_coin,s_dragon,s_enemySoldier,s_bulet,s_mybulet,s_enemybulet,s_enemybulet1,s_mybulet1;
+    Texture t_background,t_soldier,t_man,t_animal,t_coin,t_dragon,t_enemySoldier,t_bulet,t_mybulet,t_enemybulet,t_enemybulet1,t_mybulet1,t_fire;
+    Sprite s_background,s_soldier,s_man,s_animal,s_coin,s_dragon,s_enemySoldier,s_bulet,s_mybulet,s_enemybulet,s_enemybulet1,s_mybulet1,s_fire;
 
     std::cout<<"All move works ,Let's Play with arrow key\n";
     std::cout<<"shoot with S button\n";
+    std::cout<<"stab with SPACE button\n";
 
      std::vector<bulet>buletPosition;
      t_mybulet.loadFromFile("Resources/mybulet1.png");
@@ -115,6 +116,10 @@ int main()
      t_enemybulet1.loadFromFile("Resources/enemybulet1.png");
 
      s_enemybulet1.setTexture(t_enemybulet1);
+
+     ///fire
+     t_fire.loadFromFile("Resources/fire.png");
+     s_fire.setTexture(t_fire);
 
 
 ///load image
@@ -249,7 +254,13 @@ int main()
         //mybuletclock.restart();
 
 ///Down button
-           if(Keyboard::isKeyPressed(Keyboard::Down) && Keyboard::isKeyPressed(Keyboard::S))
+            if(Keyboard::isKeyPressed(Keyboard::Space))
+            {
+                if(soldier_source.y==Right)s_soldier.setTextureRect(IntRect(1*130,1*180,130,180));
+                else s_soldier.setTextureRect(IntRect(0*130,1*180,130,180));
+
+            }
+          else if(Keyboard::isKeyPressed(Keyboard::Down) && Keyboard::isKeyPressed(Keyboard::S))
             {
 
 
@@ -260,14 +271,14 @@ int main()
 
                    if(s_enemySoldier.getPosition().x>s_soldier.getPosition().x)
                    {
-                       Vector2f soldierbuletPosition(s_soldier.getPosition().x+110,s_soldier.getPosition().y+100);
+                       Vector2f soldierbuletPosition(s_soldier.getPosition().x+110,s_soldier.getPosition().y+80);
                         buletPosition.push_back(bulet(&t_mybulet,soldierbuletPosition));
                    }
 
 
                    else
                    {
-                        Vector2f soldierbuletPosition(s_soldier.getPosition().x-20,s_soldier.getPosition().y+100);
+                        Vector2f soldierbuletPosition(s_soldier.getPosition().x-20,s_soldier.getPosition().y+80);
                          buletPosition.push_back(bulet(&t_mybulet1,soldierbuletPosition));
                    }
 
@@ -324,16 +335,16 @@ int main()
             {
                  if(s_enemySoldier.getPosition().x>s_soldier.getPosition().x)
                  {
-                     Vector2f soldierbuletPosition(s_soldier.getPosition().x+110,s_soldier.getPosition().y+55);
+                     Vector2f soldierbuletPosition(s_soldier.getPosition().x+110,s_soldier.getPosition().y+45);
                      buletPosition.push_back(bulet(&t_mybulet,soldierbuletPosition));
                  }
 
                  else
                  {
-                     Vector2f soldierbuletPosition(s_soldier.getPosition().x-10,s_soldier.getPosition().y+55);
+                     Vector2f soldierbuletPosition(s_soldier.getPosition().x-10,s_soldier.getPosition().y+45);
                      buletPosition.push_back(bulet(&t_mybulet1,soldierbuletPosition));
                  }
-                 mybuletclock.restart();
+                   mybuletclock.restart();
 
             }
 
@@ -362,11 +373,14 @@ for(int i=0;i<buletPosition.size();i++)
           else if(buletPosition[i].s_bulet.getPosition().x>s_soldier.getPosition().x+600)
             buletPosition.erase(buletPosition.begin()+i);
 
-           /*  if(buletPosition[i].s_bulet.getGlobalBounds().intersects(s_enemybulet.getGlobalBounds()))
+            if(buletPosition[i].s_bulet.getGlobalBounds().intersects(s_enemybulet.getGlobalBounds()))
             {
                 buletPosition.erase(buletPosition.begin()+i);
+                ///draw fire here
+                s_fire.setPosition(buletPosition[i].s_bulet.getPosition().x,buletPosition[i].s_bulet.getPosition().y);
+                window.draw(s_fire);
             }
-            */
+
       }
       else
       {
@@ -662,8 +676,9 @@ for(int i=0;i<buletPosition.size();i++)
 
 
 
+///soldier place time
 
-        if(enemyTime.asSeconds()>20.0)
+        if(enemyTime.asSeconds()>25.0)
         {
             enemyTime=seconds(0);
             if(soldier_source.y==Right)
@@ -784,7 +799,7 @@ for(int i=0;i<buletPosition.size();i++)
         for(int i=0;i<buletPosition.size();i++)
         {
             window.draw(buletPosition[i].s_bulet);
-           std:: cout<<"Loop";
+
         }
 
         if(enemybuletPosition.size()>3)enemybuletPosition.clear();
