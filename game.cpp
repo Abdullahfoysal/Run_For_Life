@@ -224,8 +224,8 @@ int main()
     t_man.loadFromFile("Resources/man.png");
     s_man.setTexture(t_man);
 
-    s_man.setPosition(s_soldier.getPosition().x+500,soldierCurrrentPosition.y-105);
-    s_man.setTextureRect(IntRect(soldier_source.x*255,0*265,255,265));
+    s_man.setPosition(s_soldier.getPosition().x+500,soldierCurrrentPosition.y-60);
+    s_man.setTextureRect(IntRect(soldier_source.x*165,0*200,165,200));
 
     bool esc=false;
     float manSpeed=100.0f;
@@ -646,21 +646,19 @@ if((s_enemySoldier.getPosition().x>=s_soldier.getPosition().x+400)){ enemyBackAg
 
         if(abs(s_soldier.getPosition().x-s_man.getPosition().x)<10) esc=true;
 
-
         if(esc)
         {
-
-           s_man.setTextureRect(IntRect(soldier_source.x*255,2*265,255,265));
+           s_man.setTextureRect(IntRect(soldier_source.x*165,1*200,165,160));
            s_man.move(-manSpeed*clock.getElapsedTime().asSeconds(),0);
 
         }
         else if(abs(s_soldier.getPosition().x-s_man.getPosition().x )<300)
         {
             //  s_man.setPosition(1203,200);
-            s_man.setTextureRect(IntRect(soldier_source.x*255,0*265,255,265));
+            s_man.setTextureRect(IntRect(soldier_source.x*170,0*200,170,200));
 
         }
-         else s_man.setTextureRect(IntRect(1*255,0*265,255,265));
+         else s_man.setTextureRect(IntRect(1*170,0*200,170,200));
 
 
 

@@ -3,6 +3,7 @@
 #include<string>
 #include<time.h>
 
+using namespace std;
 using namespace sf;
 
 int win_x=1000;
@@ -49,6 +50,16 @@ float movespeed=100.0f;
    int enemy_hit[50];
    bool enemy_died[50];
    float enemy_diedTime=0.f;
+
+   ///man
+   float man_time=0.f;
+   int manCry=0;
+   bool man_esc=false;
+   float manSpeed=100.0f;
+   int manNumber=0;
+   int happyMovement1=0;
+    int happyMovement2=0;
+    float manESCTime=0.f,manESCTime2=0.f;
 
 
 RenderWindow window(VideoMode(win_x,win_y),"Run For Life",Style::Titlebar | Style::Resize | Style::Close);
@@ -120,6 +131,21 @@ public:
 		s_enemy.setPosition(pos);
 	}
 };
+class mann
+{
+public:
+    Sprite s_manESC;
+    mann (Texture *texture,Vector2f pos)
+    {
+        pos.x=pos.x-50;
+        pos.y=300+35;
+
+
+
+        s_manESC.setTexture(*texture);
+        s_manESC.setPosition(pos);
+    }
+};
 
 
 void my_soldier_died_Check()
@@ -169,13 +195,14 @@ int main()
 
 
 
-    Load background[5],my_soldier,enemy_soldier,dragon,animal,man,man_escape,my_bulet[2],enemy_bulet[2],
-    my_clock,my_buletclock,stab_clock,stab2_clock,life[4],money;
+    Load background[5],my_soldier,enemy_soldier,my_bulet[2],enemy_bulet[2],
+    my_clock,my_buletclock,stab_clock,stab2_clock,life[4],money,man[3];
 
      Font font1,font2,font3,font4;
     font1.loadFromFile("Resources/Hunters.otf");
 
-    Text life_text,strength_text,coin_text,coinCount_text;
+    Text life_text,strength_text,coin_text,coinCount_text,
+    helpmetxt;
 
     life_text.setString("Life :");
     life_text.setFont(font1);
@@ -201,6 +228,12 @@ int main()
      coinCount_text.setScale(1.f,1.f);
      coinCount_text.setColor(Color::Yellow);
 
+     helpmetxt.setString("Help!");
+     helpmetxt.setFont(font1);
+     helpmetxt.setCharacterSize(30);
+     helpmetxt.setScale(1.0f,1.0f);
+     helpmetxt.setColor(Color::White);
+
 
 
     background[0].t_texture.loadFromFile("Resources/background.png");
@@ -213,17 +246,17 @@ int main()
     enemy_soldier.t_texture.loadFromFile("Resources/enemySoldier.png");
     enemy_soldier.s_sprite.setTexture(enemy_soldier.t_texture);
 
-    dragon.t_texture.loadFromFile("Resources/dragon.png");
-    dragon.s_sprite.setTexture(dragon.t_texture);
-
-    animal.t_texture.loadFromFile("Resources/animal.png");
-    animal.s_sprite.setTexture(animal.t_texture);
-
-    man.t_texture.loadFromFile("Resources/man.png");
-    man.s_sprite.setTexture(man.t_texture);
-
-    man_escape.t_texture.loadFromFile("Resources/manESC.png");
-    man_escape.s_sprite.setTexture(man_escape.t_texture);
+//    dragon.t_texture.loadFromFile("Resources/dragon.png");
+//    dragon.s_sprite.setTexture(dragon.t_texture);
+//
+//    animal.t_texture.loadFromFile("Resources/animal.png");
+//    animal.s_sprite.setTexture(animal.t_texture);
+//
+//    man.t_texture.loadFromFile("Resources/man.png");
+//    man.s_sprite.setTexture(man.t_texture);
+//
+//    man_escape.t_texture.loadFromFile("Resources/manESC.png");
+//    man_escape.s_sprite.setTexture(man_escape.t_texture);
 
     my_bulet[1].t_texture.loadFromFile("Resources/mybulet1.png");//front
     my_bulet[1].s_sprite.setTexture(my_bulet[1].t_texture);
@@ -254,6 +287,24 @@ int main()
     money.s_sprite.setScale(0.5f,0.5f);
 
 
+    //man escape running
+    man[0].t_texture.loadFromFile("Resources/man.png");
+    man[0].s_sprite.setTexture(man[0].t_texture);
+
+    man[1].t_texture.loadFromFile("Resources/manESC.png");
+    man[1].s_sprite.setTexture(man[1].t_texture);
+
+    man[2].t_texture.loadFromFile("Resources/manESC.png");
+    man[2].s_sprite.setTexture(man[2].t_texture);
+
+     man[0].s_sprite.setPosition(my_soldier.s_sprite.getPosition().x+500,soldierCurrrentPosition.y-60);
+     man[0].s_sprite.setTextureRect(IntRect(0*165,0*200,165,200));
+
+   // t_man.loadFromFile("Resources/man.png");
+
+
+
+
 
 //my_soldier bulet
      std::vector<bulet>buletPosition;
@@ -264,6 +315,10 @@ int main()
 
 
    std::vector<enemybulet>enemybuletPosition[50];
+
+   ///manEscape
+    std::vector<mann>manESCPosition;
+
 
 
 
@@ -301,7 +356,7 @@ int main()
 		        if(soldier_source.y==Right)
 		        my_soldier.s_sprite.setTextureRect(IntRect(5*110,12*180,170,180));
 		        else
-		        my_soldier.s_sprite.setTextureRect(IntRect(5*110,12*180,170,180));///edit soldier image for left(image bottom)
+		        my_soldier.s_sprite.setTextureRect(IntRect(0*110,14*180,170,180));///edit soldier image for left(image bottom)
 
 		      }
 
@@ -370,12 +425,14 @@ int main()
             else my_soldier.s_sprite.setTextureRect(IntRect(soldier_source.x*130,soldier_source.y*180,130,180));
 
         }
-        else if(Keyboard::isKeyPressed(Keyboard::Up))
-        {
-            if(soldier_source.y==Left)my_soldier.s_sprite.setTextureRect(IntRect(soldier_source.x*130,10*180,130,180));
-            else my_soldier.s_sprite.setTextureRect(IntRect(soldier_source.x*130,3*180,130,180));
-
-        }
+            ///work for jump
+//       else if (Keyboard::isKeyPressed(Keyboard::Up))
+//       //if (event.key.code == sf::Keyboard::Up)
+//        {
+//            if(soldier_source.y==Left)my_soldier.s_sprite.setTextureRect(IntRect(soldier_source.x*130,10*180,130,180));
+//            else my_soldier.s_sprite.setTextureRect(IntRect(soldier_source.x*130,3*180,130,180));
+//
+//        }
         else if(Keyboard::isKeyPressed(Keyboard::S))
         {
 
@@ -418,13 +475,25 @@ int main()
 
                 my_soldier.s_sprite.move(movespeed*my_clock.clock.getElapsedTime().asSeconds(),0);
 
+                  if(Keyboard::isKeyPressed(Keyboard::Up))
+                   my_soldier.s_sprite.move(movespeed*my_clock.clock.getElapsedTime().asSeconds(),0);
+
             }
 
         }
 
         if(Keyboard::isKeyPressed(Keyboard::Left) && !Keyboard::isKeyPressed(Keyboard::Space) && !my_soldier_died)
-            if(my_soldier.s_sprite.getPosition().x>10)
-              my_soldier.s_sprite.move(-movespeed*my_clock.clock.getElapsedTime().asSeconds(),0);
+            {
+                if(my_soldier.s_sprite.getPosition().x>10)
+                {
+                    my_soldier.s_sprite.move(-movespeed*my_clock.clock.getElapsedTime().asSeconds(),0);
+
+                   if(Keyboard::isKeyPressed(Keyboard::Up))
+                   my_soldier.s_sprite.move(-movespeed*my_clock.clock.getElapsedTime().asSeconds(),0);
+                }
+
+            }
+
 ///UP button
         if(Keyboard::isKeyPressed(Keyboard::Up) && (my_soldier.s_sprite.getPosition().x>10) && !my_soldier_died)
         {
@@ -433,23 +502,23 @@ int main()
                 if(Keyboard::isKeyPressed(Keyboard::Right))
                 {
                     my_soldier.s_sprite.move(0,-soldierJumpSpeed*movespeed*my_clock.clock.getElapsedTime().asSeconds());
-                    my_soldier.s_sprite.move(movespeed*my_clock.clock.getElapsedTime().asSeconds(),0);
+                   // my_soldier.s_sprite.move(movespeed*my_clock.clock.getElapsedTime().asSeconds(),0);
                 }
                 else if(Keyboard::isKeyPressed(Keyboard::Left))
                 {
                     my_soldier.s_sprite.move(0,-soldierJumpSpeed*movespeed*my_clock.clock.getElapsedTime().asSeconds());
-                    my_soldier.s_sprite.move(-movespeed*my_clock.clock.getElapsedTime().asSeconds(),0);
+                   // my_soldier.s_sprite.move(-movespeed*my_clock.clock.getElapsedTime().asSeconds(),0);
                 }
                 else
                 {
                     my_soldier.s_sprite.move(0,-soldierJumpSpeed*movespeed*my_clock.clock.getElapsedTime().asSeconds());
-                    if(soldier_source.y==Left) my_soldier.s_sprite.move(-movespeed*my_clock.clock.getElapsedTime().asSeconds(),0);
-                    else my_soldier.s_sprite.move(movespeed*my_clock.clock.getElapsedTime().asSeconds(),0);
+//                    if(soldier_source.y==Left) my_soldier.s_sprite.move(-movespeed*my_clock.clock.getElapsedTime().asSeconds(),0);
+//                    else my_soldier.s_sprite.move(movespeed*my_clock.clock.getElapsedTime().asSeconds(),0);
                 }
 
             }
         }
-        if(my_soldier.s_sprite.getPosition().y<150)soldierCurrrentPosition.y=330;
+        if(my_soldier.s_sprite.getPosition().y>50)soldierCurrrentPosition.y=330;
 
 
 
@@ -813,6 +882,89 @@ for(int i=0;i<buletPosition.size();i++)
         }
 
 
+        ///man moving on cage
+        if(abs(my_soldier.s_sprite.getPosition().x-man[0].s_sprite.getPosition().x)<5)
+        {
+             man_esc=true;
+             man[0].s_sprite.setPosition(man[0].s_sprite.getPosition().x,soldierCurrrentPosition.y);
+        }
+        if(man_esc)
+        {
+              man[0].s_sprite.setTextureRect(IntRect(manCry*165,1*200,165,160));
+
+              man[0].s_sprite.move(-manSpeed*my_clock.clock.getElapsedTime().asSeconds(),0);
+               // s_man.move(-manSpeed*clock.getElapsedTime().asSeconds(),0);
+
+        }
+        else if(abs(my_soldier.s_sprite.getPosition().x-man[0].s_sprite.getPosition().x)<300)
+        {
+             man[0].s_sprite.setTextureRect(IntRect(manCry*165,0*200,165,200));
+             helpmetxt.setPosition(man[0].s_sprite.getPosition().x,man[0].s_sprite.getPosition().y-50);
+
+             window.draw(helpmetxt);
+
+
+        }
+        else  man[0].s_sprite.setTextureRect(IntRect(0*165,0*200,165,200));
+
+
+        if(man[0].s_sprite.getPosition().x-manNumber*130<= 0 )
+        {
+            manESCPosition.push_back(mann(&man[1].t_texture,man[0].s_sprite.getPosition()));
+            manNumber++;
+            man_esc=false;
+
+            Vector2f manCurrentPosition(my_soldier.s_sprite.getPosition().x+500,man[0].s_sprite.getPosition().y);
+            //man(&t_man,manCurrentPosition);
+            man[0].s_sprite.setPosition(manCurrentPosition.x,soldierCurrrentPosition.y-60);
+        }
+         for(int i=0;i<manESCPosition.size();i++)
+        {
+            if(i%2==0)
+            manESCPosition[i].s_manESC.setTextureRect(IntRect(happyMovement1*100,0*150,100,150));
+
+            else manESCPosition[i].s_manESC.setTextureRect(IntRect(happyMovement2*100,0*150,100,150));
+
+
+        }
+        manESCTime+=my_clock.clock.getElapsedTime().asSeconds();
+        manESCTime2+=my_clock.clock.getElapsedTime().asSeconds();
+
+        if(manESCTime>0.35)
+        {
+            manESCTime=0;
+            happyMovement1++;
+
+            if(happyMovement1>2){happyMovement1=0;}
+        }
+        if(manESCTime2>0.25)
+        {
+            manESCTime2=0;
+             happyMovement2++;
+             if(happyMovement2>2)happyMovement2=0;
+
+        }
+        for(int i=0;i<manESCPosition.size();i++)
+        {
+            window.draw(manESCPosition[i].s_manESC);
+        }
+
+        man_time+=my_clock.clock.getElapsedTime().asSeconds();
+         helpmetxt.setColor(Color::White);
+        if(man_time>0.25)
+        {
+            man_time=0;
+            manCry++;
+             helpmetxt.setColor(Color::Red);
+            if(manCry>2)
+            {
+
+                manCry=0;
+            }
+        }
+
+
+
           ///screen scrolling
 
         if(my_soldier.s_sprite.getPosition().x+win_x/2+150<screenWidth)
@@ -847,6 +999,9 @@ for(int i=0;i<buletPosition.size();i++)
             // if(soldier_source.x*130>=t_soldier.getSize().x && soldier_source.x>3)soldier_source.x=0;
         }
 
+
+
+      window.draw(man[0].s_sprite);
 
 
       for(int i=0;i<full_enemy.size();i++)
@@ -884,20 +1039,22 @@ for(int i=0;i<buletPosition.size();i++)
         coin_text.setPosition(soldierPosition.x-500,0-20+30+30);
 
         strength_rect.setPosition(soldierPosition.x-500+150,0-20+30+30);
-         strength_rect.setSize(strength_level);
+        strength_rect.setSize(strength_level);
         window.draw(strength_rect);
         window.draw(life_text);
         window.draw(strength_text);
         window.draw(coin_text);
 
+            Score_str =coinCount-'0';
 
-
-        Score_str = std::to_string(coinCount);
+        //Score_str = std::to_string(coinCount);
         coinCount_text.setString(Score_str);
         coinCount_text.setPosition(soldierPosition.x-400,0-20+30+30+10);
         window.draw(coinCount_text);
 
+
         window.draw(my_soldier.s_sprite);
+        window.draw(coinCount_text);
 
 	window.display();
 	window.clear();
