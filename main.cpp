@@ -13,6 +13,8 @@ int screenWidth=4160;///border of gamescreen
 
 ///score count
 Vector2f strength_level(100,10);
+ int manNumber=0;
+ int enemyNumber=15;
 
 
 float strength=0.f;
@@ -40,6 +42,7 @@ float movespeed=100.0f;
    //bulet
    int buletMove=0;
    float my_buletTime=0.f;
+    float enemyBuletSpeed=1.0f;
 
    float enemyTime=0.f;
    float enemySoldierSpeed=30.0f;
@@ -56,10 +59,16 @@ float movespeed=100.0f;
    int manCry=0;
    bool man_esc=false;
    float manSpeed=100.0f;
-   int manNumber=0;
+
    int happyMovement1=0;
     int happyMovement2=0;
     float manESCTime=0.f,manESCTime2=0.f;
+
+    ///coin
+    int coinMove=0,pointType=0;
+    int coinNumber=5;
+    float coinMovetime=0;
+
 
 
 RenderWindow window(VideoMode(win_x,win_y),"Run For Life",Style::Titlebar | Style::Resize | Style::Close);
@@ -163,6 +172,17 @@ void my_soldier_died_Check()
 
         }
 }
+std::string To_string(int n)
+   {
+      std::string s="";
+      if(n==0)return "0";
+      while(n)
+      {
+        s+=(n%10+'0');
+        n/=10;
+      }
+      return s;
+   }
 
 
 void diedtime()
@@ -174,6 +194,24 @@ void diedtime()
 
 
         }
+}
+//my_soldier bulet
+     std::vector<bulet>buletPosition;
+
+    std::vector<bool>soldier_buletDirection;
+ //enemy_soldier
+    std::vector<enemy>full_enemy;
+
+
+   std::vector<enemybulet>enemybuletPosition[50];
+
+   ///manEscape
+    std::vector<mann>manESCPosition;
+
+void init()
+{
+    full_enemy.clear();
+
 }
 
 
@@ -196,7 +234,7 @@ int main()
 
 
     Load background[5],my_soldier,enemy_soldier,my_bulet[2],enemy_bulet[2],
-    my_clock,my_buletclock,stab_clock,stab2_clock,life[4],money,man[3];
+    my_clock,my_buletclock,stab_clock,stab2_clock,life[4],money,man[3],coin;
 
      Font font1,font2,font3,font4;
     font1.loadFromFile("Resources/Hunters.otf");
@@ -234,17 +272,17 @@ int main()
      helpmetxt.setScale(1.0f,1.0f);
      helpmetxt.setColor(Color::White);
 
-
-
     background[0].t_texture.loadFromFile("Resources/background.png");
     background[0].s_sprite.setTexture(background[0].t_texture);
 
     my_soldier.t_texture.loadFromFile("Resources/soldier.png");
     my_soldier.s_sprite.setTexture(my_soldier.t_texture);
     my_soldier.s_sprite.setPosition(soldierCurrrentPosition.x,soldierCurrrentPosition.y);
+    my_soldier.t_texture.setSmooth(true);
 
     enemy_soldier.t_texture.loadFromFile("Resources/enemySoldier.png");
     enemy_soldier.s_sprite.setTexture(enemy_soldier.t_texture);
+    enemy_soldier.t_texture.setSmooth(true);
 
 //    dragon.t_texture.loadFromFile("Resources/dragon.png");
 //    dragon.s_sprite.setTexture(dragon.t_texture);
@@ -290,9 +328,11 @@ int main()
     //man escape running
     man[0].t_texture.loadFromFile("Resources/man.png");
     man[0].s_sprite.setTexture(man[0].t_texture);
+    man[0].t_texture.setSmooth(true);
 
     man[1].t_texture.loadFromFile("Resources/manESC.png");
     man[1].s_sprite.setTexture(man[1].t_texture);
+     man[1].t_texture.setSmooth(true);
 
     man[2].t_texture.loadFromFile("Resources/manESC.png");
     man[2].s_sprite.setTexture(man[2].t_texture);
@@ -301,23 +341,20 @@ int main()
      man[0].s_sprite.setTextureRect(IntRect(0*165,0*200,165,200));
 
    // t_man.loadFromFile("Resources/man.png");
+    ///coin
+   coin.t_texture.loadFromFile("Resources/coin.png");
+   coin.s_sprite.setTexture(coin.t_texture);
+   coin.s_sprite.setScale(0.6f,0.6f);
+   coin.t_texture.setSmooth(true);
+
+    Vector2f coinPosition(400,350);
+    coin.s_sprite.setPosition(coinPosition.x,coinPosition.y);
 
 
 
 
 
-//my_soldier bulet
-     std::vector<bulet>buletPosition;
 
-    std::vector<bool>soldier_buletDirection;
- //enemy_soldier
-    std::vector<enemy>full_enemy;
-
-
-   std::vector<enemybulet>enemybuletPosition[50];
-
-   ///manEscape
-    std::vector<mann>manESCPosition;
 
 
 
@@ -329,7 +366,14 @@ int main()
 
          diedtime();
 		 my_soldier_died_Check();
-		 if(my_soldier_died)buletPosition.clear();
+		 if(my_soldier_died)
+         {
+             buletPosition.clear();
+        // for(int i=0;i<soldier_buletDirection.size();i++)
+             soldier_buletDirection.clear();
+
+
+         }
 
 		 diedTime+=my_clock.clock.getElapsedTime().asSeconds();
 
@@ -643,8 +687,6 @@ for(int i=0;i<buletPosition.size();i++)
     }
 
 
-  //enemy placed here
-  //enemyTime+=clock.getElapsedTime();
   enemyTime += my_clock.clock.getElapsedTime().asSeconds();
 
   if(enemyTime>5.0)///work for placing enemy
@@ -705,13 +747,13 @@ for(int i=0;i<buletPosition.size();i++)
 		        {
 
 		           enemybuletPosition[i][j].s_enemybulet.setTexture(enemy_bulet[1].t_texture);
-		           enemybuletPosition[i][j].s_enemybulet.move(.5f,0.f);
+		           enemybuletPosition[i][j].s_enemybulet.move(enemyBuletSpeed,0.f);
 		        }
 		        else if(enemyBackAgain[i])
 		        {
 
 		             enemybuletPosition[i][j].s_enemybulet.setTexture(enemy_bulet[0].t_texture);
-		           enemybuletPosition[i][j].s_enemybulet.move(-.5f,0.f);
+		           enemybuletPosition[i][j].s_enemybulet.move(-enemyBuletSpeed,0.f);
 
 
 		        }
@@ -719,12 +761,12 @@ for(int i=0;i<buletPosition.size();i++)
 		        {
 
 		             enemybuletPosition[i][j].s_enemybulet.setTexture(enemy_bulet[0].t_texture);
-		           enemybuletPosition[i][j].s_enemybulet.move(-.5f,0.f);
+		           enemybuletPosition[i][j].s_enemybulet.move(-enemyBuletSpeed,0.f);
 		        }
 		        else {
 
 		            enemybuletPosition[i][j].s_enemybulet.setTexture(enemy_bulet[1].t_texture);
-		           enemybuletPosition[i][j].s_enemybulet.move(0.5f,0.f);
+		           enemybuletPosition[i][j].s_enemybulet.move(enemyBuletSpeed,0.f);
 		        }
 
 
@@ -908,7 +950,7 @@ for(int i=0;i<buletPosition.size();i++)
         else  man[0].s_sprite.setTextureRect(IntRect(0*165,0*200,165,200));
 
 
-        if(man[0].s_sprite.getPosition().x-manNumber*130<= 0 )
+        if(man[0].s_sprite.getPosition().x-manNumber*110<= 10 )
         {
             manESCPosition.push_back(mann(&man[1].t_texture,man[0].s_sprite.getPosition()));
             manNumber++;
@@ -916,7 +958,13 @@ for(int i=0;i<buletPosition.size();i++)
 
             Vector2f manCurrentPosition(my_soldier.s_sprite.getPosition().x+500,man[0].s_sprite.getPosition().y);
             //man(&t_man,manCurrentPosition);
-            man[0].s_sprite.setPosition(manCurrentPosition.x,soldierCurrrentPosition.y-60);
+            if(manCurrentPosition.x>manNumber*110 && manCurrentPosition.x<screenWidth-200)
+            {
+                 man[0].s_sprite.setPosition(manCurrentPosition.x,soldierCurrrentPosition.y-60);
+            }
+            else  man[0].s_sprite.setPosition(screenWidth/2,soldierCurrrentPosition.y-60);
+
+
         }
          for(int i=0;i<manESCPosition.size();i++)
         {
@@ -1002,6 +1050,29 @@ for(int i=0;i<buletPosition.size();i++)
 
 
       window.draw(man[0].s_sprite);
+//      for(int i=0;i<coinNumber;i++)
+//      {
+//          coin.s_sprite.setPosition(coinPosition.x+i*25,coinPosition.y);
+//
+//      }
+
+      for(int i=0;i<coinNumber;i++)
+      {
+           // s_coin.setTextureRect(IntRect(coinMove*85,pointType*120,85,120));
+          coin.s_sprite.setTextureRect(IntRect(coinMove*85,pointType*120,85,120));
+         coin.s_sprite.setPosition(coinPosition.x+i*90,coinPosition.y);
+
+          window.draw(coin.s_sprite);
+
+      }
+      coinMovetime+=my_clock.clock.getElapsedTime().asSeconds();
+        if(coinMovetime>=0.15)
+        {
+            coinMove++;
+            if(coinMove>9)coinMove=0;
+            coinMovetime=0;;
+
+        }
 
 
       for(int i=0;i<full_enemy.size();i++)
@@ -1045,9 +1116,9 @@ for(int i=0;i<buletPosition.size();i++)
         window.draw(strength_text);
         window.draw(coin_text);
 
-            Score_str =coinCount-'0';
+           // Score_str =coinCount-'0';
 
-        //Score_str = std::to_string(coinCount);
+        Score_str = To_string(coinCount);
         coinCount_text.setString(Score_str);
         coinCount_text.setPosition(soldierPosition.x-400,0-20+30+30+10);
         window.draw(coinCount_text);
