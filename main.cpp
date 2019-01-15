@@ -67,7 +67,7 @@ float movespeed=100.0f;
     ///coin
     int coinMove=0,pointType=0;
     int coinNumber=5;
-    float coinMovetime=0;
+    float coinMovetime=0.f;
 
 
 
@@ -156,6 +156,20 @@ public:
     }
 };
 
+class coint
+{
+    public:
+    Sprite s_coint;
+    coint (Texture *texture)
+    {
+
+        s_coint.setTexture(*texture);
+
+    }
+
+};
+
+
 
 void my_soldier_died_Check()
 {
@@ -207,6 +221,11 @@ void diedtime()
 
    ///manEscape
     std::vector<mann>manESCPosition;
+
+    ///coin vector
+    std::vector<coint>cointPosition;
+
+
 
 void init()
 {
@@ -347,8 +366,13 @@ int main()
    coin.s_sprite.setScale(0.6f,0.6f);
    coin.t_texture.setSmooth(true);
 
-    Vector2f coinPosition(400,350);
+    Vector2f coinPosition(400,420);
     coin.s_sprite.setPosition(coinPosition.x,coinPosition.y);
+
+    for(int i=0;i<coinNumber;i++)
+    {
+        cointPosition.push_back(coint(&coin.t_texture));
+    }
 
 
 
@@ -634,8 +658,6 @@ for(int i=0;i<buletPosition.size();i++)
 
 
     ///remove bulet from vector & collision "MY bulet"
-
-
 
    for(int i=0;i<buletPosition.size();i++)
     {
@@ -1024,8 +1046,6 @@ for(int i=0;i<buletPosition.size();i++)
 	        else soldierPosition.x=win_x/2;
         }
 
-
-
       ///my soldier setPosition here
 
         view.setCenter(soldierPosition);
@@ -1056,23 +1076,38 @@ for(int i=0;i<buletPosition.size();i++)
 //
 //      }
 
+
+    for(int i=0;i<coinNumber;i++)
+    {
+        cointPosition[i].s_coint.setTextureRect(IntRect(coinMove*85,pointType*120,85,120));
+        cointPosition[i].s_coint.setPosition(coinPosition.x+i*90,coinPosition.y);
+        cointPosition[i].s_coint.setScale(0.6f,0.6f);
+        // cointPosition[i].s_coint.setOrigin(42.5,20);
+
+    }
+
       for(int i=0;i<coinNumber;i++)
       {
-           // s_coin.setTextureRect(IntRect(coinMove*85,pointType*120,85,120));
-          coin.s_sprite.setTextureRect(IntRect(coinMove*85,pointType*120,85,120));
-         coin.s_sprite.setPosition(coinPosition.x+i*90,coinPosition.y);
 
-          window.draw(coin.s_sprite);
+
+          window.draw(cointPosition[i].s_coint);
 
       }
       coinMovetime+=my_clock.clock.getElapsedTime().asSeconds();
-        if(coinMovetime>=0.15)
+
+        if(coinMovetime>0.0012)
         {
             coinMove++;
+
             if(coinMove>9)coinMove=0;
-            coinMovetime=0;;
+
+            coinMovetime=0;
+
+
 
         }
+
+
 
 
       for(int i=0;i<full_enemy.size();i++)
