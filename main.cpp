@@ -14,7 +14,9 @@ int screenWidth=4160;///border of gamescreen
 ///score count
 Vector2f strength_level(100,10);
  int manNumber=0;
- int enemyNumber=15;
+ int enemyNumber=10;
+ int creatEnemy=enemyNumber;
+ bool creatENEMY=false;
 
 
 float strength=0.f;
@@ -233,7 +235,19 @@ void diedtime()
 
 void init()
 {
+  
+
+    for(int i=0;i<full_enemy.size();i++)
+    {
+      enemybuletPosition[i].clear();
+      enemyBack[i]=false;
+      enemyBackAgain[i]=false;
+    }
     full_enemy.clear();
+     enemy_direction.clear();
+
+  
+
 
 }
 
@@ -392,28 +406,7 @@ int main()
                 }
                
             }
-           // std::cout<<coinNumber<<std::endl;
-
-         /*   for(int i=0;i< cointPosition.size();i++)
-             for(int j=i+1;j<cointPosition.size();j++)
-                {
-                  if(abs(cointPosition[i].s_coint.getPosition().x-cointPosition[j].s_coint.getPosition().x<30))
-                  {
-                    cointPosition.erase(cointPosition.begin()+j);
-                  }
-                  else creatCoinNumber++;
-                }*/
-
-                //std::cout<<creatCoinNumber<<std::endl;
-
-
-
-
-
-
-
-
-
+        
 
 
 
@@ -673,12 +666,7 @@ for(int i=0;i<buletPosition.size();i++)
                       {
                         enemy_died[i]=true;
                          enemy_hit[i]=0;
-                         //enemy_died_Check();
-
-/*
-                         full_enemy.erase(full_enemy.begin()+i);
-                         enemy_direction.erase(enemy_direction.begin()+i);
-                            enemybuletPosition[i].clear();*/
+  
                       }
 
                        //if(buletPosition[i].s_bulet.getGlobalBounds().intersects(full_enemy[j].s_enemy.getGlobalBounds()))
@@ -742,12 +730,24 @@ for(int i=0;i<buletPosition.size();i++)
 
 
   enemyTime += my_clock.clock.getElapsedTime().asSeconds();
+if(creatENEMY)
+{
+  if(creatEnemy<=5)
+  {
+
+    init();
+
+  }
+  creatENEMY=false;
+}
+  
 
   if(enemyTime>5.0)///work for placing enemy
         {
            //std::srand(time(NULL));
              int placeEnemySoldier=rand()%2;
              enemy_direction.push_back(placeEnemySoldier);//direction
+             creatEnemy--;
 
             enemyTime=0.f;
 
@@ -783,8 +783,6 @@ for(int i=0;i<buletPosition.size();i++)
               enemybuletPosition[i].push_back(enemybulet(&enemy_bulet[1].t_texture,full_enemy[i].s_enemy.getPosition(),i));
             }
             else enemybuletPosition[i].push_back(enemybulet(&enemy_bulet[0].t_texture,full_enemy[i].s_enemy.getPosition(),i));
-
-
 
             enemybuletTime=0;
           }
@@ -971,10 +969,12 @@ for(int i=0;i<buletPosition.size();i++)
                        enemy_direction.erase(enemy_direction.begin()+i);
                        enemybuletPosition[i].clear();
                        enemy_died[i]=false;
+                       
+                       creatEnemy--;
+
               }
             }
             enemy_diedTime=0;
-
         }
 
 
