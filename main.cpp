@@ -34,7 +34,7 @@ Vector2f soldierCurrrentPosition(0,330);
 Vector2f soldierPosition(win_x/2,win_y/2);
 
 float frameCounter=0,switchFrame=100,frameSpeed=600;
-float movespeed=100.0f;
+float movespeed=200.0f;
  float soldierJumpSpeed=5.0f;
    float soldierJumpHeight=200;
 
@@ -49,7 +49,7 @@ float movespeed=100.0f;
    bool enemyBack[50],enemyBackAgain[50];
    float  enemybuletTime=0.f;
    std::vector<bool>enemy_direction;
-   int enemyHit=5;
+   int enemyHit=2;
    int enemy_hit[50];
    bool enemy_died[50];
    float enemy_diedTime=0.f;
@@ -66,8 +66,11 @@ float movespeed=100.0f;
 
     ///coin
     int coinMove=0,pointType=0;
-    int coinNumber=5;
+    int coinNumber=15;
     float coinMovetime=0.f;
+   
+    int creatCoinNumber=coinNumber;
+    bool creatCoin=false;
 
 
 
@@ -75,10 +78,10 @@ RenderWindow window(VideoMode(win_x,win_y),"Run For Life",Style::Titlebar | Styl
 
 struct Load
 {
-	Sprite s_sprite;
- 	Texture t_texture;
- 	Clock clock;
- 	Time time;
+  Sprite s_sprite;
+  Texture t_texture;
+  Clock clock;
+  Time time;
 
 
 };
@@ -132,13 +135,13 @@ class enemybulet
 class enemy
 {
 public:
-	Sprite s_enemy;
-	enemy(Texture *texture,Vector2f pos)
-	{
+  Sprite s_enemy;
+  enemy(Texture *texture,Vector2f pos)
+  {
 
-		s_enemy.setTexture(*texture);
-		s_enemy.setPosition(pos);
-	}
+    s_enemy.setTexture(*texture);
+    s_enemy.setPosition(pos);
+  }
 };
 class mann
 {
@@ -173,16 +176,16 @@ class coint
 
 void my_soldier_died_Check()
 {
-	 if(my_soldier_hit>my_soldierHit)
+   if(my_soldier_hit>my_soldierHit)
         {
-        	strength_level.x-=20;
-        	my_soldier_hit=0;
-        	if(strength_level.x<10)
-        	{
-        		lifeCount--;
-        		my_soldier_died=true;
-        		strength_level.x=100;
-        	}
+          strength_level.x-=20;
+          my_soldier_hit=0;
+          if(strength_level.x<10)
+          {
+            lifeCount--;
+            my_soldier_died=true;
+            strength_level.x=100;
+          }
 
         }
 }
@@ -195,16 +198,17 @@ std::string To_string(int n)
         s+=(n%10+'0');
         n/=10;
       }
+      reverse(s.begin(),s.end());
       return s;
    }
 
 
 void diedtime()
 {
-	 if(diedTime>5.0)
+   if(diedTime>5.0)
         {
-        	my_soldier_died=false;
-        	diedTime=0.f;
+          my_soldier_died=false;
+          diedTime=0.f;
 
 
         }
@@ -236,7 +240,7 @@ void init()
 
 int main()
 {
-	window.setPosition(Vector2i(200,0));
+    window.setPosition(Vector2i(200,0));
     window.setKeyRepeatEnabled(false);
 
     View view;
@@ -332,10 +336,8 @@ int main()
 
     /*life[1].t_texture.loadFromFile("Resources/life.png");
     life[1].s_sprite.setTexture(life[1].t_texture);
-
     life[2].t_texture.loadFromFile("Resources/life.png");
     life[2].s_sprite.setTexture(life[2].t_texture);
-
     life[3].t_texture.loadFromFile("Resources/life.png");
     life[3].s_sprite.setTexture(life[3].t_texture);
 */
@@ -351,7 +353,7 @@ int main()
 
     man[1].t_texture.loadFromFile("Resources/manESC.png");
     man[1].s_sprite.setTexture(man[1].t_texture);
-     man[1].t_texture.setSmooth(true);
+    man[1].t_texture.setSmooth(true);
 
     man[2].t_texture.loadFromFile("Resources/manESC.png");
     man[2].s_sprite.setTexture(man[2].t_texture);
@@ -366,13 +368,43 @@ int main()
    coin.s_sprite.setScale(0.6f,0.6f);
    coin.t_texture.setSmooth(true);
 
-    Vector2f coinPosition(400,420);
+    Vector2f coinPosition(500,400);
     coin.s_sprite.setPosition(coinPosition.x,coinPosition.y);
 
-    for(int i=0;i<coinNumber;i++)
-    {
-        cointPosition.push_back(coint(&coin.t_texture));
-    }
+      srand(time(NULL));
+
+     for(int i=0;i<coinNumber;i++)
+            {
+                cointPosition.push_back(coint(&coin.t_texture));
+
+                 float pos=rand()%(screenWidth+150);
+                
+                cointPosition[i].s_coint.setPosition(pos,coinPosition.y);
+
+                for(int j=i+1;j<cointPosition.size();j++)
+                {
+                  if(abs(cointPosition[i].s_coint.getPosition().x-cointPosition[j].s_coint.getPosition().x<30))
+                  {
+                    cointPosition.erase(cointPosition.begin()+j);
+                    creatCoinNumber--;
+                  }
+
+                }
+               
+            }
+           // std::cout<<coinNumber<<std::endl;
+
+         /*   for(int i=0;i< cointPosition.size();i++)
+             for(int j=i+1;j<cointPosition.size();j++)
+                {
+                  if(abs(cointPosition[i].s_coint.getPosition().x-cointPosition[j].s_coint.getPosition().x<30))
+                  {
+                    cointPosition.erase(cointPosition.begin()+j);
+                  }
+                  else creatCoinNumber++;
+                }*/
+
+                //std::cout<<creatCoinNumber<<std::endl;
 
 
 
@@ -383,14 +415,16 @@ int main()
 
 
 
-	while(window.isOpen())
-	{
-		window.draw(background[0].s_sprite);
+
+
+  while(window.isOpen())
+  {
+    window.draw(background[0].s_sprite);
 
 
          diedtime();
-		 my_soldier_died_Check();
-		 if(my_soldier_died)
+     my_soldier_died_Check();
+     if(my_soldier_died)
          {
              buletPosition.clear();
         // for(int i=0;i<soldier_buletDirection.size();i++)
@@ -399,12 +433,12 @@ int main()
 
          }
 
-		 diedTime+=my_clock.clock.getElapsedTime().asSeconds();
+     diedTime+=my_clock.clock.getElapsedTime().asSeconds();
 
-		Event event;
-		while(window.pollEvent(event))
-		{
-			 switch(event.type)
+    Event event;
+    while(window.pollEvent(event))
+    {
+       switch(event.type)
             {
             case Event::Closed:
                 window.close();
@@ -414,19 +448,19 @@ int main()
                     window.close();
                 break;
             }
-		}
+    }
 
         my_buletTime=my_buletclock.clock.getElapsedTime().asSeconds();
 
-	//Down button
+  //Down button
            if(my_soldier_died)
-		      {
-		        if(soldier_source.y==Right)
-		        my_soldier.s_sprite.setTextureRect(IntRect(5*110,12*180,170,180));
-		        else
-		        my_soldier.s_sprite.setTextureRect(IntRect(0*110,14*180,170,180));///edit soldier image for left(image bottom)
+          {
+            if(soldier_source.y==Right)
+            my_soldier.s_sprite.setTextureRect(IntRect(5*110,12*180,170,180));
+            else
+            my_soldier.s_sprite.setTextureRect(IntRect(0*110,14*180,170,180));///edit soldier image for left(image bottom)
 
-		      }
+          }
 
             else if(Keyboard::isKeyPressed(Keyboard::Space))
             {
@@ -506,24 +540,24 @@ int main()
 
             if(soldier_source.y==Right)my_soldier.s_sprite.setTextureRect(IntRect(soldier_source.x*130,4*180,130,180));
             else my_soldier.s_sprite.setTextureRect(IntRect(soldier_source.x*130,5*180,130,180));
-	            if( my_buletTime>0.2)
-	            {
-	                 if(soldier_source.y==Right)///s_enemySoldier.getPosition().x>s_soldier.getPosition().x
-	                 {
-	                     Vector2f soldierbuletPosition(my_soldier.s_sprite.getPosition().x+110,my_soldier.s_sprite.getPosition().y+45);
-	                     buletPosition.push_back(bulet(&my_bulet[1].t_texture,soldierbuletPosition));
-	                     soldier_buletDirection.push_back(true);
-	                 }
+              if( my_buletTime>0.2)
+              {
+                   if(soldier_source.y==Right)///s_enemySoldier.getPosition().x>s_soldier.getPosition().x
+                   {
+                       Vector2f soldierbuletPosition(my_soldier.s_sprite.getPosition().x+110,my_soldier.s_sprite.getPosition().y+45);
+                       buletPosition.push_back(bulet(&my_bulet[1].t_texture,soldierbuletPosition));
+                       soldier_buletDirection.push_back(true);
+                   }
 
-	                 else
-	                 {
-	                     Vector2f soldierbuletPosition(my_soldier.s_sprite.getPosition().x-10,my_soldier.s_sprite.getPosition().y+45);
-	                     buletPosition.push_back(bulet(&my_bulet[0].t_texture,soldierbuletPosition));
-	                     soldier_buletDirection.push_back(false);
-	                 }
-	                   my_buletclock.clock.restart();
+                   else
+                   {
+                       Vector2f soldierbuletPosition(my_soldier.s_sprite.getPosition().x-10,my_soldier.s_sprite.getPosition().y+45);
+                       buletPosition.push_back(bulet(&my_bulet[0].t_texture,soldierbuletPosition));
+                       soldier_buletDirection.push_back(false);
+                   }
+                     my_buletclock.clock.restart();
 
-	            }
+              }
 
         }
 
@@ -601,55 +635,54 @@ for(int i=0;i<buletPosition.size();i++)
      }
      else if(soldier_buletDirection[i]==false)  /// s_enemySoldier.getPosition().x<s_soldier.getPosition().x && soldier_source.y==Left
         buletPosition[i].s_bulet.move(-1.f,0.f);
-	 /*else
-	  {
-	    buletPosition.erase(buletPosition.begin()+i);
-	    soldier_buletDirection.erase(soldier_buletDirection.begin()+i);
-	  }*/
+   /*else
+    {
+      buletPosition.erase(buletPosition.begin()+i);
+      soldier_buletDirection.erase(soldier_buletDirection.begin()+i);
+    }*/
 
   }
 
 ///stabed  my soldier
   for(int i=0;i<full_enemy.size();i++)
   {
-  	float stab2=stab2_clock.clock.getElapsedTime().asSeconds();
-  	if(my_soldier.s_sprite.getGlobalBounds().intersects(full_enemy[i].s_enemy.getGlobalBounds()) && stab2>0.2 )
-  	{
+    float stab2=stab2_clock.clock.getElapsedTime().asSeconds();
+    if(my_soldier.s_sprite.getGlobalBounds().intersects(full_enemy[i].s_enemy.getGlobalBounds()) && stab2>0.2 )
+    {
            if(!my_soldier_died) my_soldier_hit++;
             stab2_clock.clock.restart();
-  	}
+    }
 
   }
 
 ///stabing enemy
 
-  		 float stab=stab_clock.clock.getElapsedTime().asSeconds();
+       float stab=stab_clock.clock.getElapsedTime().asSeconds();
 
-  		 enemy_diedTime+=my_clock.clock.getElapsedTime().asSeconds();
+       enemy_diedTime+=my_clock.clock.getElapsedTime().asSeconds();
 
             if(Keyboard::isKeyPressed(Keyboard::Space) && stab>0.2)
             {
                 for(int i=0;i<full_enemy.size();i++)
                 {
 
-                		if(my_soldier.s_sprite.getGlobalBounds().intersects(full_enemy[i].s_enemy.getGlobalBounds()) && !enemy_died[i])
-                		{
-                			enemy_hit[i]++;
-                			if(enemy_hit[i]>=enemyHit)
-                			{
-                				enemy_died[i]=true;
-                				 enemy_hit[i]=0;
-                				 //enemy_died_Check();
+                    if(my_soldier.s_sprite.getGlobalBounds().intersects(full_enemy[i].s_enemy.getGlobalBounds()) && !enemy_died[i])
+                    {
+                      enemy_hit[i]++;
+                      if(enemy_hit[i]>=enemyHit)
+                      {
+                        enemy_died[i]=true;
+                         enemy_hit[i]=0;
+                         //enemy_died_Check();
 
 /*
-                				 full_enemy.erase(full_enemy.begin()+i);
-				                 enemy_direction.erase(enemy_direction.begin()+i);
+                         full_enemy.erase(full_enemy.begin()+i);
+                         enemy_direction.erase(enemy_direction.begin()+i);
+                            enemybuletPosition[i].clear();*/
+                      }
 
-				                    enemybuletPosition[i].clear();*/
-                			}
-
-                			 //if(buletPosition[i].s_bulet.getGlobalBounds().intersects(full_enemy[j].s_enemy.getGlobalBounds()))
-                		}
+                       //if(buletPosition[i].s_bulet.getGlobalBounds().intersects(full_enemy[j].s_enemy.getGlobalBounds()))
+                    }
 
                 }
                 stab_clock.clock.restart();
@@ -661,50 +694,49 @@ for(int i=0;i<buletPosition.size();i++)
 
    for(int i=0;i<buletPosition.size();i++)
     {
-    	for(int j=0;j<full_enemy.size();j++)
-    	{
+      for(int j=0;j<full_enemy.size();j++)
+      {
 
-	           if(buletPosition[i].s_bulet.getGlobalBounds().intersects(full_enemy[j].s_enemy.getGlobalBounds()) && !enemy_died[j])
-	            {
-	                 buletPosition.erase(buletPosition.begin()+i);
-	                 soldier_buletDirection.erase(soldier_buletDirection.begin()+i);
-	                 enemy_hit[j]++;
-	                 if(enemy_hit[j]>=enemyHit)//check enemy is dead
-	                 {
-	                 	enemy_died[i]=true;
-                		enemy_hit[i]=0;
+             if(buletPosition[i].s_bulet.getGlobalBounds().intersects(full_enemy[j].s_enemy.getGlobalBounds()) && !enemy_died[j])
+              {
+                   buletPosition.erase(buletPosition.begin()+i);
+                   soldier_buletDirection.erase(soldier_buletDirection.begin()+i);
+                   enemy_hit[j]++;
+                   if(enemy_hit[j]>=enemyHit)//check enemy is dead
+                   {
+                    enemy_died[i]=true;
+                    enemy_hit[i]=0;
 
                       /*full_enemy.erase(full_enemy.begin()+j);
-	                   enemy_direction.erase(enemy_direction.begin()+j);
+                     enemy_direction.erase(enemy_direction.begin()+j);
+                      enemybuletPosition[j].clear();*/
 
-	                    enemybuletPosition[j].clear();*/
+                  }
 
-	                }
-
-	            }
-
+              }
 
 
-    	}
+
+      }
 
     }
 
    for(int i=0;i<buletPosition.size();i++)
     {
 
-    	      if(buletPosition[i].s_bulet.getPosition().x>my_soldier.s_sprite.getPosition().x+550)
-		         {
-		            buletPosition.erase(buletPosition.begin()+i);
-		            soldier_buletDirection.erase(soldier_buletDirection.begin()+i);
+            if(buletPosition[i].s_bulet.getPosition().x>my_soldier.s_sprite.getPosition().x+550)
+             {
+                buletPosition.erase(buletPosition.begin()+i);
+                soldier_buletDirection.erase(soldier_buletDirection.begin()+i);
 
-		         }
+             }
 
 
-	         else if(buletPosition[i].s_bulet.getPosition().x<my_soldier.s_sprite.getPosition().x-550)
-	           {
-	                buletPosition.erase(buletPosition.begin()+i);
-	                soldier_buletDirection.erase(soldier_buletDirection.begin()+i);
-	           }
+           else if(buletPosition[i].s_bulet.getPosition().x<my_soldier.s_sprite.getPosition().x-550)
+             {
+                  buletPosition.erase(buletPosition.begin()+i);
+                  soldier_buletDirection.erase(soldier_buletDirection.begin()+i);
+             }
 
     }
 
@@ -724,16 +756,16 @@ for(int i=0;i<buletPosition.size();i++)
             if(placeEnemySoldier==1)
             {
                 Vector2f enemyPosition(my_soldier.s_sprite.getPosition().x+500,soldierCurrrentPosition.y);
-            	full_enemy.push_back(enemy(&enemy_soldier.t_texture,enemyPosition));
+              full_enemy.push_back(enemy(&enemy_soldier.t_texture,enemyPosition));
 
             }
             else
             {
                  //placeEnemySoldier=0;
 
-            	Vector2f enemyPosition(my_soldier.s_sprite.getPosition().x-500,soldierCurrrentPosition.y);
+              Vector2f enemyPosition(my_soldier.s_sprite.getPosition().x-500,soldierCurrrentPosition.y);
 
-            	full_enemy.push_back(enemy(&enemy_soldier.t_texture,enemyPosition));
+              full_enemy.push_back(enemy(&enemy_soldier.t_texture,enemyPosition));
 
             }
 
@@ -744,18 +776,18 @@ for(int i=0;i<buletPosition.size();i++)
 
         for(int i=0;i<full_enemy.size();i++)
         {
-        	if(enemybuletTime>0.5 && abs(full_enemy[i].s_enemy.getPosition().x-my_soldier.s_sprite.getPosition().x)<400 && abs(full_enemy[i].s_enemy.getPosition().x-my_soldier.s_sprite.getPosition().x)>100 && !enemy_died[i])
-        	{
-        		if(my_soldier.s_sprite.getPosition().x < full_enemy[i].s_enemy.getPosition().x)
-        		{
-        			enemybuletPosition[i].push_back(enemybulet(&enemy_bulet[1].t_texture,full_enemy[i].s_enemy.getPosition(),i));
-        		}
-        		else enemybuletPosition[i].push_back(enemybulet(&enemy_bulet[0].t_texture,full_enemy[i].s_enemy.getPosition(),i));
+          if(enemybuletTime>0.5 && abs(full_enemy[i].s_enemy.getPosition().x-my_soldier.s_sprite.getPosition().x)<400 && abs(full_enemy[i].s_enemy.getPosition().x-my_soldier.s_sprite.getPosition().x)>100 && !enemy_died[i])
+          {
+            if(my_soldier.s_sprite.getPosition().x < full_enemy[i].s_enemy.getPosition().x)
+            {
+              enemybuletPosition[i].push_back(enemybulet(&enemy_bulet[1].t_texture,full_enemy[i].s_enemy.getPosition(),i));
+            }
+            else enemybuletPosition[i].push_back(enemybulet(&enemy_bulet[0].t_texture,full_enemy[i].s_enemy.getPosition(),i));
 
 
 
-        		enemybuletTime=0;
-        	}
+            enemybuletTime=0;
+          }
 
 
         }
@@ -763,97 +795,97 @@ for(int i=0;i<buletPosition.size();i++)
         //enemy bulet set texture & move
         for(int i=0;i<full_enemy.size();i++)
         {
-        	for(int j=0;j<enemybuletPosition[i].size();j++)
-		    {
-		        if(enemyBack[i])
-		        {
+          for(int j=0;j<enemybuletPosition[i].size();j++)
+        {
+            if(enemyBack[i])
+            {
 
-		           enemybuletPosition[i][j].s_enemybulet.setTexture(enemy_bulet[1].t_texture);
-		           enemybuletPosition[i][j].s_enemybulet.move(enemyBuletSpeed,0.f);
-		        }
-		        else if(enemyBackAgain[i])
-		        {
+               enemybuletPosition[i][j].s_enemybulet.setTexture(enemy_bulet[1].t_texture);
+               enemybuletPosition[i][j].s_enemybulet.move(enemyBuletSpeed,0.f);
+            }
+            else if(enemyBackAgain[i])
+            {
 
-		             enemybuletPosition[i][j].s_enemybulet.setTexture(enemy_bulet[0].t_texture);
-		           enemybuletPosition[i][j].s_enemybulet.move(-enemyBuletSpeed,0.f);
-
-
-		        }
-		        else if(enemy_direction[i])
-		        {
-
-		             enemybuletPosition[i][j].s_enemybulet.setTexture(enemy_bulet[0].t_texture);
-		           enemybuletPosition[i][j].s_enemybulet.move(-enemyBuletSpeed,0.f);
-		        }
-		        else {
-
-		            enemybuletPosition[i][j].s_enemybulet.setTexture(enemy_bulet[1].t_texture);
-		           enemybuletPosition[i][j].s_enemybulet.move(enemyBuletSpeed,0.f);
-		        }
+                 enemybuletPosition[i][j].s_enemybulet.setTexture(enemy_bulet[0].t_texture);
+               enemybuletPosition[i][j].s_enemybulet.move(-enemyBuletSpeed,0.f);
 
 
-		    }
+            }
+            else if(enemy_direction[i])
+            {
+
+                 enemybuletPosition[i][j].s_enemybulet.setTexture(enemy_bulet[0].t_texture);
+               enemybuletPosition[i][j].s_enemybulet.move(-enemyBuletSpeed,0.f);
+            }
+            else {
+
+                enemybuletPosition[i][j].s_enemybulet.setTexture(enemy_bulet[1].t_texture);
+               enemybuletPosition[i][j].s_enemybulet.move(enemyBuletSpeed,0.f);
+            }
+
+
+        }
         }
 
 ///enemy bulet collision
 
         for(int i=0;i<full_enemy.size();i++)
         {
-        	for(int j=0;j<enemybuletPosition[i].size();j++)
-        	{
-        		if(Keyboard::isKeyPressed(Keyboard::Down));///do nothing with bulet
+          for(int j=0;j<enemybuletPosition[i].size();j++)
+          {
+            if(Keyboard::isKeyPressed(Keyboard::Down));///do nothing with bulet
 
-        	  else if(enemybuletPosition[i][j].s_enemybulet.getGlobalBounds().intersects(my_soldier.s_sprite.getGlobalBounds()))
-        		{
-        			enemybuletPosition[i].erase(enemybuletPosition[i].begin()+j);
-        			if(!my_soldier_died) my_soldier_hit++;//my soldier hit bulet
-        		}
+            else if(enemybuletPosition[i][j].s_enemybulet.getGlobalBounds().intersects(my_soldier.s_sprite.getGlobalBounds()))
+            {
+              enemybuletPosition[i].erase(enemybuletPosition[i].begin()+j);
+              if(!my_soldier_died) my_soldier_hit++;//my soldier hit bulet
+            }
 
-        		/*else if(enemybuletPosition[i][j].s_enemybulet.getPosition().x+300<my_soldier.s_sprite.getPosition().x)
-        		{
-        			enemybuletPosition[i].erase(enemybuletPosition[i].begin()+j);
-        		}
-        		else if(enemybuletPosition[i][j].s_enemybulet.getPosition().x-300>my_soldier.s_sprite.getPosition().x)
-        		{
-        			enemybuletPosition[i].erase(enemybuletPosition[i].begin()+j);
-        		}*/
-        	}
+            /*else if(enemybuletPosition[i][j].s_enemybulet.getPosition().x+300<my_soldier.s_sprite.getPosition().x)
+            {
+              enemybuletPosition[i].erase(enemybuletPosition[i].begin()+j);
+            }
+            else if(enemybuletPosition[i][j].s_enemybulet.getPosition().x-300>my_soldier.s_sprite.getPosition().x)
+            {
+              enemybuletPosition[i].erase(enemybuletPosition[i].begin()+j);
+            }*/
+          }
 
 
         }
 
         for(int i=0;i<full_enemy.size();i++)
         {
-        	for(int j=0;j<enemybuletPosition[i].size();j++)
-        	{
-        		if(enemybuletPosition[i][j].s_enemybulet.getPosition().x>my_soldier.s_sprite.getPosition().x+400 )
-        		{
-        			enemybuletPosition[i].erase(enemybuletPosition[i].begin()+j);
-        		}
-        		else if(enemybuletPosition[i][j].s_enemybulet.getPosition().x+400<my_soldier.s_sprite.getPosition().x)
-        		{
-        			enemybuletPosition[i].erase(enemybuletPosition[i].begin()+j);
-        		}
-        	}
+          for(int j=0;j<enemybuletPosition[i].size();j++)
+          {
+            if(enemybuletPosition[i][j].s_enemybulet.getPosition().x>my_soldier.s_sprite.getPosition().x+400 )
+            {
+              enemybuletPosition[i].erase(enemybuletPosition[i].begin()+j);
+            }
+            else if(enemybuletPosition[i][j].s_enemybulet.getPosition().x+400<my_soldier.s_sprite.getPosition().x)
+            {
+              enemybuletPosition[i].erase(enemybuletPosition[i].begin()+j);
+            }
+          }
         }
 
 
         for(int i=0;i<full_enemy.size();i++)
         {
-        	if(enemy_died[i])
-        	{
-        		if(enemyBack[i] || !enemy_direction[i])
-        		full_enemy[i].s_enemy.setTextureRect(IntRect(4*130,11*180,170,180));
-        		else if(enemyBackAgain[i] || enemy_direction[i])
-        		{
-        			full_enemy[i].s_enemy.setTextureRect(IntRect(4*130,12*180,170,180));
-        		}
-        	}
-        	else if(abs(full_enemy[i].s_enemy.getPosition().x-my_soldier.s_sprite.getPosition().x)<100)
-        	{
+          if(enemy_died[i])
+          {
+            if(enemyBack[i] || !enemy_direction[i])
+            full_enemy[i].s_enemy.setTextureRect(IntRect(4*130,11*180,170,180));
+            else if(enemyBackAgain[i] || enemy_direction[i])
+            {
+              full_enemy[i].s_enemy.setTextureRect(IntRect(4*130,12*180,170,180));
+            }
+          }
+          else if(abs(full_enemy[i].s_enemy.getPosition().x-my_soldier.s_sprite.getPosition().x)<100)
+          {
 
 
-        		if(enemyBack[i])
+            if(enemyBack[i])
                 {
                     full_enemy[i].s_enemy.setTextureRect(IntRect(soldier_source.x*110,1*180,110,180));
 
@@ -862,42 +894,42 @@ for(int i=0;i<buletPosition.size();i++)
                 {
                   full_enemy[i].s_enemy.setTextureRect(IntRect(soldier_source.x*110,6*180,110,180));
                 }
-        		else if(enemy_direction[i])
-        		{
-        			full_enemy[i].s_enemy.setTextureRect(IntRect(soldier_source.x*110,6*180,110,180));
-        		}
-        		else
-        		full_enemy[i].s_enemy.setTextureRect(IntRect(soldier_source.x*110,1*180,110,180));
-        	}
-        	else if(abs(full_enemy[i].s_enemy.getPosition().x-my_soldier.s_sprite.getPosition().x)<600)
-        	{
-        		 if(enemyBack[i])
+            else if(enemy_direction[i])
+            {
+              full_enemy[i].s_enemy.setTextureRect(IntRect(soldier_source.x*110,6*180,110,180));
+            }
+            else
+            full_enemy[i].s_enemy.setTextureRect(IntRect(soldier_source.x*110,1*180,110,180));
+          }
+          else if(abs(full_enemy[i].s_enemy.getPosition().x-my_soldier.s_sprite.getPosition().x)<600)
+          {
+             if(enemyBack[i])
                 {
                     full_enemy[i].s_enemy.setTextureRect(IntRect(soldier_source.x*110,2*180,110,180));
-        	        full_enemy[i].s_enemy.move(enemySoldierSpeed*my_clock.clock.getElapsedTime().asSeconds(),0);
+                  full_enemy[i].s_enemy.move(enemySoldierSpeed*my_clock.clock.getElapsedTime().asSeconds(),0);
                 }
                 else if(enemyBackAgain[i])
                 {
                     full_enemy[i].s_enemy.setTextureRect(IntRect(soldier_source.x*110,7*180,110,180));
-        			full_enemy[i].s_enemy.move(-enemySoldierSpeed*my_clock.clock.getElapsedTime().asSeconds(),0);
+              full_enemy[i].s_enemy.move(-enemySoldierSpeed*my_clock.clock.getElapsedTime().asSeconds(),0);
                 }
 
-        		else if(enemy_direction[i])
-        		{
-        			full_enemy[i].s_enemy.setTextureRect(IntRect(soldier_source.x*110,7*180,110,180));
-        			full_enemy[i].s_enemy.move(-enemySoldierSpeed*my_clock.clock.getElapsedTime().asSeconds(),0);
-        		}
-        		else if(enemy_direction[i]==false)
-        		{
+            else if(enemy_direction[i])
+            {
+              full_enemy[i].s_enemy.setTextureRect(IntRect(soldier_source.x*110,7*180,110,180));
+              full_enemy[i].s_enemy.move(-enemySoldierSpeed*my_clock.clock.getElapsedTime().asSeconds(),0);
+            }
+            else if(enemy_direction[i]==false)
+            {
 
-        		    full_enemy[i].s_enemy.setTextureRect(IntRect(soldier_source.x*110,2*180,110,180));
-        	        full_enemy[i].s_enemy.move(enemySoldierSpeed*my_clock.clock.getElapsedTime().asSeconds(),0);
-        		}
+                full_enemy[i].s_enemy.setTextureRect(IntRect(soldier_source.x*110,2*180,110,180));
+                  full_enemy[i].s_enemy.move(enemySoldierSpeed*my_clock.clock.getElapsedTime().asSeconds(),0);
+            }
 
-        	}
-        	else
-        	{
-        		 if(enemyBack[i])
+          }
+          else
+          {
+             if(enemyBack[i])
                 {
                     full_enemy[i].s_enemy.setTextureRect(IntRect(3*110,4*180,110,180));
 
@@ -906,18 +938,18 @@ for(int i=0;i<buletPosition.size();i++)
                 {
                    full_enemy[i].s_enemy.setTextureRect(IntRect(2*110,4*180,110,180));
                 }
-        		else if(enemy_direction[i])
-        		{
-        			full_enemy[i].s_enemy.setTextureRect(IntRect(2*110,4*180,110,180));
-        		}
-        		else if(enemy_direction[i]==false)
-        		{
-        			full_enemy[i].s_enemy.setTextureRect(IntRect(3*110,4*180,110,180));
+            else if(enemy_direction[i])
+            {
+              full_enemy[i].s_enemy.setTextureRect(IntRect(2*110,4*180,110,180));
+            }
+            else if(enemy_direction[i]==false)
+            {
+              full_enemy[i].s_enemy.setTextureRect(IntRect(3*110,4*180,110,180));
 
-        		}
+            }
 
 
-        	}
+          }
 
         if((full_enemy[i].s_enemy.getPosition().x+300<=my_soldier.s_sprite.getPosition().x)) {enemyBack[i]=true;enemyBackAgain[i]=false;}///range of back 300-x  enemybuletPosition.clear();
 
@@ -931,17 +963,17 @@ for(int i=0;i<buletPosition.size();i++)
 
         if(enemy_diedTime>6.0)
         {
-        	 for(int i=0;i<full_enemy.size();i++)
-		        {
-		        	if(enemy_died[i])
-		        	{
-		        		 full_enemy.erase(full_enemy.begin()+i);
-	                     enemy_direction.erase(enemy_direction.begin()+i);
-	                     enemybuletPosition[i].clear();
-	                     enemy_died[i]=false;
-		        	}
-		        }
-		        enemy_diedTime=0;
+           for(int i=0;i<full_enemy.size();i++)
+            {
+              if(enemy_died[i])
+              {
+                 full_enemy.erase(full_enemy.begin()+i);
+                       enemy_direction.erase(enemy_direction.begin()+i);
+                       enemybuletPosition[i].clear();
+                       enemy_died[i]=false;
+              }
+            }
+            enemy_diedTime=0;
 
         }
 
@@ -967,7 +999,6 @@ for(int i=0;i<buletPosition.size();i++)
 
              window.draw(helpmetxt);
 
-
         }
         else  man[0].s_sprite.setTextureRect(IntRect(0*165,0*200,165,200));
 
@@ -987,8 +1018,11 @@ for(int i=0;i<buletPosition.size();i++)
             else  man[0].s_sprite.setPosition(screenWidth/2,soldierCurrrentPosition.y-60);
 
 
+
+
         }
-         for(int i=0;i<manESCPosition.size();i++)
+
+        for(int i=0;i<manESCPosition.size();i++)
         {
             if(i%2==0)
             manESCPosition[i].s_manESC.setTextureRect(IntRect(happyMovement1*100,0*150,100,150));
@@ -997,6 +1031,7 @@ for(int i=0;i<buletPosition.size();i++)
 
 
         }
+
         manESCTime+=my_clock.clock.getElapsedTime().asSeconds();
         manESCTime2+=my_clock.clock.getElapsedTime().asSeconds();
 
@@ -1039,11 +1074,11 @@ for(int i=0;i<buletPosition.size();i++)
 
         if(my_soldier.s_sprite.getPosition().x+win_x/2+150<screenWidth)
         {
-	       if(my_soldier.s_sprite.getPosition().x+100>win_x/2)
-	        {
-	            soldierPosition.x=my_soldier.s_sprite.getPosition().x+100;
-	        }
-	        else soldierPosition.x=win_x/2;
+         if(my_soldier.s_sprite.getPosition().x+100>win_x/2)
+          {
+              soldierPosition.x=my_soldier.s_sprite.getPosition().x+100;
+          }
+          else soldierPosition.x=win_x/2;
         }
 
       ///my soldier setPosition here
@@ -1070,23 +1105,74 @@ for(int i=0;i<buletPosition.size();i++)
 
 
       window.draw(man[0].s_sprite);
-//      for(int i=0;i<coinNumber;i++)
-//      {
-//          coin.s_sprite.setPosition(coinPosition.x+i*25,coinPosition.y);
-//
-//      }
+
+      ///coin 
+
+      if(creatCoinNumber<=5)
+      {
+        creatCoin=true;
+        creatCoinNumber=coinNumber;
+      }
+      else creatCoin=false;
+
+          srand(time(NULL));
+
+        
+         if(creatCoin)
+         {
+
+            //std::cout<<creatCoinNumber<<std::endl;
+            for(int i=0;i<coinNumber;i++)
+            {
+                cointPosition.push_back(coint(&coin.t_texture));
+
+                 int pos=rand()%(screenWidth+150);
+                
+                cointPosition[i].s_coint.setPosition(pos,coinPosition.y);
+
+                for(int j=i+1;j<cointPosition.size();j++)
+                {
+                  if(cointPosition[i].s_coint.getGlobalBounds().intersects(cointPosition[j].s_coint.getGlobalBounds()))
+                  {
+                    cointPosition.erase(cointPosition.begin()+j);
+                    creatCoinNumber--;
+                  }
+                   
+                }
+               
+            }
+
+                
+         }     
+ 
+         
 
 
-    for(int i=0;i<coinNumber;i++)
+
+    for(int i=0;i<cointPosition.size();i++)
     {
         cointPosition[i].s_coint.setTextureRect(IntRect(coinMove*85,pointType*120,85,120));
-        cointPosition[i].s_coint.setPosition(coinPosition.x+i*90,coinPosition.y);
+        
         cointPosition[i].s_coint.setScale(0.6f,0.6f);
         // cointPosition[i].s_coint.setOrigin(42.5,20);
 
     }
 
-      for(int i=0;i<coinNumber;i++)
+
+      for(int i=0;i<cointPosition.size();i++)
+      {
+        if(cointPosition[i].s_coint.getGlobalBounds().intersects(my_soldier.s_sprite.getGlobalBounds()))
+        {
+          coinCount++;
+          cointPosition.erase(cointPosition.begin()+i);
+          //std::cout<<cointPosition.size()<<std::endl;
+          creatCoinNumber--;
+
+        }
+      }
+
+
+      for(int i=0;i<cointPosition.size();i++)
       {
 
 
@@ -1095,7 +1181,7 @@ for(int i=0;i<buletPosition.size();i++)
       }
       coinMovetime+=my_clock.clock.getElapsedTime().asSeconds();
 
-        if(coinMovetime>0.0012)
+        if(coinMovetime>0.002)
         {
             coinMove++;
 
@@ -1110,34 +1196,35 @@ for(int i=0;i<buletPosition.size();i++)
 
 
 
-      for(int i=0;i<full_enemy.size();i++)
+    for(int i=0;i<full_enemy.size();i++)
       {
-      	for(int j=0;j<enemybuletPosition[i].size();j++)
-      		window.draw(enemybuletPosition[i][j].s_enemybulet);
+        for(int j=0;j<enemybuletPosition[i].size();j++)
+          window.draw(enemybuletPosition[i][j].s_enemybulet);
       }
 
 
-	  for(int i=0;i<full_enemy.size();i++)
+    for(int i=0;i<full_enemy.size();i++)
       {
-      	window.draw(full_enemy[i].s_enemy);
+        window.draw(full_enemy[i].s_enemy);
 
       }
-      for(int i=0;i<buletPosition.size();i++)
+
+    for(int i=0;i<buletPosition.size();i++)
       {
         window.draw(buletPosition[i].s_bulet);
       }
 
 
-      for(int i=0;i<lifeCount;i++)
+    for(int i=0;i<lifeCount;i++)
       {
 
-	    life[0].s_sprite.setPosition(soldierPosition.x-400+i*25,0+8);
+      life[0].s_sprite.setPosition(soldierPosition.x-400+i*25,0+8);
 
-      	window.draw(life[0].s_sprite);
+        window.draw(life[0].s_sprite);
       }
 
-	      money.s_sprite.setPosition(soldierPosition.x+400,0-10);
-	      window.draw(money.s_sprite);
+        money.s_sprite.setPosition(soldierPosition.x+400,0-10);
+        window.draw(money.s_sprite);
 
 
         life_text.setPosition(soldierPosition.x-500,0-20);
@@ -1162,11 +1249,11 @@ for(int i=0;i<buletPosition.size();i++)
         window.draw(my_soldier.s_sprite);
         window.draw(coinCount_text);
 
-	window.display();
-	window.clear();
+  window.display();
+  window.clear();
 
 
 
-	}
+  }
 
 }
