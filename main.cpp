@@ -74,6 +74,9 @@ float movespeed=230.0f;
     int creatCoinNumber=coinNumber;
     bool creatCoin=false;
 
+    ///menu
+    bool menu=false;
+
 
 
 RenderWindow window(VideoMode(win_x,win_y),"Run For Life",Style::Titlebar | Style::Resize | Style::Close);
@@ -418,25 +421,9 @@ int main()
             }
         
 
-
-
   while(window.isOpen())
   {
-    window.draw(background[0].s_sprite);
 
-
-         diedtime();
-     my_soldier_died_Check();
-     if(my_soldier_died)
-         {
-             buletPosition.clear();
-        // for(int i=0;i<soldier_buletDirection.size();i++)
-             soldier_buletDirection.clear();
-
-
-         }
-
-     diedTime+=my_clock.clock.getElapsedTime().asSeconds();
 
     Event event;
     while(window.pollEvent(event))
@@ -452,6 +439,26 @@ int main()
                 break;
             }
     }
+
+ if(menu)
+  {
+
+  }
+ else if(!menu)
+  {
+      window.draw(background[0].s_sprite);
+
+
+     diedtime();
+     my_soldier_died_Check();
+
+     if(my_soldier_died)
+         {
+             buletPosition.clear();        
+             soldier_buletDirection.clear();
+         }
+
+     diedTime+=my_clock.clock.getElapsedTime().asSeconds();
 
         my_buletTime=my_buletclock.clock.getElapsedTime().asSeconds();
 
@@ -522,13 +529,49 @@ int main()
             if(event.type==Event::KeyReleased && event.key.code==Keyboard::S)my_soldier.s_sprite.setTextureRect(IntRect(soldier_source.x*130,4*180,130,180));
             else my_soldier.s_sprite.setTextureRect(IntRect(soldier_source.x*130,soldier_source.y*180,130,180));
 
+             if(Keyboard::isKeyPressed(Keyboard::S) && !my_soldier_died && my_buletTime>0.2)
+              {
+                   if(soldier_source.y==Right)///s_enemySoldier.getPosition().x>s_soldier.getPosition().x
+                   {
+                       Vector2f soldierbuletPosition(my_soldier.s_sprite.getPosition().x+110,my_soldier.s_sprite.getPosition().y+45);
+                       buletPosition.push_back(bulet(&my_bulet[1].t_texture,soldierbuletPosition));
+                       soldier_buletDirection.push_back(true);
+                   }
+
+                   else
+                   {
+                       Vector2f soldierbuletPosition(my_soldier.s_sprite.getPosition().x-10,my_soldier.s_sprite.getPosition().y+45);
+                       buletPosition.push_back(bulet(&my_bulet[0].t_texture,soldierbuletPosition));
+                       soldier_buletDirection.push_back(false);
+                   }
+                     my_buletclock.clock.restart();
+
+              }
+
         }
         else if(Keyboard::isKeyPressed(Keyboard::Left))
         {
             soldier_source.y=Left;
             if(event.type==Event::KeyReleased && event.key.code==Keyboard::S)my_soldier.s_sprite.setTextureRect(IntRect(soldier_source.x*130,5*180,130,180));
             else my_soldier.s_sprite.setTextureRect(IntRect(soldier_source.x*130,soldier_source.y*180,130,180));
+             if(Keyboard::isKeyPressed(Keyboard::S) && !my_soldier_died && my_buletTime>0.2)
+              {
+                   if(soldier_source.y==Right)///s_enemySoldier.getPosition().x>s_soldier.getPosition().x
+                   {
+                       Vector2f soldierbuletPosition(my_soldier.s_sprite.getPosition().x+110,my_soldier.s_sprite.getPosition().y+45);
+                       buletPosition.push_back(bulet(&my_bulet[1].t_texture,soldierbuletPosition));
+                       soldier_buletDirection.push_back(true);
+                   }
 
+                   else
+                   {
+                       Vector2f soldierbuletPosition(my_soldier.s_sprite.getPosition().x-10,my_soldier.s_sprite.getPosition().y+45);
+                       buletPosition.push_back(bulet(&my_bulet[0].t_texture,soldierbuletPosition));
+                       soldier_buletDirection.push_back(false);
+                   }
+                     my_buletclock.clock.restart();
+
+              }
         }
             ///work for jump
 //       else if (Keyboard::isKeyPressed(Keyboard::Up))
@@ -565,8 +608,6 @@ int main()
         }
 
         else  my_soldier.s_sprite.setTextureRect(IntRect(1,soldier_source.y*180,130,180));//straight stand_up
-
-
 
 
 ///my soldier move
@@ -755,6 +796,7 @@ int main()
 
 
   enemyTime += my_clock.clock.getElapsedTime().asSeconds();
+
 if(creatENEMY)
 {
   if(creatEnemy<=3)
@@ -1277,6 +1319,9 @@ if(creatENEMY)
 
         window.draw(my_soldier.s_sprite);
         window.draw(coinCount_text);
+  }
+
+  
 
   window.display();
   window.clear();
