@@ -481,7 +481,7 @@ int main()
             }
            else if(Keyboard::isKeyPressed(Keyboard::Down) && Keyboard::isKeyPressed(Keyboard::S))
             {
-                if(soldier_source.y==Right)my_soldier.s_sprite.setTextureRect(IntRect(soldier_source.x*130,8*180,130,180));
+                if(soldier_source.y==Right)my_soldier.s_sprite.setTextureRect(IntRect(soldier_source.x*130,8*180+2,130,180));
                 else my_soldier.s_sprite.setTextureRect(IntRect(soldier_source.x*130,9*180,130,180));
 
               if(my_buletTime>0.2 )
@@ -526,7 +526,7 @@ int main()
         else if(Keyboard::isKeyPressed(Keyboard::Right))
         {
             soldier_source.y=Right;
-            if(event.type==Event::KeyReleased && event.key.code==Keyboard::S)my_soldier.s_sprite.setTextureRect(IntRect(soldier_source.x*130,4*180,130,180));
+            if(event.type==Event::KeyReleased && event.key.code==Keyboard::S)my_soldier.s_sprite.setTextureRect(IntRect(0*130,0*180,130,180));
             else my_soldier.s_sprite.setTextureRect(IntRect(soldier_source.x*130,soldier_source.y*180,130,180));
 
              if(Keyboard::isKeyPressed(Keyboard::S) && !my_soldier_died && my_buletTime>0.2)
@@ -584,8 +584,8 @@ int main()
         else if(Keyboard::isKeyPressed(Keyboard::S))
         {
 
-            if(soldier_source.y==Right)my_soldier.s_sprite.setTextureRect(IntRect(soldier_source.x*130,4*180,130,180));
-            else my_soldier.s_sprite.setTextureRect(IntRect(soldier_source.x*130,5*180,130,180));
+            if(soldier_source.y==Right)my_soldier.s_sprite.setTextureRect(IntRect(0*130,0*180,130,180));
+            else my_soldier.s_sprite.setTextureRect(IntRect(0*130,2*180,130,180));
               if(!my_soldier_died && my_buletTime>0.2)
               {
                    if(soldier_source.y==Right)///s_enemySoldier.getPosition().x>s_soldier.getPosition().x
@@ -607,7 +607,7 @@ int main()
 
         }
 
-        else  my_soldier.s_sprite.setTextureRect(IntRect(1,soldier_source.y*180,130,180));//straight stand_up
+        else  my_soldier.s_sprite.setTextureRect(IntRect(0*130,soldier_source.y*180,130,180));//straight stand_up
 
 
 ///my soldier move
