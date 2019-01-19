@@ -1,8 +1,9 @@
 #include<SFML/Graphics.hpp>
+#include<SFML/Window.hpp>
+#include<SFML/System.hpp>
+#include<SFML/Audio.hpp>
 #include<bits/stdc++.h>
-#include<string>
-#include<time.h>
-
+#include<math.h>
 using namespace std;
 using namespace sf;
 
@@ -288,21 +289,21 @@ class game_menu
     t_menu[0].loadFromFile("Resources/menubackground.jpg");
     s_menu[0].setTexture(t_menu[0]);
 
-     t_menu[1].loadFromFile("Resources/menu11.png");
+    t_menu[1].loadFromFile("Resources/menu11.png");
     s_menu[1].setTexture(t_menu[1]);
-    s_menu[1].setPosition(0,380);
+    s_menu[1].setPosition(0,390);
 
-     t_menu[2].loadFromFile("Resources/menu2.png");
+    t_menu[2].loadFromFile("Resources/menu2.png");
     s_menu[2].setTexture(t_menu[2]);
-    s_menu[2].setPosition(700,400);
+    s_menu[2].setPosition(700,420);
 
 
   }
   void menu_background_show()
   {
     window.draw(s_menu[0]);
-     window.draw(s_menu[1]);
-      window.draw(s_menu[2]);
+    window.draw(s_menu[1]);
+    window.draw(s_menu[2]);
   }
 
     void load_text()
@@ -457,6 +458,28 @@ class game_menu
       window.draw(c4);
       window.draw(c5);
     }
+};
+
+class GameMusic
+{
+   public:
+  Music menu_music,game_music,shoot_music;
+  void load_music()
+  {
+     menu_music.openFromFile("Resources/menu_music.wav");
+     menu_music.setVolume(1000);
+
+     game_music.openFromFile("Resources/game_music.wav");
+     game_music.setVolume(80);
+
+     shoot_music.openFromFile("Resources/gunshoot.wav");
+     shoot_music.setVolume(1000);
+
+  }
+ 
+
+ 
+
 };
 
 
@@ -617,6 +640,12 @@ int main()
 
             }
 
+
+            GameMusic music;
+            music.load_music();
+
+            music.menu_music.play();
+
         game_menu menu_text;
          menu_text.load_text();
          menu_text.challenge_full_text();
@@ -639,16 +668,18 @@ int main()
             case Event::Closed:
                 window.close();
                 break;
-            case Event::KeyPressed:
+            /*case Event::KeyPressed:
                 if(event.key.code==Keyboard::Escape)
                     window.close();
-                break;
+                break;*/
             }
     }
 
  if(menu)
   {
+            music.menu_music.setLoop(true);
             menu_text.menu_background_show();
+
 
            key=menu_clock.getElapsedTime().asSeconds();
 
@@ -666,7 +697,7 @@ int main()
             }
        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape) && key>0.2)
             {
-                             menu=true;
+                menu=true;
                menu_clock.restart();
             }
       else if(Keyboard::isKeyPressed(Keyboard::BackSpace)  && key>0.2)
@@ -675,8 +706,10 @@ int main()
 
               if(playy)
               {
+                
                 playy=false;
                 home=true;
+                
               }
               else if(challenge)
               {
@@ -712,8 +745,10 @@ int main()
           {
             if(menuselect%6==1)
             {
-              playy=true;
-              home=false;
+              menu=false;
+               music.menu_music.stop();
+               music.game_music.play();
+
             }
             else if(menuselect%6==2)
             {
@@ -780,10 +815,6 @@ int main()
 
         menu_text.show_text();
     }
-    else if(playy)
-    {
-        menu=false;
-    }
     else if(challenge)
     {
         menu_text.challenge_text_show();
@@ -806,6 +837,18 @@ int main()
   }
  else if(!menu)
   {
+
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+          {
+            menu=true;
+            music.game_music.stop();
+            music.menu_music.play();
+            
+            my_soldier.s_sprite.setPosition(soldierCurrrentPosition);
+          }
+
+      music.game_music.setLoop(true);
+
       window.draw(background[0].s_sprite);
 
 
@@ -906,6 +949,9 @@ int main()
                    }
                      my_buletclock.clock.restart();
 
+                     music.shoot_music.play();
+                     //music.shoot_music.setVolume(1000);
+
               }
 
         }
@@ -962,6 +1008,9 @@ int main()
                        soldier_buletDirection.push_back(false);
                    }
                      my_buletclock.clock.restart();
+
+                      music.shoot_music.play();
+
 
               }
 
