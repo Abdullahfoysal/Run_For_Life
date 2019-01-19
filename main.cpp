@@ -75,17 +75,7 @@ float movespeed=230.0f;
     bool creatCoin=false;
 
     ///menu
-    bool menu=true;
-    int text_y=50;
-    float key=0.f;
-
-    bool home=true;
-    bool playy=false;
-    bool challenge=false;
-    bool soundd=false;
-    bool instructions=false;
-    bool aboutt=false;
-    bool exitt=false;
+    bool menu=false;
 
 
 
@@ -267,173 +257,12 @@ void init()
      enemyHit=2;
     full_enemy.clear();
      enemy_direction.clear();
-      creatEnemy=enemyNumber;
+       creatEnemy=enemyNumber;
 
   
 
 
 }
-
-class game_menu
-{
-   public:
-  Font font1;
-  Text game_text, play_text,challenge_text,sound_txt,instruction_text,about_text,exit_text;
-  Text c1,c2,c3,c4,c5,c6,c7,c8,c9,c10;
- 
-    void load_text()
-    {
-       font1.loadFromFile("Resources/Hunters.otf");
-
-
-        game_text.setString("Run For Life");
-         game_text.setFont(font1);
-          game_text.setCharacterSize(80);
-          game_text.setScale(1.5f,1.5f);
-          //gametxt.setFillColor(Color::Red);
-          game_text.setPosition(200,-30);
-          game_text.setColor(Color::Red);
-
-         play_text.setString("Play");
-         play_text.setFont(font1);
-          play_text.setCharacterSize(40);
-          play_text.setScale(1.5f,1.5f);
-          //gametxt.setFillColor(Color::Red);
-          play_text.setPosition(400,100+text_y*1);
-          play_text.setColor(Color::Yellow);
-
-          challenge_text.setString("Challenge");
-         challenge_text.setFont(font1);
-          challenge_text.setCharacterSize(40);
-          challenge_text.setScale(1.5f,1.5f);
-          //gametxt.setFillColor(Color::Red);
-          challenge_text.setPosition(400-25,100+text_y*2);
-          challenge_text.setColor(Color::Yellow);
-
-            sound_txt.setString("Sound");
-         sound_txt.setFont(font1);
-          sound_txt.setCharacterSize(40);
-          sound_txt.setScale(1.5f,1.5f);
-          //gametxt.setFillColor(Color::Red);
-          sound_txt.setPosition(400,100+text_y*3);
-          sound_txt.setColor(Color::Yellow);
-
-            instruction_text.setString("Instructions");
-         instruction_text.setFont(font1);
-          instruction_text.setCharacterSize(40);
-          instruction_text.setScale(1.5f,1.5f);
-          //gametxt.setFillColor(Color::Red);
-          instruction_text.setPosition(400-25,100+text_y*4);
-          instruction_text.setColor(Color::Yellow);
-
-            about_text.setString("About");
-         about_text.setFont(font1);
-          about_text.setCharacterSize(40);
-          about_text.setScale(1.5f,1.5f);
-          //gametxt.setFillColor(Color::Red);
-          about_text.setPosition(400,100+text_y*5);
-          about_text.setColor(Color::Yellow);
-
-            exit_text.setString("Quit");
-         exit_text.setFont(font1);
-          exit_text.setCharacterSize(40);
-          exit_text.setScale(1.5f,1.5f);
-          //gametxt.setFillColor(Color::Red);
-          exit_text.setPosition(400,100+text_y*6);
-          exit_text.setColor(Color::Yellow);
-
-    }
-    void text_color(char colour)
-    {
-
-
-       if(colour=='G')
-      {
-
-      play_text.setColor(Color::Green);
-      challenge_text.setColor(Color::Green);
-      sound_txt.setColor(Color::Green);
-      instruction_text.setColor(Color::Green);
-      about_text.setColor(Color::Green);
-      exit_text.setColor(Color::Green);
-
-      }
-      else 
-      {
-         play_text.setColor(Color::Yellow);
-      challenge_text.setColor(Color::Yellow);
-      sound_txt.setColor(Color::Yellow);
-      instruction_text.setColor(Color::Yellow);
-      about_text.setColor(Color::Yellow);
-      exit_text.setColor(Color::Yellow);
-
-      }
-    }
-    void show_text()
-    {
-     
-      window.draw(game_text);
-      window.draw(play_text);
-      window.draw(challenge_text);
-      window.draw(sound_txt);
-      window.draw(instruction_text);
-      window.draw(about_text);
-      window.draw(exit_text);
-    }
-
-    void challenge_full_text()
-    {
-         c1.setString("Challenge:1-> Escape 5 Man and Earn Coins 20");
-         c1.setFont(font1);
-          c1.setCharacterSize(40);
-          c1.setScale(1.5f,1.5f);
-          //gametxt.setFillColor(Color::Red);
-          c1.setPosition(100,100+text_y*1);
-          c1.setColor(Color::Yellow);
-
-          c2.setString("Challenge:2-> Escape 10 Man and Earn Coins 40");
-         c2.setFont(font1);
-          c2.setCharacterSize(40);
-          c2.setScale(1.5f,1.5f);
-          //gametxt.setFillColor(Color::Red);
-          c2.setPosition(100,100+text_y*2);
-          c2.setColor(Color::Yellow);
-
-           c3.setString("Challenge:3-> Escape 15 Man and Earn Coins 60");
-         c3.setFont(font1);
-          c3.setCharacterSize(40);
-          c3.setScale(1.5f,1.5f);
-          //gametxt.setFillColor(Color::Red);
-          c3.setPosition(100,100+text_y*3);
-          c3.setColor(Color::Yellow);
-
-          c4.setString("Challenge:4-> Escape 20 Man and Earn Coins 80");
-          c4.setFont(font1);
-          c4.setCharacterSize(40);
-          c4.setScale(1.5f,1.5f);
-          //gametxt.setFillColor(Color::Red);
-          c4.setPosition(100,100+text_y*4);
-          c4.setColor(Color::Yellow);
-
-
-          c5.setString("Challenge:5-> Escape 30 Man and Earn Coins 100");
-          c5.setFont(font1);
-          c5.setCharacterSize(40);
-          c5.setScale(1.5f,1.5f);
-          //gametxt.setFillColor(Color::Red);
-          c5.setPosition(100,100+text_y*5);
-          c5.setColor(Color::Yellow);
-    }
-
-    void challenge_text_show()
-    {
-      window.draw(c1);
-      window.draw(c2);
-      window.draw(c3);
-      window.draw(c4);
-      window.draw(c5);
-    }
-};
 
 
 int main()
@@ -456,8 +285,6 @@ int main()
 
     Load background[5],my_soldier,enemy_soldier,my_bulet[2],enemy_bulet[2],
     my_clock,my_buletclock,stab_clock,stab2_clock,life[4],money,man[3],coin;
-
-    Clock menu_clock;
 
      Font font1,font2,font3,font4;
     font1.loadFromFile("Resources/Hunters.otf");
@@ -592,15 +419,7 @@ int main()
                 }
                
             }
-
-        game_menu menu_text;
-         menu_text.load_text();
-         menu_text.challenge_full_text();
-      
-
-       unsigned menuselect=1;
-
-
+        
 
   while(window.isOpen())
   {
@@ -623,159 +442,6 @@ int main()
 
  if(menu)
   {
-
-           key=menu_clock.getElapsedTime().asSeconds();
-
-
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && key>0.2)
-            {
-                menuselect++;
-                menu_clock.restart();
-
-            }
-        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && key>0.2)
-            {
-                menuselect--;
-               menu_clock.restart();
-            }
-       else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape) && key>0.2)
-            {
-                             menu=true;
-               menu_clock.restart();
-            }
-      else if(Keyboard::isKeyPressed(Keyboard::BackSpace)  && key>0.2) 
-            {
-                menu_clock.restart();
-
-              if(playy)
-              {
-                playy=false;
-                home=true;
-              }
-              else if(challenge)
-              {
-                challenge=false;
-                home=true;
-              }
-              else if(soundd)
-              {
-                soundd=false;
-                home=true;
-              }
-              else if(instructions)
-              {
-                instructions=false;
-                home=true;
-              }
-              else if(aboutt)
-              {
-                aboutt=false;
-                home=true;
-              }
-              else if(exitt)
-              {
-                exitt=false;
-                home=true;
-              }
-
-            }   
-       else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Return) && key>0.2)
-       {
-          menu_clock.restart();
-          if(!playy && !challenge && !soundd && !instructions && !aboutt )
-          {
-            if(menuselect%6==1)
-            {
-              playy=true;
-              home=false;
-            }
-            else if(menuselect%6==2)
-            {
-              challenge=true;
-              home=false;
-            }
-            else if(menuselect%6==3)
-            {
-              soundd=true;
-              home=false;
-            }
-            else if(menuselect%6==4)
-            {
-              instructions=true;
-              home=false;
-            }
-            else if(menuselect%6==5)
-            {
-              aboutt=true;
-              home=false;
-            }
-            else if(menuselect%6==0)
-            {
-              exitt=true;
-              home=false;
-              window.close();
-            }
-
-          }
-       }     
-    
-  
-    if(home)
-    {
-         menu_text.text_color('Y');
-
-
-        if(menuselect%6==1)
-        {
-          menu_text.play_text.setColor(Color::Green);
-
-        }
-        else if(menuselect%6==2)
-        {
-          menu_text.challenge_text.setColor(Color::Green);
-        }
-        else if(menuselect%6==3)
-        {
-          menu_text.sound_txt.setColor(Color::Green);
-        }
-        else if(menuselect%6==4)
-        {
-          menu_text.instruction_text.setColor(Color::Green);
-        }
-        else if(menuselect%6==5)
-        {
-          menu_text.about_text.setColor(Color::Green);
-        }
-       else if(menuselect%6==0)
-        {
-          menu_text.exit_text.setColor(Color::Green);
-        }
-
-
-        menu_text.show_text();
-    }
-    else if(playy)
-    {
-        menu=false;
-    }
-    else if(challenge)
-    {
-        menu_text.challenge_text_show();
-    }  
-    else if(soundd)
-    {
-
-    } 
-    else if(instructions)
-    {
-
-    } 
-    else if(aboutt)  
-    {
-
-    } 
-
-
 
   }
  else if(!menu)
@@ -815,7 +481,7 @@ int main()
             }
            else if(Keyboard::isKeyPressed(Keyboard::Down) && Keyboard::isKeyPressed(Keyboard::S))
             {
-                if(soldier_source.y==Right)my_soldier.s_sprite.setTextureRect(IntRect(soldier_source.x*130,8*180+2,130,180));
+                if(soldier_source.y==Right)my_soldier.s_sprite.setTextureRect(IntRect(soldier_source.x*130,8*180,130,180));
                 else my_soldier.s_sprite.setTextureRect(IntRect(soldier_source.x*130,9*180,130,180));
 
               if(my_buletTime>0.2 )
@@ -860,7 +526,7 @@ int main()
         else if(Keyboard::isKeyPressed(Keyboard::Right))
         {
             soldier_source.y=Right;
-            if(event.type==Event::KeyReleased && event.key.code==Keyboard::S)my_soldier.s_sprite.setTextureRect(IntRect(0*130,0*180,130,180));
+            if(event.type==Event::KeyReleased && event.key.code==Keyboard::S)my_soldier.s_sprite.setTextureRect(IntRect(soldier_source.x*130,4*180,130,180));
             else my_soldier.s_sprite.setTextureRect(IntRect(soldier_source.x*130,soldier_source.y*180,130,180));
 
              if(Keyboard::isKeyPressed(Keyboard::S) && !my_soldier_died && my_buletTime>0.2)
@@ -918,8 +584,8 @@ int main()
         else if(Keyboard::isKeyPressed(Keyboard::S))
         {
 
-            if(soldier_source.y==Right)my_soldier.s_sprite.setTextureRect(IntRect(0*130,0*180,130,180));
-            else my_soldier.s_sprite.setTextureRect(IntRect(0*130,2*180,130,180));
+            if(soldier_source.y==Right)my_soldier.s_sprite.setTextureRect(IntRect(soldier_source.x*130,4*180,130,180));
+            else my_soldier.s_sprite.setTextureRect(IntRect(soldier_source.x*130,5*180,130,180));
               if(!my_soldier_died && my_buletTime>0.2)
               {
                    if(soldier_source.y==Right)///s_enemySoldier.getPosition().x>s_soldier.getPosition().x
@@ -941,7 +607,7 @@ int main()
 
         }
 
-        else  my_soldier.s_sprite.setTextureRect(IntRect(0*130,soldier_source.y*180,130,180));//straight stand_up
+        else  my_soldier.s_sprite.setTextureRect(IntRect(1,soldier_source.y*180,130,180));//straight stand_up
 
 
 ///my soldier move
