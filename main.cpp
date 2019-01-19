@@ -70,7 +70,7 @@ float movespeed=230.0f;
     int coinMove=0,pointType=0;
     int coinNumber=15;
     float coinMovetime=0.f;
-   
+
     int creatCoinNumber=coinNumber;
     bool creatCoin=false;
 
@@ -248,17 +248,17 @@ void diedtime()
 
 void init()
 {
-  
+
 
     for(int i=0;i<full_enemy.size();i++)
     {
 
       enemybuletPosition[i].clear();
-     
+
     }
     for(int i=0;i<50;i++)
     {
-       
+
         enemy_hit[i]=0;
         enemy_died[i]=false;
          enemyBack[i]=false;
@@ -269,7 +269,7 @@ void init()
      enemy_direction.clear();
       creatEnemy=enemyNumber;
 
-  
+
 
 
 }
@@ -290,17 +290,21 @@ class game_menu
 
      t_menu[1].loadFromFile("Resources/menu11.png");
     s_menu[1].setTexture(t_menu[1]);
+    s_menu[1].setPosition(0,380);
 
      t_menu[2].loadFromFile("Resources/menu2.png");
     s_menu[2].setTexture(t_menu[2]);
+    s_menu[2].setPosition(700,400);
 
 
   }
   void menu_background_show()
   {
     window.draw(s_menu[0]);
+     window.draw(s_menu[1]);
+      window.draw(s_menu[2]);
   }
- 
+
     void load_text()
     {
        font1.loadFromFile("Resources/Hunters.otf");
@@ -378,7 +382,7 @@ class game_menu
       exit_text.setColor(Color::Green);
 
       }
-      else 
+      else
       {
          play_text.setColor(Color::Yellow);
       challenge_text.setColor(Color::Yellow);
@@ -391,7 +395,7 @@ class game_menu
     }
     void show_text()
     {
-     
+
       window.draw(game_text);
       window.draw(play_text);
       window.draw(challenge_text);
@@ -598,7 +602,7 @@ int main()
                 cointPosition.push_back(coint(&coin.t_texture));
 
                  float pos=rand()%(screenWidth+150);
-                
+
                 cointPosition[i].s_coint.setPosition(pos,coinPosition.y);
 
                 for(int j=i+1;j<cointPosition.size();j++)
@@ -610,13 +614,14 @@ int main()
                   }
 
                 }
-               
+
             }
 
         game_menu menu_text;
          menu_text.load_text();
          menu_text.challenge_full_text();
-      
+         menu_text.load_menu_background();
+
 
        unsigned menuselect=1;
 
@@ -643,6 +648,7 @@ int main()
 
  if(menu)
   {
+            menu_text.menu_background_show();
 
            key=menu_clock.getElapsedTime().asSeconds();
 
@@ -663,7 +669,7 @@ int main()
                              menu=true;
                menu_clock.restart();
             }
-      else if(Keyboard::isKeyPressed(Keyboard::BackSpace)  && key>0.2) 
+      else if(Keyboard::isKeyPressed(Keyboard::BackSpace)  && key>0.2)
             {
                 menu_clock.restart();
 
@@ -698,7 +704,7 @@ int main()
                 home=true;
               }
 
-            }   
+            }
        else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Return) && key>0.2)
        {
           menu_clock.restart();
@@ -737,9 +743,9 @@ int main()
             }
 
           }
-       }     
-    
-  
+       }
+
+
     if(home)
     {
          menu_text.text_color('Y');
@@ -781,19 +787,19 @@ int main()
     else if(challenge)
     {
         menu_text.challenge_text_show();
-    }  
+    }
     else if(soundd)
     {
 
-    } 
+    }
     else if(instructions)
     {
 
-    } 
-    else if(aboutt)  
+    }
+    else if(aboutt)
     {
 
-    } 
+    }
 
 
 
@@ -808,7 +814,7 @@ int main()
 
      if(my_soldier_died)
          {
-             buletPosition.clear();        
+             buletPosition.clear();
              soldier_buletDirection.clear();
          }
 
@@ -1045,7 +1051,7 @@ int main()
 
 ///stabing enemy
 
-   ///enemy died function 
+   ///enemy died function
 
        float stab=stab_clock.clock.getElapsedTime().asSeconds();
 
@@ -1063,7 +1069,7 @@ int main()
                       {
                         enemy_died[i]=true;
                          enemy_hit[i]=0;
-  
+
                       }
 
                        //if(buletPosition[i].s_bulet.getGlobalBounds().intersects(full_enemy[j].s_enemy.getGlobalBounds()))
@@ -1084,23 +1090,23 @@ int main()
      }
      else if(soldier_buletDirection[i]==false)  /// s_enemySoldier.getPosition().x<s_soldier.getPosition().x && soldier_source.y==Left
         buletPosition[i].s_bulet.move(-1.f,0.f);
-  
+
 
   }
 
 
 
-  
+
 
             for(int i=0;i+1<full_enemy.size();i++)
             {
-              
+
                  if(full_enemy[i].s_enemy.getGlobalBounds().intersects(full_enemy[i+1].s_enemy.getGlobalBounds()))
                   {
                     full_enemy.erase(full_enemy.begin()+i+1);
                   }
-              
-             
+
+
             }
 
    for(int i=0;i<buletPosition.size();i++)
@@ -1114,7 +1120,7 @@ int main()
                    enemy_hit[j]++;
                    if(enemy_hit[j]>=enemyHit)//check enemy is dead
                    {
-                   
+
                       enemy_died[j]=true;
                       enemy_hit[j]=0;
 
@@ -1123,7 +1129,7 @@ int main()
 
 
               }
-          
+
       }
 
     }
@@ -1161,7 +1167,7 @@ if(creatENEMY)
   }
   creatENEMY=false;
 }
-  
+
 
   if(enemyTime>5.0)///work for placing enemy
         {
@@ -1278,7 +1284,7 @@ if(creatENEMY)
         {
           for(int j=0;j<enemybuletPosition[i].size();j++)
           {
-            
+
               if(enemybuletPosition[i][j].s_enemybulet.getPosition().x>my_soldier.s_sprite.getPosition().x+400 )
               {
                 enemybuletPosition[i].erase(enemybuletPosition[i].begin()+j);
@@ -1287,8 +1293,8 @@ if(creatENEMY)
               {
                 enemybuletPosition[i].erase(enemybuletPosition[i].begin()+j);
               }
-            
-            
+
+
           }
         }*/
 
@@ -1394,7 +1400,7 @@ if(creatENEMY)
                        enemy_direction.erase(enemy_direction.begin()+i);
                        enemybuletPosition[i].clear();
                        enemy_died[i]=false;
-                       
+
                        creatEnemy--;
 
               }
@@ -1531,7 +1537,7 @@ if(creatENEMY)
 
       window.draw(man[0].s_sprite);
 
-      ///coin 
+      ///coin
 
       if(creatCoinNumber<=5)
       {
@@ -1542,7 +1548,7 @@ if(creatENEMY)
 
           srand(time(NULL));
 
-        
+
          if(creatCoin)
          {
 
@@ -1552,7 +1558,7 @@ if(creatENEMY)
                 cointPosition.push_back(coint(&coin.t_texture));
 
                  int pos=rand()%(screenWidth+150);
-                
+
                 cointPosition[i].s_coint.setPosition(pos,coinPosition.y);
 
                 for(int j=i+1;j<cointPosition.size();j++)
@@ -1562,22 +1568,22 @@ if(creatENEMY)
                     cointPosition.erase(cointPosition.begin()+j);
                     creatCoinNumber--;
                   }
-                   
+
                 }
-               
+
             }
 
-                
-         }     
- 
-         
+
+         }
+
+
 
 
 
     for(int i=0;i<cointPosition.size();i++)
     {
         cointPosition[i].s_coint.setTextureRect(IntRect(coinMove*85,pointType*120,85,120));
-        
+
         cointPosition[i].s_coint.setScale(0.6f,0.6f);
         // cointPosition[i].s_coint.setOrigin(42.5,20);
 
@@ -1675,7 +1681,7 @@ if(creatENEMY)
         window.draw(coinCount_text);
   }
 
-  
+
 
   window.display();
   window.clear();
