@@ -908,6 +908,7 @@ int main()
 
                    my_buletclock.clock.restart();
 
+                     music.shoot_music.play();
 
               }
 
@@ -976,6 +977,8 @@ int main()
                        soldier_buletDirection.push_back(false);
                    }
                      my_buletclock.clock.restart();
+
+                       music.shoot_music.play();
 
               }
         }
