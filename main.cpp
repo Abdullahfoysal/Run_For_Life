@@ -19,10 +19,12 @@ Vector2f strength_level(100,10);
  int creatEnemy=enemyNumber;
  bool creatENEMY=false;
 
+ 
+
 
 float strength=0.f;
 int coinCount=0;
-int lifeCount=4;
+int lifeCount=3;
 int moneyCount=0;
 int my_soldier_hit=0;
 int my_soldierHit=4;
@@ -30,6 +32,11 @@ bool my_soldier_died=false;
  float diedTime=0.f;
  float mybuletSpeed=1.5f;
 
+ ///result of game
+
+ int ManCount=5;
+ int CoinCount=20;
+ bool gameover=false;
 
 enum Direction {Right,Down,Left,Up};
 
@@ -53,7 +60,7 @@ float movespeed=230.0f;
    bool enemyBack[50],enemyBackAgain[50];
    float  enemybuletTime=0.f;
    std::vector<bool>enemy_direction;
-   int enemyHit=2;
+   int enemyHit=4;
    int enemy_hit[50];
    bool enemy_died[50];
    float enemy_diedTime=0.f;
@@ -89,6 +96,9 @@ float movespeed=230.0f;
     bool aboutt=false;
     bool exitt=false;
 
+    bool challenge_select[5];
+
+
 
 
 RenderWindow window(VideoMode(win_x,win_y),"Run For Life",Style::Titlebar | Style::Resize | Style::Close);
@@ -102,6 +112,84 @@ struct Load
 
 
 };
+
+
+
+class eend
+{
+public:
+  Font font1;
+
+  Text gameover_text,playAgain,exit_txt,backk;
+
+
+ 
+
+    void load_end()
+    {
+         font1.loadFromFile("Resources/Hunters.otf");
+
+         gameover_text.setString("Game Over");
+         gameover_text.setFont(font1);
+          gameover_text.setCharacterSize(80);
+          gameover_text.setScale(1.5f,1.5f);
+          //gametxt.setFillColor(Color::Red);
+          gameover_text.setPosition(200,-30);
+          gameover_text.setColor(Color::Red);
+
+           playAgain.setString("Play Again");
+         playAgain.setFont(font1);
+          playAgain.setCharacterSize(40);
+          playAgain.setScale(1.5f,1.5f);
+          //gametxt.setFillColor(Color::Red);
+          playAgain.setPosition(400,100+text_y*1);
+          playAgain.setColor(Color::Yellow);
+
+          
+
+             backk.setString("Back");
+         backk.setFont(font1);
+          backk.setCharacterSize(40);
+          backk.setScale(1.5f,1.5f);
+          //gametxt.setFillColor(Color::Red);
+          backk.setPosition(400,100+text_y*2);
+          backk.setColor(Color::Yellow);
+
+            exit_txt.setString("Exit");
+         exit_txt.setFont(font1);
+          exit_txt.setCharacterSize(40);
+          exit_txt.setScale(1.5f,1.5f);
+          //gametxt.setFillColor(Color::Red);
+          exit_txt.setPosition(400,100+text_y*3);
+          exit_txt.setColor(Color::Yellow);
+
+          
+
+
+
+
+    }
+    void end_text_color()
+    {
+       playAgain.setColor(Color::Yellow);
+       exit_txt.setColor(Color::Yellow);
+       backk.setColor(Color::Yellow);
+    }
+    void show_end()
+    {
+      window.draw(gameover_text);
+      window.draw(playAgain);
+      window.draw(exit_txt);
+      window.draw(backk);
+    }
+
+        
+
+
+};
+
+
+
 class bulet
 {
 public:
@@ -282,6 +370,7 @@ class game_menu
   Font font1;
   Text game_text, play_text,challenge_text,sound_txt,instruction_text,about_text,exit_text;
   Text c1,c2,c3,c4,c5,c6,c7,c8,c9,c10;
+
   Texture t_menu[3];
   Sprite s_menu[3];
 
@@ -450,6 +539,15 @@ class game_menu
           c5.setPosition(100,100+text_y*5);
           c5.setColor(Color::Yellow);
     }
+    void challenge_text_color()
+    {
+      c1.setColor(Color::Yellow);
+      c2.setColor(Color::Yellow);
+      c3.setColor(Color::Yellow);
+      c4.setColor(Color::Yellow);
+      c5.setColor(Color::Yellow);
+
+    }
 
     void challenge_text_show()
     {
@@ -459,12 +557,13 @@ class game_menu
       window.draw(c4);
       window.draw(c5);
     }
+
 };
 
 class GameMusic
 {
    public:
-  Music menu_music,game_music,shoot_music,enemyshoot,enemystab,mystab,coin_music;
+  Music menu_music,game_music,shoot_music,enemyshoot,enemystab,mystab,coin_music,end_music;
 
   void load_music()
   {
@@ -488,6 +587,9 @@ class GameMusic
      coin_music.openFromFile("Resources/coin.wav");
      coin_music.setVolume(1000);
 
+     end_music.openFromFile("Resources/endmusic.wav");
+     end_music.setVolume(1000);
+
 
 
   }
@@ -497,9 +599,43 @@ class GameMusic
 
 };
 
+void play_Again()
+{
+
+    for(int i=0;i<full_enemy.size();i++)
+    {
+
+      enemybuletPosition[i].clear();
+
+    }
+    for(int i=0;i<50;i++)
+    {
+
+        enemy_hit[i]=0;
+        enemy_died[i]=false;
+         enemyBack[i]=false;
+      enemyBackAgain[i]=false;
+    }
+     enemyHit=2;
+    full_enemy.clear();
+     enemy_direction.clear();
+      creatEnemy=enemyNumber;
+
+      lifeCount=3;
+      manNumber=0;
+
+    cointPosition.clear();
+
+
+
+}
+
 
 int main()
 {
+  ///score
+   challenge_select[1]=true;
+
     window.setPosition(Vector2i(200,0));
     window.setKeyRepeatEnabled(false);
 
@@ -673,6 +809,9 @@ int main()
          menu_text.challenge_full_text();
          menu_text.load_menu_background();
 
+         eend End;
+         End.load_end();
+
 
        unsigned menuselect=1;
 
@@ -776,6 +915,7 @@ int main()
             {
               challenge=true;
               home=false;
+              menuselect=1;
             }
             else if(menuselect%6==3)
             {
@@ -797,6 +937,41 @@ int main()
               exitt=true;
               home=false;
               window.close();
+            }
+
+          }
+          else if(challenge)
+          {
+            for(int i=0;i<5;i++)
+            {
+              challenge_select[i]=false;
+
+            }
+            challenge_select[menuselect%5]=true;
+            if(menuselect%5==1)
+            {
+              ManCount=5;
+              CoinCount=20;
+            }
+            else if(menuselect%5==2)
+            {
+              ManCount=10;
+              CoinCount=40;
+            }
+            else if(menuselect%5==3)
+            {
+              ManCount=15;
+              CoinCount=60;
+            }
+            else if(menuselect%5==4)
+            {
+              ManCount=20;
+              CoinCount=80;
+            }
+            else if(menuselect%5==0)
+            {
+              ManCount=30;
+              CoinCount=100;
             }
 
           }
@@ -839,7 +1014,36 @@ int main()
     }
     else if(challenge)
     {
-        menu_text.challenge_text_show();
+         menu_text.challenge_text_color();
+       
+        if(menuselect%5==1)
+        {
+          menu_text.c1.setColor(Color::Green);
+        }
+        else if(menuselect%5==2)
+        {
+          menu_text.c2.setColor(Color::Green);
+        }
+        else if(menuselect%5==3)
+        {
+          menu_text.c3.setColor(Color::Green);
+        }
+        else if(menuselect%5==4)
+        {
+          menu_text.c4.setColor(Color::Green);
+        }
+        else if(menuselect%5==0)
+        {
+          menu_text.c5.setColor(Color::Green);
+        }
+
+        if(challenge_select[1]) menu_text.c1.setColor(Color::Red);
+         else if(challenge_select[2]) menu_text.c2.setColor(Color::Red);
+         else if(challenge_select[3]) menu_text.c3.setColor(Color::Red);
+         else if(challenge_select[4]) menu_text.c4.setColor(Color::Red);
+         else if(challenge_select[0]) menu_text.c5.setColor(Color::Red);
+         menu_text.challenge_text_show();
+        
     }
     else if(soundd)
     {
@@ -857,8 +1061,82 @@ int main()
 
 
   }
+else if(gameover)
+{
+    music.end_music.setLoop(true);
+
+  window.draw(menu_text.s_menu[0]);
+  End.end_text_color();
+
+     key=menu_clock.getElapsedTime().asSeconds();
+
+
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && key>0.2)
+            {
+                menuselect++;
+                menu_clock.restart();
+
+            }
+        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && key>0.2)
+            {
+                menuselect--;
+               menu_clock.restart();
+            }
+        else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Return) && key>0.2)
+            {
+
+              menu_clock.restart();
+              if(menuselect%3==1)
+              {
+                 End.playAgain.setColor(Color::Red);
+              }
+              else if(menuselect%3==2)
+              {
+                End.backk.setColor(Color::Red);
+                menu=true;
+                gameover=false;
+
+                 music.end_music.stop();
+                
+              }
+              else if(menuselect%3==0)
+              {
+                End.exit_txt.setColor(Color::Red);
+                window.close();
+              }
+            }
+
+             if(menuselect%3==1)
+              {
+                 End.playAgain.setColor(Color::Green);
+              }
+              else if(menuselect%3==2)
+              {
+                End.backk.setColor(Color::Green);
+                
+              }
+              else if(menuselect%3==0)
+              {
+                End.exit_txt.setColor(Color::Green);
+                
+              }
+
+
+
+
+  End.show_end();
+}
  else if(!menu)
   {
+        if(lifeCount<0)
+        {
+          my_soldier.s_sprite.setPosition(soldierCurrrentPosition);
+          gameover=true;
+          music.game_music.stop();
+          music.end_music.play();
+        }
+
+
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
           {
