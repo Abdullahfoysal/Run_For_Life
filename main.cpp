@@ -28,6 +28,7 @@ int my_soldier_hit=0;
 int my_soldierHit=4;
 bool my_soldier_died=false;
  float diedTime=0.f;
+ float mybuletSpeed=1.5f;
 
 
 enum Direction {Right,Down,Left,Up};
@@ -463,7 +464,8 @@ class game_menu
 class GameMusic
 {
    public:
-  Music menu_music,game_music,shoot_music;
+  Music menu_music,game_music,shoot_music,enemyshoot,enemystab,mystab,coin_music;
+
   void load_music()
   {
      menu_music.openFromFile("Resources/menu_music.wav");
@@ -474,6 +476,19 @@ class GameMusic
 
      shoot_music.openFromFile("Resources/gunshoot.wav");
      shoot_music.setVolume(1000);
+
+     enemyshoot.openFromFile("Resources/enemybulet2.wav");
+
+     enemystab.openFromFile("Resources/enemystab.wav");
+     enemystab.setVolume(20);
+
+     mystab.openFromFile("Resources/my_stab.wav");
+     mystab.setVolume(1000);
+
+     coin_music.openFromFile("Resources/coin.wav");
+     coin_music.setVolume(1000);
+
+
 
   }
  
@@ -588,9 +603,10 @@ int main()
     life[3].t_texture.loadFromFile("Resources/life.png");
     life[3].s_sprite.setTexture(life[3].t_texture);
 */
-    money.t_texture.loadFromFile("Resources/money.png");
+    money.t_texture.loadFromFile("Resources/manESC2.png");
     money.s_sprite.setTexture(money.t_texture);
     money.s_sprite.setScale(0.5f,0.5f);
+    money.s_sprite.setRotation(-360.f);
 
 
     //man escape running
@@ -1093,7 +1109,12 @@ int main()
     float stab2=stab2_clock.clock.getElapsedTime().asSeconds();
     if(my_soldier.s_sprite.getGlobalBounds().intersects(full_enemy[i].s_enemy.getGlobalBounds()) && stab2>0.2 )
     {
-           if(!my_soldier_died) my_soldier_hit++;
+           if(!my_soldier_died && !enemy_died[i]) 
+           {
+              my_soldier_hit++;
+              music.enemystab.play();
+           }
+            
             stab2_clock.clock.restart();
     }
 
@@ -1131,6 +1152,8 @@ int main()
 
                 stab_clock.clock.restart();
 
+                music.mystab.play();
+
             }
 
 
@@ -1138,10 +1161,10 @@ int main()
   {
      if(soldier_buletDirection[i])///s_enemySoldier.getPosition().x>s_soldier.getPosition().x && soldier_source.y==Right
      {
-       buletPosition[i].s_bulet.move(1.f,0.f);
+       buletPosition[i].s_bulet.move(mybuletSpeed*1.f,0.f);
      }
      else if(soldier_buletDirection[i]==false)  /// s_enemySoldier.getPosition().x<s_soldier.getPosition().x && soldier_source.y==Left
-        buletPosition[i].s_bulet.move(-1.f,0.f);
+        buletPosition[i].s_bulet.move(mybuletSpeed*-1.f,0.f);
 
 
   }
@@ -1264,6 +1287,8 @@ if(creatENEMY)
             else enemybuletPosition[i].push_back(enemybulet(&enemy_bulet[0].t_texture,full_enemy[i].s_enemy.getPosition(),i));
 
             enemybuletTime=0;
+
+            music.enemyshoot.play();
           }
 
 
@@ -1651,6 +1676,11 @@ if(creatENEMY)
           //std::cout<<cointPosition.size()<<std::endl;
           creatCoinNumber--;
 
+          if(!my_soldier_died)
+          {
+            music.coin_music.play();
+          }
+
         }
       }
 
@@ -1706,8 +1736,11 @@ if(creatENEMY)
         window.draw(life[0].s_sprite);
       }
 
-        money.s_sprite.setPosition(soldierPosition.x+400,0-10);
+
+        money.s_sprite.setTextureRect(IntRect(happyMovement1*50,0*150,100,150));
+        money.s_sprite.setPosition(soldierPosition.x+400,0);
         window.draw(money.s_sprite);
+///man count on screen
 
 
         life_text.setPosition(soldierPosition.x-500,0-20);
