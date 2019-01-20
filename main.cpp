@@ -1743,7 +1743,7 @@ if(creatENEMY)
       }
 
 
-        money.s_sprite.setTextureRect(IntRect(happyMovement1*50,0*150,100,150));
+        money.s_sprite.setTextureRect(IntRect(happyMovement1*100,0*150,100,150));
         money.s_sprite.setPosition(soldierPosition.x+400,0);
         window.draw(money.s_sprite);
 ///man count on screen
