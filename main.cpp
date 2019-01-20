@@ -491,9 +491,9 @@ class GameMusic
 
 
   }
- 
 
- 
+
+
 
 };
 
@@ -722,10 +722,10 @@ int main()
 
               if(playy)
               {
-                
+
                 playy=false;
                 home=true;
-                
+
               }
               else if(challenge)
               {
@@ -859,7 +859,7 @@ int main()
             menu=true;
             music.game_music.stop();
             music.menu_music.play();
-            
+
             my_soldier.s_sprite.setPosition(soldierCurrrentPosition);
           }
 
@@ -1109,12 +1109,12 @@ int main()
     float stab2=stab2_clock.clock.getElapsedTime().asSeconds();
     if(my_soldier.s_sprite.getGlobalBounds().intersects(full_enemy[i].s_enemy.getGlobalBounds()) && stab2>0.2 )
     {
-           if(!my_soldier_died && !enemy_died[i]) 
+           if(!my_soldier_died && !enemy_died[i])
            {
               my_soldier_hit++;
               music.enemystab.play();
            }
-            
+
             stab2_clock.clock.restart();
     }
 
@@ -1737,7 +1737,7 @@ if(creatENEMY)
       }
 
 
-        money.s_sprite.setTextureRect(IntRect(happyMovement1*50,0*150,100,150));
+        money.s_sprite.setTextureRect(IntRect(happyMovement1*100,0*150,100,150));
         money.s_sprite.setPosition(soldierPosition.x+400,0);
         window.draw(money.s_sprite);
 ///man count on screen
