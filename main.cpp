@@ -491,9 +491,9 @@ class GameMusic
 
 
   }
+ 
 
-
-
+ 
 
 };
 
@@ -523,8 +523,9 @@ int main()
 
      Font font1,font2,font3,font4;
     font1.loadFromFile("Resources/Hunters.otf");
+////score count 
 
-    Text life_text,strength_text,coin_text,coinCount_text,
+    Text life_text,strength_text,coin_text,coinCount_text,manCount_text,
     helpmetxt;
 
     life_text.setString("Life :");
@@ -547,9 +548,14 @@ int main()
      coin_text.setColor(Color::Yellow);
 
      coinCount_text.setFont(font1);
-     coinCount_text.setCharacterSize(30);
+     coinCount_text.setCharacterSize(40);
      coinCount_text.setScale(1.f,1.f);
      coinCount_text.setColor(Color::Yellow);
+
+     manCount_text.setFont(font1);
+     manCount_text.setCharacterSize(80);
+     manCount_text.setScale(1.f,1.f);
+     manCount_text.setColor(Color::Green);
 
      helpmetxt.setString("Help!");
      helpmetxt.setFont(font1);
@@ -722,10 +728,10 @@ int main()
 
               if(playy)
               {
-
+                
                 playy=false;
                 home=true;
-
+                
               }
               else if(challenge)
               {
@@ -859,7 +865,7 @@ int main()
             menu=true;
             music.game_music.stop();
             music.menu_music.play();
-
+            
             my_soldier.s_sprite.setPosition(soldierCurrrentPosition);
           }
 
@@ -1109,12 +1115,12 @@ int main()
     float stab2=stab2_clock.clock.getElapsedTime().asSeconds();
     if(my_soldier.s_sprite.getGlobalBounds().intersects(full_enemy[i].s_enemy.getGlobalBounds()) && stab2>0.2 )
     {
-           if(!my_soldier_died && !enemy_died[i])
+           if(!my_soldier_died && !enemy_died[i]) 
            {
               my_soldier_hit++;
               music.enemystab.play();
            }
-
+            
             stab2_clock.clock.restart();
     }
 
@@ -1737,7 +1743,7 @@ if(creatENEMY)
       }
 
 
-        money.s_sprite.setTextureRect(IntRect(happyMovement1*100,0*150,100,150));
+        money.s_sprite.setTextureRect(IntRect(happyMovement1*50,0*150,100,150));
         money.s_sprite.setPosition(soldierPosition.x+400,0);
         window.draw(money.s_sprite);
 ///man count on screen
@@ -1758,8 +1764,17 @@ if(creatENEMY)
 
         Score_str = To_string(coinCount);
         coinCount_text.setString(Score_str);
-        coinCount_text.setPosition(soldierPosition.x-400,0-20+30+30+10);
+        coinCount_text.setPosition(soldierPosition.x-400,0-20+30+30);
         window.draw(coinCount_text);
+
+        ///man count 
+
+
+        Score_str = To_string(manNumber);
+        manCount_text.setString(Score_str);
+         manCount_text.setPosition(soldierPosition.x+400-50,0-20);
+        window.draw(manCount_text);
+
 
 
         window.draw(my_soldier.s_sprite);
