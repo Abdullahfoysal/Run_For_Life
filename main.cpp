@@ -37,6 +37,7 @@ bool my_soldier_died=false;
  int ManCount=5;
  int CoinCount=20;
  bool gameover=false;
+ bool win=false;
 
 enum Direction {Right,Down,Left,Up};
 
@@ -110,6 +111,71 @@ struct Load
   Clock clock;
   Time time;
 
+
+};
+class winn
+{
+  public:
+  Font font1;
+
+  Text game_win_text,playAgain,exit_txt,backk;
+
+
+ 
+
+    void load_end()
+    {
+         font1.loadFromFile("Resources/Hunters.otf");
+
+         game_win_text.setString("Game Win");
+         game_win_text.setFont(font1);
+          game_win_text.setCharacterSize(80);
+          game_win_text.setScale(1.5f,1.5f);
+          //gametxt.setFillColor(Color::Red);
+          game_win_text.setPosition(200,-30);
+          game_win_text.setColor(Color::Red);
+
+           playAgain.setString("Play Again");
+         playAgain.setFont(font1);
+          playAgain.setCharacterSize(40);
+          playAgain.setScale(1.5f,1.5f);
+          //gametxt.setFillColor(Color::Red);
+          playAgain.setPosition(400,100+text_y*1);
+          playAgain.setColor(Color::Yellow);
+
+          
+
+             backk.setString("Back");
+         backk.setFont(font1);
+          backk.setCharacterSize(40);
+          backk.setScale(1.5f,1.5f);
+          //gametxt.setFillColor(Color::Red);
+          backk.setPosition(400,100+text_y*2);
+          backk.setColor(Color::Yellow);
+
+            exit_txt.setString("Exit");
+         exit_txt.setFont(font1);
+          exit_txt.setCharacterSize(40);
+          exit_txt.setScale(1.5f,1.5f);
+          //gametxt.setFillColor(Color::Red);
+          exit_txt.setPosition(400,100+text_y*3);
+          exit_txt.setColor(Color::Yellow);
+
+        }
+
+    void end_text_color()
+    {
+       playAgain.setColor(Color::Yellow);
+       exit_txt.setColor(Color::Yellow);
+       backk.setColor(Color::Yellow);
+    }
+    void show_end()
+    {
+      window.draw(game_win_text);
+      window.draw(playAgain);
+      window.draw(exit_txt);
+      window.draw(backk);
+    }
 
 };
 
@@ -812,6 +878,9 @@ int main()
          eend End;
          End.load_end();
 
+         winn Win;
+         Win.load_end();
+
 
        unsigned menuselect=1;
 
@@ -1061,6 +1130,72 @@ int main()
 
 
   }
+else if(win)
+{
+   window.draw(menu_text.s_menu[0]);
+   Win.end_text_color();
+
+    key=menu_clock.getElapsedTime().asSeconds();
+
+
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && key>0.2)
+            {
+                menuselect++;
+                menu_clock.restart();
+
+            }
+        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && key>0.2)
+            {
+                menuselect--;
+               menu_clock.restart();
+            }
+        else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Return) && key>0.2)
+            {
+
+              menu_clock.restart();
+              if(menuselect%3==1)
+              {
+                 Win.playAgain.setColor(Color::Red);
+              }
+              else if(menuselect%3==2)
+              {
+                Win.backk.setColor(Color::Red);
+                menu=true;
+                win=false;
+
+                 /*music.end_music.stop();
+                 music.menu_music.play();*/              
+              }
+              else if(menuselect%3==0)
+              {
+                Win.exit_txt.setColor(Color::Red);
+                window.close();
+              }
+
+            }
+
+            if(menuselect%3==1)
+              {
+                 Win.playAgain.setColor(Color::Green);
+              }
+              else if(menuselect%3==2)
+              {
+                Win.backk.setColor(Color::Green);
+                
+              }
+              else if(menuselect%3==0)
+              {
+                Win.exit_txt.setColor(Color::Green);
+                
+              }
+
+
+
+
+  Win.show_end();
+
+
+}  
 else if(gameover)
 {
     music.end_music.setLoop(true);
@@ -1097,6 +1232,7 @@ else if(gameover)
                 gameover=false;
 
                  music.end_music.stop();
+                 music.menu_music.play();
                 
               }
               else if(menuselect%3==0)
@@ -1128,6 +1264,7 @@ else if(gameover)
 }
  else if(!menu)
   {
+        ///go to game over
         if(lifeCount<0)
         {
           my_soldier.s_sprite.setPosition(soldierCurrrentPosition);
@@ -1135,6 +1272,12 @@ else if(gameover)
           music.game_music.stop();
           music.end_music.play();
         }
+        else if(ManCount<=manNumber && CoinCount<=coinNumber) win=true;
+
+          
+        
+
+
 
 
 
