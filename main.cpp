@@ -443,6 +443,7 @@ class game_menu
   Text game_text, play_text,challenge_text,sound_txt,instruction_text,about_text,exit_text;
   Text c1,c2,c3,c4,c5,c6,c7,c8,c9,c10,backk;
   Text challenge_view,coin_view,man_view,coin_view2,man_view2,challenge_viewCount;
+  Text go_back_man;
 
   Texture t_menu[3];
   Sprite s_menu[3];
@@ -573,6 +574,20 @@ class game_menu
           man_view2.setScale(1.5f,1.5f);
           //gametxt.setFillColor(Color::Red);
           man_view2.setColor(Color::Red);
+
+           go_back_man.setString("Run.. ");
+         go_back_man.setFont(font1);
+          go_back_man.setCharacterSize(30);
+          go_back_man.setScale(1.5f,1.5f);
+          //gametxt.setFillColor(Color::Red);
+          go_back_man.setColor(Color::Green);
+
+
+              
+
+
+
+
 
 
 
@@ -773,26 +788,7 @@ void play_Again()
 //play again the same mission
     
 
-/*
-     for(int i=0;i<coinNumber;i++)
-            {
-                cointPosition.push_back(coint(&coin.t_texture));
 
-                 float pos=rand()%(screenWidth+150);
-
-                cointPosition[i].s_coint.setPosition(pos,coinPosition.y);
-
-                for(int j=i+1;j<cointPosition.size();j++)
-                {
-                  if(abs(cointPosition[i].s_coint.getPosition().x-cointPosition[j].s_coint.getPosition().x<30))
-                  {
-                    cointPosition.erase(cointPosition.begin()+j);
-                    creatCoinNumber--;
-                  }
-
-                }
-
-            }*/
 
 
 
@@ -1136,7 +1132,7 @@ int main()
               {
                 challenge_select[i]=false;
               }
-              
+
                challenge_select[menuselect%6]=true;
                play_Again();
             }
@@ -2084,6 +2080,7 @@ if(creatENEMY)
         {
              man_esc=true;
              man[0].s_sprite.setPosition(man[0].s_sprite.getPosition().x,soldierCurrrentPosition.y);
+            
         }
         if(man_esc)
         {
@@ -2099,6 +2096,11 @@ if(creatENEMY)
              helpmetxt.setPosition(man[0].s_sprite.getPosition().x,man[0].s_sprite.getPosition().y-50);
 
              window.draw(helpmetxt);
+
+               if(soldier_source.y==Right)
+             menu_text.go_back_man.setPosition(my_soldier.s_sprite.getPosition().x+100,my_soldier.s_sprite.getPosition().y-60);
+            else  menu_text.go_back_man.setPosition(my_soldier.s_sprite.getPosition().x,my_soldier.s_sprite.getPosition().y-60);
+             window.draw(menu_text.go_back_man);
 
         }
         else  man[0].s_sprite.setTextureRect(IntRect(0*165,0*200,165,200));
