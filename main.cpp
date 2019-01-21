@@ -19,6 +19,16 @@ Vector2f strength_level(100,10);
  int creatEnemy=enemyNumber;
  bool creatENEMY=false;
 
+ ///man hit by enemy
+
+ bool ManRun=false;
+ int ManHitted=3;
+ int ManHitCount=0;
+ bool ManDied=false;
+
+ Vector2f ManHealth_level(100,10);
+
+
 
 
 
@@ -95,8 +105,8 @@ float movespeed=230.0f;
     bool challenge_select[6];
 
     ///challenge of game
-    int ManCount=1;
- int CoinCount=5;
+    int ManCount=5;
+ int CoinCount=20;
  ///main three loop
  bool menu=true;
  bool gameover=false;
@@ -832,9 +842,16 @@ int main()
     view.setViewport(FloatRect(0,0,1.0f,1.0f));
 
 
-     RectangleShape strength_rect;
+     RectangleShape strength_rect,ManHealth_rect;
     strength_rect.setSize(strength_level);
     strength_rect.setFillColor(Color::Green);
+
+    ManHealth_rect.setSize(strength_level);
+    ManHealth_rect.setFillColor(Color::Green);
+    ManHealth_rect.setOutlineThickness(2.0f);
+    ManHealth_rect.setOutlineColor(Color::Black);
+
+
 
     std::string Score_str;
 
@@ -2113,13 +2130,53 @@ if(creatENEMY)
             }
             enemy_diedTime=0;
         }
+///man hit by enemy again
 
+        if(ManRun)
+        {
+            for(int i=0;i<full_enemy.size();i++)
+            {
+                for(int j=0;j<enemybuletPosition[i].size();j++)
+                {
+                    if(man[0].s_sprite.getGlobalBounds().intersects(enemybuletPosition[i][j].s_enemybulet.getGlobalBounds()))
+                    {
+
+                        enemybuletPosition[i].erase(enemybuletPosition[i].begin()+j);
+                        ManHitCount++;
+                        ManHealth_level.x-=30;
+                        if(ManHealth_level.x<=0)
+                        {
+                             ManHealth_level.x=5;
+
+                        }
+                        if(ManHitCount>=ManHitted)
+                        {
+                           // manESCPosition.erase(manESCPosition.begin()+manESCPosition.size()-1);
+
+                            ManDied=true;
+
+                            ManHitCount=0;
+
+                            ManRun=false;
+                             ManHealth_rect.setFillColor(Color::Red);
+                        }
+                    }
+                }
+
+            }
+
+
+
+        }
 
         ///man moving on cage
-        if(abs(my_soldier.s_sprite.getPosition().x-man[0].s_sprite.getPosition().x)<5)
+        if(abs(my_soldier.s_sprite.getPosition().x-man[0].s_sprite.getPosition().x)<5 && !ManRun)
         {
              man_esc=true;
              man[0].s_sprite.setPosition(man[0].s_sprite.getPosition().x,soldierCurrrentPosition.y);
+             ManRun=true;
+              ManHealth_rect.setFillColor(Color::Green);
+
 
         }
         if(man_esc)
@@ -2128,6 +2185,9 @@ if(creatENEMY)
 
               man[0].s_sprite.move(-manSpeed*my_clock.clock.getElapsedTime().asSeconds(),0);
                // s_man.move(-manSpeed*clock.getElapsedTime().asSeconds(),0);
+               ManHealth_rect.setSize(ManHealth_level);
+               ManHealth_rect.setPosition(man[0].s_sprite.getPosition().x,man[0].s_sprite.getPosition().y-20);
+               window.draw(ManHealth_rect);
 
         }
         else if(abs(my_soldier.s_sprite.getPosition().x-man[0].s_sprite.getPosition().x)<300)
@@ -2148,12 +2208,20 @@ if(creatENEMY)
         else  man[0].s_sprite.setTextureRect(IntRect(0*165,0*200,165,200));
 
 
-        if(man[0].s_sprite.getPosition().x-manNumber*110<= 10 )
+        if(man[0].s_sprite.getPosition().x-manNumber*110<= 10)
         {
-            manESCPosition.push_back(mann(&man[1].t_texture,man[0].s_sprite.getPosition()));
-            manNumber++;
-            manEscaped++;
+            if(!ManDied)
+            {
+                manESCPosition.push_back(mann(&man[1].t_texture,man[0].s_sprite.getPosition()));
+                manNumber++;
+                manEscaped++;
+            }
+
             man_esc=false;
+
+            ManRun=false;
+            ManDied=false;
+             ManHealth_level.x=100;
 
             Vector2f manCurrentPosition(my_soldier.s_sprite.getPosition().x+500,man[0].s_sprite.getPosition().y);
             //man(&t_man,manCurrentPosition);
