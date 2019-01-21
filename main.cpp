@@ -1348,6 +1348,7 @@ else if(gameover)
               if(menuselect%3==1)
               {
                  End.playAgain.setColor(Color::Red);
+                 play_Again();
               }
               else if(menuselect%3==2)
               {
