@@ -770,6 +770,8 @@ void play_Again()
     cointPosition.clear();
     creatCoinNumber=4;///then creat coin
 
+//play again the same mission
+    
 
 /*
      for(int i=0;i<coinNumber;i++)
@@ -1111,17 +1113,18 @@ int main()
           }
           else if(challenge)
           {
-            for(int i=0;i<5;i++)
-            {
-              challenge_select[i]=false;
-
-            }
+            
            
 
             if(menuselect%6==1)
             {
               ManCount=5;
               CoinCount=20;
+              for(int i=0;i<5;i++)
+              {
+                challenge_select[i]=false;
+
+              }
                challenge_select[menuselect%6]=true;
                play_Again();
             }
@@ -1129,6 +1132,11 @@ int main()
             {
               ManCount=10;
               CoinCount=40;
+              for(int i=0;i<5;i++)
+              {
+                challenge_select[i]=false;
+              }
+              
                challenge_select[menuselect%6]=true;
                play_Again();
             }
@@ -1136,6 +1144,11 @@ int main()
             {
               ManCount=15;
               CoinCount=60;
+              for(int i=0;i<5;i++)
+              {
+                challenge_select[i]=false;
+              }
+
                challenge_select[menuselect%6]=true;
                play_Again();
             }
@@ -1143,6 +1156,11 @@ int main()
             {
               ManCount=20;
               CoinCount=80;
+              for(int i=0;i<5;i++)
+              {
+                challenge_select[i]=false;
+              }
+
                challenge_select[menuselect%6]=true;
                play_Again();
             }
@@ -1150,6 +1168,11 @@ int main()
             {
               ManCount=30;
               CoinCount=100;
+              for(int i=0;i<5;i++)
+              {
+                challenge_select[i]=false;
+              }
+
                challenge_select[menuselect%6]=true;
                play_Again();
             }
@@ -1355,10 +1378,15 @@ else if(gameover)
               {
                  End.playAgain.setColor(Color::Red);
                  play_Again();
+                 gameover=false;
+                 menu=false;
+
+
               }
               else if(menuselect%3==2)
               {
                 End.backk.setColor(Color::Red);
+                menu=true;
                 home=true;
                 gameover=false;
 
@@ -2366,7 +2394,7 @@ if(creatENEMY)
          {
           if(challenge_select[i])
           {
-               Score_str = To_string(i);
+               Score_str=To_string(i);
                break;
           }
        
