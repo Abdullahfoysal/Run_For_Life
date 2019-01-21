@@ -1352,6 +1352,7 @@ else if(win)
                 home=true;
                 win=false;
                 menu=true;
+                 menuselect=1;
 
                  /*music.end_music.stop();
                  music.menu_music.play();*/
@@ -1465,6 +1466,7 @@ else if(gameover)
                 menu=true;
                 home=true;
                 gameover=false;
+                menuselect=1;
 
                  music.end_music.stop();
                  music.menu_music.play();
@@ -2175,7 +2177,6 @@ if(creatENEMY)
              man_esc=true;
              man[0].s_sprite.setPosition(man[0].s_sprite.getPosition().x,soldierCurrrentPosition.y);
              ManRun=true;
-              ManHealth_rect.setFillColor(Color::Green);
 
 
         }
@@ -2222,14 +2223,21 @@ if(creatENEMY)
             ManRun=false;
             ManDied=false;
              ManHealth_level.x=100;
+              ManHealth_rect.setFillColor(Color::Green);
 
-            Vector2f manCurrentPosition(my_soldier.s_sprite.getPosition().x+500,man[0].s_sprite.getPosition().y);
+
             //man(&t_man,manCurrentPosition);
-            if(manCurrentPosition.x>manNumber*110 && manCurrentPosition.x<screenWidth-200)
+              float randomPosition=rand()%screenWidth-200;
+            Vector2f manCurrentPosition(randomPosition,man[0].s_sprite.getPosition().y);
+
+           while(randomPosition>manNumber*110.0 && randomPosition<screenWidth-200)
             {
-                 man[0].s_sprite.setPosition(manCurrentPosition.x,soldierCurrrentPosition.y-60);
+                   randomPosition=rand()%screenWidth-200;
+                 Vector2f manCurrentPosition(randomPosition,man[0].s_sprite.getPosition().y);
+
             }
-            else  man[0].s_sprite.setPosition(screenWidth/2,soldierCurrrentPosition.y-60);
+              man[0].s_sprite.setPosition(manCurrentPosition.x,soldierCurrrentPosition.y-60);
+           // else  man[0].s_sprite.setPosition(screenWidth/2,soldierCurrrentPosition.y-60);
 
 
 
