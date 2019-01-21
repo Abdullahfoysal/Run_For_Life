@@ -92,7 +92,7 @@ float movespeed=230.0f;
     bool aboutt=false;
     bool exitt=false;
 
-    bool challenge_select[5];
+    bool challenge_select[6];
 
     ///challenge of game
 
@@ -1116,35 +1116,41 @@ int main()
               challenge_select[i]=false;
 
             }
-            challenge_select[menuselect%5]=true;
+           
+
             if(menuselect%6==1)
             {
               ManCount=5;
               CoinCount=20;
+               challenge_select[menuselect%6]=true;
                play_Again();
             }
             else if(menuselect%6==2)
             {
               ManCount=10;
               CoinCount=40;
+               challenge_select[menuselect%6]=true;
                play_Again();
             }
             else if(menuselect%6==3)
             {
               ManCount=15;
               CoinCount=60;
+               challenge_select[menuselect%6]=true;
                play_Again();
             }
             else if(menuselect%6==4)
             {
               ManCount=20;
               CoinCount=80;
+               challenge_select[menuselect%6]=true;
                play_Again();
             }
             else if(menuselect%6==5)
             {
               ManCount=30;
               CoinCount=100;
+               challenge_select[menuselect%6]=true;
                play_Again();
             }
             else if(menuselect%6==0)
@@ -1226,7 +1232,7 @@ int main()
          else if(challenge_select[2]) menu_text.c2.setColor(Color::Red);
          else if(challenge_select[3]) menu_text.c3.setColor(Color::Red);
          else if(challenge_select[4]) menu_text.c4.setColor(Color::Red);
-         else if(challenge_select[0]) menu_text.c5.setColor(Color::Red);
+         else if(challenge_select[5]) menu_text.c5.setColor(Color::Red);
 
          menu_text.challenge_text_show();
         
@@ -2301,6 +2307,7 @@ if(creatENEMY)
         money.s_sprite.setTextureRect(IntRect(happyMovement1*100,0*150,100,150));
         money.s_sprite.setPosition(soldierPosition.x+400,0);
         window.draw(money.s_sprite);
+
 ///man count on screen
 
 
@@ -2355,7 +2362,7 @@ if(creatENEMY)
          window.draw(menu_text.challenge_view);
 
 
-         for(int i=1;i<5;i++)
+         for(int i=1;i<=5;i++)
          {
           if(challenge_select[i])
           {
