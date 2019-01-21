@@ -575,7 +575,7 @@ class game_menu
           //gametxt.setFillColor(Color::Red);
           man_view2.setColor(Color::Red);
 
-           go_back_man.setString("Run.. ");
+           go_back_man.setString("Ready to Run.. ");
          go_back_man.setFont(font1);
           go_back_man.setCharacterSize(30);
           go_back_man.setScale(1.5f,1.5f);
@@ -2098,9 +2098,11 @@ if(creatENEMY)
              window.draw(helpmetxt);
 
                if(soldier_source.y==Right)
-             menu_text.go_back_man.setPosition(my_soldier.s_sprite.getPosition().x+100,my_soldier.s_sprite.getPosition().y-60);
-            else  menu_text.go_back_man.setPosition(my_soldier.s_sprite.getPosition().x,my_soldier.s_sprite.getPosition().y-60);
+             menu_text.go_back_man.setPosition(my_soldier.s_sprite.getPosition().x+100,my_soldier.s_sprite.getPosition().y-160);
+            else  menu_text.go_back_man.setPosition(my_soldier.s_sprite.getPosition().x,my_soldier.s_sprite.getPosition().y-160);
              window.draw(menu_text.go_back_man);
+
+
 
         }
         else  man[0].s_sprite.setTextureRect(IntRect(0*165,0*200,165,200));
@@ -2145,12 +2147,19 @@ if(creatENEMY)
             happyMovement1++;
 
             if(happyMovement1>2){happyMovement1=0;}
+
+             menu_text.go_back_man.setColor(Color::Yellow);
+
+
+
         }
         if(manESCTime2>0.25)
         {
             manESCTime2=0;
              happyMovement2++;
              if(happyMovement2>2)happyMovement2=0;
+
+              menu_text.go_back_man.setColor(Color::Black);
 
         }
         for(int i=0;i<manESCPosition.size();i++)
