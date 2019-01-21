@@ -96,14 +96,14 @@ float movespeed=230.0f;
 
     ///challenge of game
 
- int ManCount=0;
- int CoinCount=0;
+ int ManCount=5;
+ int CoinCount=20;
  bool gameover=false;
  bool win=false;
 
  ///result of game
- int manEscaped=4;
- int coinGain=19;
+ int manEscaped=0;
+ int coinGain=0;
 
 
 
@@ -1075,7 +1075,7 @@ int main()
           {
             if(menuselect%6==1)
             {
-              menu=false;
+               menu=false;
                music.menu_music.stop();
                music.game_music.play();
 
@@ -1161,7 +1161,6 @@ int main()
     if(home)
     {
          menu_text.text_color('Y');
-
 
         if(menuselect%6==1)
         {
@@ -1271,6 +1270,7 @@ else if(win)
             {
 
               menu_clock.restart();
+
               if(menuselect%3==1)
               {
                  Win.playAgain.setColor(Color::Red);
