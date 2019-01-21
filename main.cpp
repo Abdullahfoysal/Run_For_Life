@@ -32,12 +32,7 @@ bool my_soldier_died=false;
  float diedTime=0.f;
  float mybuletSpeed=1.5f;
 
- ///result of game
-
- int ManCount=5;
- int CoinCount=20;
- bool gameover=false;
- bool win=false;
+ 
 
 enum Direction {Right,Down,Left,Up};
 
@@ -99,6 +94,17 @@ float movespeed=230.0f;
 
     bool challenge_select[5];
 
+    ///challenge of game
+
+ int ManCount=0;
+ int CoinCount=0;
+ bool gameover=false;
+ bool win=false;
+
+ ///result of game
+ int manEscaped=4;
+ int coinGain=19;
+
 
 
 
@@ -132,8 +138,8 @@ class winn
           game_win_text.setCharacterSize(80);
           game_win_text.setScale(1.5f,1.5f);
           //gametxt.setFillColor(Color::Red);
-          game_win_text.setPosition(200,-30);
-          game_win_text.setColor(Color::Red);
+          game_win_text.setPosition(200+80,-30);
+          game_win_text.setColor(Color::Magenta);
 
            playAgain.setString("Play Again");
          playAgain.setFont(font1);
@@ -435,7 +441,8 @@ class game_menu
    public:
   Font font1;
   Text game_text, play_text,challenge_text,sound_txt,instruction_text,about_text,exit_text;
-  Text c1,c2,c3,c4,c5,c6,c7,c8,c9,c10;
+  Text c1,c2,c3,c4,c5,c6,c7,c8,c9,c10,backk;
+  Text challenge_view,coin_view,man_view,coin_view2,man_view2,challenge_viewCount;
 
   Texture t_menu[3];
   Sprite s_menu[3];
@@ -523,6 +530,52 @@ class game_menu
           exit_text.setPosition(400,100+text_y*6);
           exit_text.setColor(Color::Yellow);
 
+
+            challenge_view.setString("Mission:");
+         challenge_view.setFont(font1);
+          challenge_view.setCharacterSize(40);
+          challenge_view.setScale(1.5f,1.5f);
+          //gametxt.setFillColor(Color::Red);
+          challenge_view.setColor(Color::Red);
+
+
+        
+         challenge_viewCount.setFont(font1);
+          challenge_viewCount.setCharacterSize(40);
+          challenge_viewCount.setScale(1.5f,1.5f);
+          //gametxt.setFillColor(Color::Red);
+          challenge_viewCount.setColor(Color::Red);
+
+          coin_view.setString("Money :");
+         coin_view.setFont(font1);
+          coin_view.setCharacterSize(30);
+          coin_view.setScale(1.5f,1.5f);
+          //gametxt.setFillColor(Color::Red);
+          coin_view.setColor(Color::Yellow);
+
+          man_view.setString("Man :");
+          man_view.setFont(font1);
+          man_view.setCharacterSize(30);
+          man_view.setScale(1.5f,1.5f);
+          //gametxt.setFillColor(Color::Red);
+          man_view.setColor(Color::Green);
+
+         
+          coin_view2.setFont(font1);
+          coin_view2.setCharacterSize(30);
+          coin_view2.setScale(1.5f,1.5f);
+          //gametxt.setFillColor(Color::Red);
+          coin_view2.setColor(Color::Red);
+
+          
+          man_view2.setFont(font1);
+          man_view2.setCharacterSize(30);
+          man_view2.setScale(1.5f,1.5f);
+          //gametxt.setFillColor(Color::Red);
+          man_view2.setColor(Color::Red);
+
+
+
     }
     void text_color(char colour)
     {
@@ -564,7 +617,7 @@ class game_menu
 
     void challenge_full_text()
     {
-         c1.setString("Challenge:1-> Escape 5 Man and Earn Coins 20");
+         c1.setString("Mission:1-> Escape 5 Man and Earn Coins 20");
          c1.setFont(font1);
           c1.setCharacterSize(40);
           c1.setScale(1.5f,1.5f);
@@ -572,7 +625,7 @@ class game_menu
           c1.setPosition(100,100+text_y*1);
           c1.setColor(Color::Yellow);
 
-          c2.setString("Challenge:2-> Escape 10 Man and Earn Coins 40");
+          c2.setString("Mission:2-> Escape 10 Man and Earn Coins 40");
          c2.setFont(font1);
           c2.setCharacterSize(40);
           c2.setScale(1.5f,1.5f);
@@ -580,7 +633,7 @@ class game_menu
           c2.setPosition(100,100+text_y*2);
           c2.setColor(Color::Yellow);
 
-           c3.setString("Challenge:3-> Escape 15 Man and Earn Coins 60");
+           c3.setString("Mission:3-> Escape 15 Man and Earn Coins 60");
          c3.setFont(font1);
           c3.setCharacterSize(40);
           c3.setScale(1.5f,1.5f);
@@ -588,7 +641,7 @@ class game_menu
           c3.setPosition(100,100+text_y*3);
           c3.setColor(Color::Yellow);
 
-          c4.setString("Challenge:4-> Escape 20 Man and Earn Coins 80");
+          c4.setString("Mission:4-> Escape 20 Man and Earn Coins 80");
           c4.setFont(font1);
           c4.setCharacterSize(40);
           c4.setScale(1.5f,1.5f);
@@ -597,13 +650,21 @@ class game_menu
           c4.setColor(Color::Yellow);
 
 
-          c5.setString("Challenge:5-> Escape 30 Man and Earn Coins 100");
+          c5.setString("Mission:5-> Escape 30 Man and Earn Coins 100");
           c5.setFont(font1);
           c5.setCharacterSize(40);
           c5.setScale(1.5f,1.5f);
           //gametxt.setFillColor(Color::Red);
           c5.setPosition(100,100+text_y*5);
           c5.setColor(Color::Yellow);
+
+        backk.setString("Back");
+         backk.setFont(font1);
+          backk.setCharacterSize(40);
+          backk.setScale(1.5f,1.5f);
+          //gametxt.setFillColor(Color::Red);
+          backk.setPosition(400,100+text_y*6);
+          backk.setColor(Color::Yellow);
     }
     void challenge_text_color()
     {
@@ -612,6 +673,7 @@ class game_menu
       c3.setColor(Color::Yellow);
       c4.setColor(Color::Yellow);
       c5.setColor(Color::Yellow);
+      backk.setColor(Color::Yellow);
 
     }
 
@@ -622,6 +684,7 @@ class game_menu
       window.draw(c3);
       window.draw(c4);
       window.draw(c5);
+      window.draw(backk);
     }
 
 };
@@ -682,15 +745,52 @@ void play_Again()
          enemyBack[i]=false;
       enemyBackAgain[i]=false;
     }
-     enemyHit=2;
+     enemyHit=4;
     full_enemy.clear();
      enemy_direction.clear();
       creatEnemy=enemyNumber;
 
-      lifeCount=3;
+     
       manNumber=0;
 
+      coinCount=0;
+     lifeCount=3;
+    moneyCount=0;
+
+    ///strength full
+    strength_level.x=100;
+
+//result ==0
+    manEscaped=0;
+   coinGain=0;
+///escaped man==0
+   manESCPosition.clear();
+
+///coin=0
     cointPosition.clear();
+    creatCoinNumber=4;///then creat coin
+
+
+/*
+     for(int i=0;i<coinNumber;i++)
+            {
+                cointPosition.push_back(coint(&coin.t_texture));
+
+                 float pos=rand()%(screenWidth+150);
+
+                cointPosition[i].s_coint.setPosition(pos,coinPosition.y);
+
+                for(int j=i+1;j<cointPosition.size();j++)
+                {
+                  if(abs(cointPosition[i].s_coint.getPosition().x-cointPosition[j].s_coint.getPosition().x<30))
+                  {
+                    cointPosition.erase(cointPosition.begin()+j);
+                    creatCoinNumber--;
+                  }
+
+                }
+
+            }*/
 
 
 
@@ -743,7 +843,7 @@ int main()
      strength_text.setScale(1.5f,1.5f);
      strength_text.setColor(Color::Magenta);
 
-     coin_text.setString("Coins:");
+     coin_text.setString("Money:");
      coin_text.setFont(font1);
      coin_text.setCharacterSize(30);
      coin_text.setScale(1.5f,1.5f);
@@ -1017,30 +1117,41 @@ int main()
 
             }
             challenge_select[menuselect%5]=true;
-            if(menuselect%5==1)
+            if(menuselect%6==1)
             {
               ManCount=5;
               CoinCount=20;
+               play_Again();
             }
-            else if(menuselect%5==2)
+            else if(menuselect%6==2)
             {
               ManCount=10;
               CoinCount=40;
+               play_Again();
             }
-            else if(menuselect%5==3)
+            else if(menuselect%6==3)
             {
               ManCount=15;
               CoinCount=60;
+               play_Again();
             }
-            else if(menuselect%5==4)
+            else if(menuselect%6==4)
             {
               ManCount=20;
               CoinCount=80;
+               play_Again();
             }
-            else if(menuselect%5==0)
+            else if(menuselect%6==5)
             {
               ManCount=30;
               CoinCount=100;
+               play_Again();
+            }
+            else if(menuselect%6==0)
+            {
+              home=true;
+              challenge=false;
+              menuselect=2;
             }
 
           }
@@ -1085,32 +1196,39 @@ int main()
     {
          menu_text.challenge_text_color();
        
-        if(menuselect%5==1)
+        if(menuselect%6==1)
         {
           menu_text.c1.setColor(Color::Green);
         }
-        else if(menuselect%5==2)
+        else if(menuselect%6==2)
         {
           menu_text.c2.setColor(Color::Green);
         }
-        else if(menuselect%5==3)
+        else if(menuselect%6==3)
         {
           menu_text.c3.setColor(Color::Green);
         }
-        else if(menuselect%5==4)
+        else if(menuselect%6==4)
         {
           menu_text.c4.setColor(Color::Green);
         }
-        else if(menuselect%5==0)
+        else if(menuselect%6==5)
         {
           menu_text.c5.setColor(Color::Green);
         }
+        else if(menuselect%6==0)
+        {
+          menu_text.backk.setColor(Color::Red);
+        }
+
+    
 
         if(challenge_select[1]) menu_text.c1.setColor(Color::Red);
          else if(challenge_select[2]) menu_text.c2.setColor(Color::Red);
          else if(challenge_select[3]) menu_text.c3.setColor(Color::Red);
          else if(challenge_select[4]) menu_text.c4.setColor(Color::Red);
          else if(challenge_select[0]) menu_text.c5.setColor(Color::Red);
+
          menu_text.challenge_text_show();
         
     }
@@ -1156,12 +1274,18 @@ else if(win)
               if(menuselect%3==1)
               {
                  Win.playAgain.setColor(Color::Red);
+
+                 win=false;
+                 menu=false;
+                 play_Again();
+                 music.game_music.play();
               }
               else if(menuselect%3==2)
               {
                 Win.backk.setColor(Color::Red);
-                menu=true;
+                home=true;
                 win=false;
+                menu=true;
 
                  /*music.end_music.stop();
                  music.menu_music.play();*/              
@@ -1180,12 +1304,12 @@ else if(win)
               }
               else if(menuselect%3==2)
               {
-                Win.backk.setColor(Color::Green);
+                Win.backk.setColor(Color::Red);
                 
               }
               else if(menuselect%3==0)
               {
-                Win.exit_txt.setColor(Color::Green);
+                Win.exit_txt.setColor(Color::Red);
                 
               }
 
@@ -1228,7 +1352,7 @@ else if(gameover)
               else if(menuselect%3==2)
               {
                 End.backk.setColor(Color::Red);
-                menu=true;
+                home=true;
                 gameover=false;
 
                  music.end_music.stop();
@@ -1262,7 +1386,7 @@ else if(gameover)
 
   End.show_end();
 }
- else if(!menu)
+else if(!menu)
   {
         ///go to game over
         if(lifeCount<0)
@@ -1272,7 +1396,14 @@ else if(gameover)
           music.game_music.stop();
           music.end_music.play();
         }
-        else if(ManCount<=manNumber && CoinCount<=coinNumber) win=true;
+        else if(ManCount<=manEscaped && CoinCount<=coinGain) 
+        {
+           my_soldier.s_sprite.setPosition(soldierCurrrentPosition);
+           win=true;
+           music.game_music.stop();
+
+        }
+                  
 
           
         
@@ -1942,6 +2073,7 @@ if(creatENEMY)
         {
             manESCPosition.push_back(mann(&man[1].t_texture,man[0].s_sprite.getPosition()));
             manNumber++;
+            manEscaped++;
             man_esc=false;
 
             Vector2f manCurrentPosition(my_soldier.s_sprite.getPosition().x+500,man[0].s_sprite.getPosition().y);
@@ -2106,6 +2238,7 @@ if(creatENEMY)
           if(!my_soldier_died)
           {
             music.coin_music.play();
+            coinGain++;
           }
 
         }
@@ -2172,7 +2305,7 @@ if(creatENEMY)
 
         life_text.setPosition(soldierPosition.x-500,0-20);
         strength_text.setPosition(soldierPosition.x-500,0-20+30);
-        coin_text.setPosition(soldierPosition.x-500,0-20+30+30);
+        coin_text.setPosition(soldierPosition.x-500-10,0-20+30+30-2);
 
         strength_rect.setPosition(soldierPosition.x-500+150,0-20+30+30);
         strength_rect.setSize(strength_level);
@@ -2195,6 +2328,45 @@ if(creatENEMY)
         manCount_text.setString(Score_str);
          manCount_text.setPosition(soldierPosition.x+400-50,0-20);
         window.draw(manCount_text);
+
+///challenge show
+
+         Score_str = To_string(CoinCount);
+        menu_text.coin_view2.setString(Score_str);
+          menu_text.coin_view2.setPosition(soldierPosition.x-120+110,20);
+        window.draw(menu_text.coin_view2);
+
+         Score_str = To_string(ManCount);
+        menu_text.man_view2.setString(Score_str);
+          menu_text.man_view2.setPosition(soldierPosition.x-120+110+150,20);
+        window.draw( menu_text.man_view2);
+      
+        menu_text.coin_view.setPosition(soldierPosition.x-120-5,20);
+        menu_text.man_view.setPosition(soldierPosition.x+50,20);
+
+        window.draw(menu_text.coin_view);
+        window.draw( menu_text.man_view);
+
+
+
+///mission no
+         menu_text.challenge_view.setPosition(soldierPosition.x-60,0-30);
+         window.draw(menu_text.challenge_view);
+
+
+         for(int i=1;i<5;i++)
+         {
+          if(challenge_select[i])
+          {
+               Score_str = To_string(i);
+               break;
+          }
+       
+         }
+          
+         menu_text.challenge_viewCount.setString(Score_str);
+           menu_text.challenge_viewCount.setPosition(soldierPosition.x-60+160,0-30);
+           window.draw(menu_text.challenge_viewCount);
 
 
 
