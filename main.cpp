@@ -19,7 +19,7 @@ Vector2f strength_level(100,10);
  int creatEnemy=enemyNumber;
  bool creatENEMY=false;
 
- 
+
 
 
 float strength=0.f;
@@ -32,7 +32,7 @@ bool my_soldier_died=false;
  float diedTime=0.f;
  float mybuletSpeed=1.5f;
 
- 
+
 
 enum Direction {Right,Down,Left,Up};
 
@@ -127,7 +127,7 @@ class winn
   Text game_win_text,playAgain,exit_txt,backk;
 
 
- 
+
 
     void load_end()
     {
@@ -149,7 +149,7 @@ class winn
           playAgain.setPosition(400,100+text_y*1);
           playAgain.setColor(Color::Yellow);
 
-          
+
 
              backk.setString("Back");
          backk.setFont(font1);
@@ -195,7 +195,7 @@ public:
   Text gameover_text,playAgain,exit_txt,backk;
 
 
- 
+
 
     void load_end()
     {
@@ -217,7 +217,7 @@ public:
           playAgain.setPosition(400,100+text_y*1);
           playAgain.setColor(Color::Yellow);
 
-          
+
 
              backk.setString("Back");
          backk.setFont(font1);
@@ -235,7 +235,7 @@ public:
           exit_txt.setPosition(400,100+text_y*3);
           exit_txt.setColor(Color::Yellow);
 
-          
+
 
 
 
@@ -255,7 +255,7 @@ public:
       window.draw(backk);
     }
 
-        
+
 
 
 };
@@ -482,6 +482,8 @@ class game_menu
           //gametxt.setFillColor(Color::Red);
           game_text.setPosition(200,-30);
           game_text.setColor(Color::Red);
+          game_text.setOutlineThickness(2);
+          game_text.setOutlineColor(Color::Black);
 
          play_text.setString("Play");
          play_text.setFont(font1);
@@ -491,6 +493,9 @@ class game_menu
           play_text.setPosition(400,100+text_y*1);
           play_text.setColor(Color::Yellow);
 
+            play_text.setOutlineThickness(2);
+          play_text.setOutlineColor(Color::Black);
+
           challenge_text.setString("Challenge");
          challenge_text.setFont(font1);
           challenge_text.setCharacterSize(40);
@@ -499,6 +504,9 @@ class game_menu
           challenge_text.setPosition(400-25,100+text_y*2);
           challenge_text.setColor(Color::Yellow);
 
+           challenge_text.setOutlineThickness(2);
+           challenge_text.setOutlineColor(Color::Black);
+
             sound_txt.setString("Sound");
          sound_txt.setFont(font1);
           sound_txt.setCharacterSize(40);
@@ -506,6 +514,9 @@ class game_menu
           //gametxt.setFillColor(Color::Red);
           sound_txt.setPosition(400,100+text_y*3);
           sound_txt.setColor(Color::Yellow);
+            sound_txt.setOutlineThickness(2);
+            sound_txt.setOutlineColor(Color::Black);
+
 
             instruction_text.setString("Instructions");
          instruction_text.setFont(font1);
@@ -515,6 +526,9 @@ class game_menu
           instruction_text.setPosition(400-25,100+text_y*4);
           instruction_text.setColor(Color::Yellow);
 
+          instruction_text.setOutlineThickness(2);
+            instruction_text.setOutlineColor(Color::Black);
+
             about_text.setString("About");
          about_text.setFont(font1);
           about_text.setCharacterSize(40);
@@ -522,6 +536,9 @@ class game_menu
           //gametxt.setFillColor(Color::Red);
           about_text.setPosition(400,100+text_y*5);
           about_text.setColor(Color::Yellow);
+
+          about_text.setOutlineThickness(2);
+            about_text.setOutlineColor(Color::Black);
 
             exit_text.setString("Quit");
          exit_text.setFont(font1);
@@ -531,6 +548,9 @@ class game_menu
           exit_text.setPosition(400,100+text_y*6);
           exit_text.setColor(Color::Yellow);
 
+             exit_text.setOutlineThickness(2);
+             exit_text.setOutlineColor(Color::Black);
+
 
             challenge_view.setString("Mission:");
          challenge_view.setFont(font1);
@@ -539,8 +559,11 @@ class game_menu
           //gametxt.setFillColor(Color::Red);
           challenge_view.setColor(Color::Red);
 
+            challenge_view.setOutlineThickness(2);
+             challenge_view.setOutlineColor(Color::Black);
 
-        
+
+
          challenge_viewCount.setFont(font1);
           challenge_viewCount.setCharacterSize(40);
           challenge_viewCount.setScale(1.5f,1.5f);
@@ -561,14 +584,14 @@ class game_menu
           //gametxt.setFillColor(Color::Red);
           man_view.setColor(Color::Green);
 
-         
+
           coin_view2.setFont(font1);
           coin_view2.setCharacterSize(30);
           coin_view2.setScale(1.5f,1.5f);
           //gametxt.setFillColor(Color::Red);
           coin_view2.setColor(Color::Red);
 
-          
+
           man_view2.setFont(font1);
           man_view2.setCharacterSize(30);
           man_view2.setScale(1.5f,1.5f);
@@ -583,7 +606,7 @@ class game_menu
           go_back_man.setColor(Color::Green);
 
 
-              
+
 
 
 
@@ -737,9 +760,9 @@ class GameMusic
 
 
   }
- 
 
- 
+
+
 
 };
 
@@ -765,7 +788,7 @@ void play_Again()
      enemy_direction.clear();
       creatEnemy=enemyNumber;
 
-     
+
       manNumber=0;
 
       coinCount=0;
@@ -786,7 +809,7 @@ void play_Again()
     creatCoinNumber=4;///then creat coin
 
 //play again the same mission
-    
+
 
 
 
@@ -823,7 +846,7 @@ int main()
 
      Font font1,font2,font3,font4;
     font1.loadFromFile("Resources/Hunters.otf");
-////score count 
+////score count
 
     Text life_text,strength_text,coin_text,coinCount_text,manCount_text,
     helpmetxt;
@@ -1034,10 +1057,10 @@ int main()
 
               if(playy)
               {
-                
+
                 playy=false;
                 home=true;
-                
+
               }
               else if(challenge)
               {
@@ -1109,8 +1132,8 @@ int main()
           }
           else if(challenge)
           {
-            
-           
+
+
 
             if(menuselect%6==1)
             {
@@ -1219,7 +1242,7 @@ int main()
     else if(challenge)
     {
          menu_text.challenge_text_color();
-       
+
         if(menuselect%6==1)
         {
           menu_text.c1.setColor(Color::Green);
@@ -1245,7 +1268,7 @@ int main()
           menu_text.backk.setColor(Color::Red);
         }
 
-    
+
 
         if(challenge_select[1]) menu_text.c1.setColor(Color::Red);
          else if(challenge_select[2]) menu_text.c2.setColor(Color::Red);
@@ -1254,7 +1277,7 @@ int main()
          else if(challenge_select[5]) menu_text.c5.setColor(Color::Red);
 
          menu_text.challenge_text_show();
-        
+
     }
     else if(soundd)
     {
@@ -1313,7 +1336,7 @@ else if(win)
                 menu=true;
 
                  /*music.end_music.stop();
-                 music.menu_music.play();*/              
+                 music.menu_music.play();*/
               }
               else if(menuselect%3==0)
               {
@@ -1330,12 +1353,12 @@ else if(win)
               else if(menuselect%3==2)
               {
                 Win.backk.setColor(Color::Red);
-                
+
               }
               else if(menuselect%3==0)
               {
                 Win.exit_txt.setColor(Color::Red);
-                
+
               }
 
 
@@ -1344,7 +1367,7 @@ else if(win)
   Win.show_end();
 
 
-}  
+}
 else if(gameover)
 {
     music.end_music.setLoop(true);
@@ -1388,7 +1411,7 @@ else if(gameover)
 
                  music.end_music.stop();
                  music.menu_music.play();
-                
+
               }
               else if(menuselect%3==0)
               {
@@ -1404,12 +1427,12 @@ else if(gameover)
               else if(menuselect%3==2)
               {
                 End.backk.setColor(Color::Green);
-                
+
               }
               else if(menuselect%3==0)
               {
                 End.exit_txt.setColor(Color::Green);
-                
+
               }
 
 
@@ -1427,17 +1450,17 @@ else if(!menu)
           music.game_music.stop();
           music.end_music.play();
         }
-        else if(ManCount<=manEscaped && CoinCount<=coinGain) 
+        else if(ManCount<=manEscaped && CoinCount<=coinGain)
         {
            my_soldier.s_sprite.setPosition(soldierCurrrentPosition);
            win=true;
            music.game_music.stop();
 
         }
-                  
 
-          
-        
+
+
+
 
 
 
@@ -1448,7 +1471,7 @@ else if(!menu)
             menu=true;
             music.game_music.stop();
             music.menu_music.play();
-            
+
             my_soldier.s_sprite.setPosition(soldierCurrrentPosition);
           }
 
@@ -1698,12 +1721,12 @@ else if(!menu)
     float stab2=stab2_clock.clock.getElapsedTime().asSeconds();
     if(my_soldier.s_sprite.getGlobalBounds().intersects(full_enemy[i].s_enemy.getGlobalBounds()) && stab2>0.2 )
     {
-           if(!my_soldier_died && !enemy_died[i]) 
+           if(!my_soldier_died && !enemy_died[i])
            {
               my_soldier_hit++;
               music.enemystab.play();
            }
-            
+
             stab2_clock.clock.restart();
     }
 
@@ -1950,7 +1973,6 @@ if(creatENEMY)
         {
           for(int j=0;j<enemybuletPosition[i].size();j++)
           {
-
               if(enemybuletPosition[i][j].s_enemybulet.getPosition().x>my_soldier.s_sprite.getPosition().x+400 )
               {
                 enemybuletPosition[i].erase(enemybuletPosition[i].begin()+j);
@@ -1959,8 +1981,6 @@ if(creatENEMY)
               {
                 enemybuletPosition[i].erase(enemybuletPosition[i].begin()+j);
               }
-
-
           }
         }*/
 
@@ -2080,7 +2100,7 @@ if(creatENEMY)
         {
              man_esc=true;
              man[0].s_sprite.setPosition(man[0].s_sprite.getPosition().x,soldierCurrrentPosition.y);
-            
+
         }
         if(man_esc)
         {
@@ -2159,7 +2179,7 @@ if(creatENEMY)
              happyMovement2++;
              if(happyMovement2>2)happyMovement2=0;
 
-              menu_text.go_back_man.setColor(Color::Black);
+              menu_text.go_back_man.setColor(Color::Green);
 
         }
         for(int i=0;i<manESCPosition.size();i++)
@@ -2368,7 +2388,7 @@ if(creatENEMY)
         coinCount_text.setPosition(soldierPosition.x-400,0-20+30+30);
         window.draw(coinCount_text);
 
-        ///man count 
+        ///man count
 
 
         Score_str = To_string(manNumber);
@@ -2387,7 +2407,7 @@ if(creatENEMY)
         menu_text.man_view2.setString(Score_str);
           menu_text.man_view2.setPosition(soldierPosition.x-120+110+150,20);
         window.draw( menu_text.man_view2);
-      
+
         menu_text.coin_view.setPosition(soldierPosition.x-120-5,20);
         menu_text.man_view.setPosition(soldierPosition.x+50,20);
 
@@ -2408,9 +2428,9 @@ if(creatENEMY)
                Score_str=To_string(i);
                break;
           }
-       
+
          }
-          
+
          menu_text.challenge_viewCount.setString(Score_str);
            menu_text.challenge_viewCount.setPosition(soldierPosition.x-60+160,0-30);
            window.draw(menu_text.challenge_viewCount);
