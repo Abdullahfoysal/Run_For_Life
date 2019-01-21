@@ -80,7 +80,7 @@ float movespeed=230.0f;
     bool creatCoin=false;
 
     ///menu
-    bool menu=true;
+
     int text_y=50;
     float key=0.f;
 
@@ -95,9 +95,10 @@ float movespeed=230.0f;
     bool challenge_select[6];
 
     ///challenge of game
-
- int ManCount=5;
- int CoinCount=20;
+    int ManCount=1;
+ int CoinCount=5;
+ ///main three loop
+ bool menu=true;
  bool gameover=false;
  bool win=false;
 
@@ -1367,6 +1368,45 @@ else if(win)
   Win.show_end();
 
 
+       manESCTime+=my_clock.clock.getElapsedTime().asSeconds();
+        manESCTime2+=my_clock.clock.getElapsedTime().asSeconds();
+
+
+         for(int i=0;i<manESCPosition.size();i++)
+        {
+            if(i%2==0)
+            manESCPosition[i].s_manESC.setTextureRect(IntRect(happyMovement1*100,0*150,100,150));
+
+            else manESCPosition[i].s_manESC.setTextureRect(IntRect(happyMovement2*100,0*150,100,150));
+
+
+        }
+
+        if(manESCTime>0.35)
+        {
+            manESCTime=0;
+            happyMovement1++;
+
+            if(happyMovement1>2){happyMovement1=0;}
+
+
+        }
+        if(manESCTime2>0.25)
+        {
+            manESCTime2=0;
+             happyMovement2++;
+             if(happyMovement2>2)happyMovement2=0;
+
+        }
+        for(int i=0;i<manESCPosition.size();i++)
+        {
+             manESCPosition[i].s_manESC.setPosition(manESCPosition[i].s_manESC.getPosition().x,soldierCurrrentPosition.y+225);
+            window.draw(manESCPosition[i].s_manESC);
+        }
+
+
+my_clock.clock.restart();
+
 }
 else if(gameover)
 {
@@ -1558,7 +1598,7 @@ else if(!menu)
         else if(Keyboard::isKeyPressed(Keyboard::Right))
         {
             soldier_source.y=Right;
-            if(event.type==Event::KeyReleased && event.key.code==Keyboard::S)my_soldier.s_sprite.setTextureRect(IntRect(0*130,0*180,130,180));
+            if(event.type==Event::KeyReleased && event.key.code==Keyboard::S)my_soldier.s_sprite.setTextureRect(IntRect(soldier_source.x*130,0*180,130,180));
             else my_soldier.s_sprite.setTextureRect(IntRect(soldier_source.x*130,soldier_source.y*180,130,180));
 
              if(Keyboard::isKeyPressed(Keyboard::S) && !my_soldier_died && my_buletTime>0.2)
@@ -1587,7 +1627,7 @@ else if(!menu)
         else if(Keyboard::isKeyPressed(Keyboard::Left))
         {
             soldier_source.y=Left;
-            if(event.type==Event::KeyReleased && event.key.code==Keyboard::S)my_soldier.s_sprite.setTextureRect(IntRect(soldier_source.x*130,5*180,130,180));
+            if(event.type==Event::KeyReleased && event.key.code==Keyboard::S)my_soldier.s_sprite.setTextureRect(IntRect(soldier_source.x*130,2*180,130,180));
             else my_soldier.s_sprite.setTextureRect(IntRect(soldier_source.x*130,soldier_source.y*180,130,180));
              if(Keyboard::isKeyPressed(Keyboard::S) && !my_soldier_died && my_buletTime>0.2)
               {
@@ -1610,14 +1650,7 @@ else if(!menu)
 
               }
         }
-            ///work for jump
-//       else if (Keyboard::isKeyPressed(Keyboard::Up))
-//       //if (event.key.code == sf::Keyboard::Up)
-//        {
-//            if(soldier_source.y==Left)my_soldier.s_sprite.setTextureRect(IntRect(soldier_source.x*130,10*180,130,180));
-//            else my_soldier.s_sprite.setTextureRect(IntRect(soldier_source.x*130,3*180,130,180));
-//
-//        }
+
         else if(Keyboard::isKeyPressed(Keyboard::S))
         {
 
@@ -1969,20 +2002,7 @@ if(creatENEMY)
 
         }
 
-        /*for(int i=0;i<full_enemy.size();i++)
-        {
-          for(int j=0;j<enemybuletPosition[i].size();j++)
-          {
-              if(enemybuletPosition[i][j].s_enemybulet.getPosition().x>my_soldier.s_sprite.getPosition().x+400 )
-              {
-                enemybuletPosition[i].erase(enemybuletPosition[i].begin()+j);
-              }
-              else if(enemybuletPosition[i][j].s_enemybulet.getPosition().x+400<my_soldier.s_sprite.getPosition().x)
-              {
-                enemybuletPosition[i].erase(enemybuletPosition[i].begin()+j);
-              }
-          }
-        }*/
+
 
 
         for(int i=0;i<full_enemy.size();i++)
