@@ -12,6 +12,8 @@ int win_y=700;
 int screenWidth=4160;///border of gamescreen
 
 
+
+
 ///score count
 Vector2f strength_level(100,10);
  int manNumber=0;
@@ -25,6 +27,7 @@ Vector2f strength_level(100,10);
  int ManHitted=3;
  int ManHitCount=0;
  bool ManDied=false;
+ bool first_meet=false;
 
  Vector2f ManHealth_level(100,10);
 
@@ -49,6 +52,9 @@ enum Direction {Right,Down,Left,Up};
 sf::Vector2i soldier_source(0,0);
 Vector2f soldierCurrrentPosition(0,330);
 Vector2f soldierPosition(win_x/2,win_y/2);
+
+///save soldier position
+Vector2f pausePosition=soldierCurrrentPosition;
 
 float frameCounter=0,switchFrame=100,frameSpeed=600;
 float movespeed=230.0f;
@@ -826,6 +832,7 @@ void play_Again()
   ManHitted=3;
   ManHitCount=0;
   ManDied=false;
+  first_meet=false;
 
  Vector2f ManHealth_level(100,10);
 
@@ -1135,6 +1142,9 @@ int main()
             if(menuselect%6==1)
             {
                menu=false;
+               ///save soldier position
+               my_soldier.s_sprite.setPosition(pausePosition);
+
                music.menu_music.stop();
                music.game_music.play();
 
@@ -1555,18 +1565,16 @@ else if(!menu)
 
 
 
-
-
-
-
-
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
           {
             menu=true;
             music.game_music.stop();
             music.menu_music.play();
 
+             pausePosition=my_soldier.s_sprite.getPosition();
+
             my_soldier.s_sprite.setPosition(soldierCurrrentPosition);
+
           }
 
       music.game_music.setLoop(true);
@@ -1589,13 +1597,13 @@ else if(!menu)
 
   //Down button
            if(my_soldier_died)
-          {
-            if(soldier_source.y==Right)
-            my_soldier.s_sprite.setTextureRect(IntRect(5*110,12*180,170,180));
-            else
-            my_soldier.s_sprite.setTextureRect(IntRect(0*110,14*180,170,180));///edit soldier image for left(image bottom)
+            {
+              if(soldier_source.y==Right)
+              my_soldier.s_sprite.setTextureRect(IntRect(5*110,12*180,170,180));
+              else
+              my_soldier.s_sprite.setTextureRect(IntRect(0*110,14*180,170,180));///edit soldier image for left(image bottom)
 
-          }
+            }
 
             else if(Keyboard::isKeyPressed(Keyboard::Space))
             {
@@ -1631,6 +1639,7 @@ else if(!menu)
                    my_buletclock.clock.restart();
 
                      music.shoot_music.play();
+                      cout<<"1"<<endl;
 
               }
 
@@ -1674,6 +1683,7 @@ else if(!menu)
 
                      music.shoot_music.play();
                      //music.shoot_music.setVolume(1000);
+                     cout<<"2"<<endl;
 
               }
 
@@ -1728,6 +1738,8 @@ else if(!menu)
                      my_buletclock.clock.restart();
 
                       music.shoot_music.play();
+                      
+                      cout<<"3"<<endl;
 
 
               }
@@ -1977,7 +1989,7 @@ else if(!menu)
 
         for(int i=0;i<full_enemy.size();i++)
         {
-          if(enemybuletTime>0.5 && abs(full_enemy[i].s_enemy.getPosition().x-my_soldier.s_sprite.getPosition().x)<500 && abs(full_enemy[i].s_enemy.getPosition().x-my_soldier.s_sprite.getPosition().x)>100 && !enemy_died[i])
+          if(enemybuletTime>0.5 && abs(full_enemy[i].s_enemy.getPosition().x-my_soldier.s_sprite.getPosition().x)<600 && abs(full_enemy[i].s_enemy.getPosition().x-my_soldier.s_sprite.getPosition().x)>100 && !enemy_died[i])
           {
             if(my_soldier.s_sprite.getPosition().x < full_enemy[i].s_enemy.getPosition().x)
             {
@@ -2043,11 +2055,11 @@ else if(!menu)
               if(!my_soldier_died) my_soldier_hit++;//my soldier hit bulet
             }
 
-            else if(enemybuletPosition[i][j].s_enemybulet.getPosition().x>my_soldier.s_sprite.getPosition().x+550 )
+            else if(enemybuletPosition[i][j].s_enemybulet.getPosition().x>my_soldier.s_sprite.getPosition().x+300 )
               {
                 enemybuletPosition[i].erase(enemybuletPosition[i].begin()+j);
               }
-            else if(enemybuletPosition[i][j].s_enemybulet.getPosition().x+550<my_soldier.s_sprite.getPosition().x)
+            else if(enemybuletPosition[i][j].s_enemybulet.getPosition().x+300<my_soldier.s_sprite.getPosition().x)
               {
                 enemybuletPosition[i].erase(enemybuletPosition[i].begin()+j);
               }
@@ -2090,7 +2102,7 @@ else if(!menu)
             else
             full_enemy[i].s_enemy.setTextureRect(IntRect(soldier_source.x*110,1*180,110,180));
           }
-          else if(abs(full_enemy[i].s_enemy.getPosition().x-my_soldier.s_sprite.getPosition().x)<600)
+          else if(abs(full_enemy[i].s_enemy.getPosition().x-my_soldier.s_sprite.getPosition().x)<700)
           {
              if(enemyBack[i])
                 {
@@ -2181,7 +2193,7 @@ else if(!menu)
                         enemybuletPosition[i].erase(enemybuletPosition[i].begin()+j);
                         ManHitCount++;
                         ManHealth_level.x-=30;
-                        if(ManHealth_level.x<=0)
+                        if(ManHealth_level.x<=10)
                         {
                              ManHealth_level.x=5;
 
@@ -2195,6 +2207,7 @@ else if(!menu)
                             ManHitCount=0;
 
                             ManRun=false;
+                            ManHealth_level.x=5;
                             ManHealth_rect.setFillColor(Color::Red);
                         }
                     }
@@ -2207,14 +2220,16 @@ else if(!menu)
         }
 
         ///man moving on cage
-        if(abs(my_soldier.s_sprite.getPosition().x-man[0].s_sprite.getPosition().x)<5 && !ManRun)
+        if(abs(my_soldier.s_sprite.getPosition().x-man[0].s_sprite.getPosition().x)<5 && !first_meet)
         {
              man_esc=true;
              man[0].s_sprite.setPosition(man[0].s_sprite.getPosition().x,soldierCurrrentPosition.y);
              ManRun=true;
+             first_meet=true;
 
 
         }
+
         if(man_esc)
         {
               man[0].s_sprite.setTextureRect(IntRect(manCry*165,1*200,165,160));
@@ -2257,6 +2272,8 @@ else if(!menu)
 
             ManRun=false;
             ManDied=false;
+            first_meet=false;
+
              ManHealth_level.x=100;
             ManHealth_rect.setFillColor(Color::Green);
 
