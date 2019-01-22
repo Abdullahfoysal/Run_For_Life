@@ -27,7 +27,7 @@ Vector2f strength_level(100,10);
  int ManHitted=3;
  int ManHitCount=0;
  bool ManDied=false;
- bool first_meet=false;
+
 
  Vector2f ManHealth_level(100,10);
 
@@ -76,6 +76,8 @@ float movespeed=230.0f;
    int enemy_hit[50];
    bool enemy_died[50];
    float enemy_diedTime=0.f;
+   float enemy_downTime=6.0f;
+   float enemyPlacingTime=5.0f;
 
    ///man
    float man_time=0.f;
@@ -832,7 +834,7 @@ void play_Again()
   ManHitted=3;
   ManHitCount=0;
   ManDied=false;
-  first_meet=false;
+
 
  Vector2f ManHealth_level(100,10);
 
@@ -844,6 +846,9 @@ void play_Again()
 ///clear all enemy and their direction and bullet
      init();
      ///clock restart
+     ///my soldier from first position
+     pausePosition=soldierCurrrentPosition;
+
 
 
 
@@ -1486,7 +1491,7 @@ else if(gameover)
               if(menuselect%3==1)
               {
                  End.playAgain.setFillColor(Color::Red);
-              
+
                  gameover=false;
                  menu=false;
 
@@ -1639,7 +1644,7 @@ else if(!menu)
                    my_buletclock.clock.restart();
 
                      music.shoot_music.play();
-                      cout<<"1"<<endl;
+
 
               }
 
@@ -1683,7 +1688,7 @@ else if(!menu)
 
                      music.shoot_music.play();
                      //music.shoot_music.setVolume(1000);
-                     cout<<"2"<<endl;
+
 
               }
 
@@ -1738,8 +1743,8 @@ else if(!menu)
                      my_buletclock.clock.restart();
 
                       music.shoot_music.play();
-                      
-                      cout<<"3"<<endl;
+
+
 
 
               }
@@ -1947,15 +1952,13 @@ else if(!menu)
 {
   if(creatEnemy<=3)
   {
-
     init();
-
   }
   creatENEMY=false;
 }*/
 
 
-  if(enemyTime>5.0)///work for placing enemy
+  if(enemyTime>enemyPlacingTime)///work for placing enemy enemyPlacingTime=4.0f;
         {
            //std::srand(time(NULL));
              int placeEnemySoldier=rand()%2;
@@ -1989,7 +1992,7 @@ else if(!menu)
 
         for(int i=0;i<full_enemy.size();i++)
         {
-          if(enemybuletTime>0.5 && abs(full_enemy[i].s_enemy.getPosition().x-my_soldier.s_sprite.getPosition().x)<600 && abs(full_enemy[i].s_enemy.getPosition().x-my_soldier.s_sprite.getPosition().x)>100 && !enemy_died[i])
+          if(enemybuletTime>0.5 && abs(full_enemy[i].s_enemy.getPosition().x-my_soldier.s_sprite.getPosition().x)<400 && abs(full_enemy[i].s_enemy.getPosition().x-my_soldier.s_sprite.getPosition().x)>100 && !enemy_died[i])
           {
             if(my_soldier.s_sprite.getPosition().x < full_enemy[i].s_enemy.getPosition().x)
             {
@@ -2067,7 +2070,6 @@ else if(!menu)
 
 
         }
-
 
 
 
@@ -2162,7 +2164,7 @@ else if(!menu)
 
         enemy_diedTime+=my_clock.clock.getElapsedTime().asSeconds();
 
-        if(enemy_diedTime>6.0)
+        if(enemy_diedTime>enemy_downTime)
         {
            for(int i=0;i<full_enemy.size();i++)
             {
@@ -2220,19 +2222,17 @@ else if(!menu)
         }
 
         ///man moving on cage
-        if(abs(my_soldier.s_sprite.getPosition().x-man[0].s_sprite.getPosition().x)<5 && !first_meet)
+        if(abs(my_soldier.s_sprite.getPosition().x-man[0].s_sprite.getPosition().x)<5 && !man_esc )
         {
              man_esc=true;
-             man[0].s_sprite.setPosition(man[0].s_sprite.getPosition().x,soldierCurrrentPosition.y);
              ManRun=true;
-             first_meet=true;
-
 
         }
 
         if(man_esc)
         {
               man[0].s_sprite.setTextureRect(IntRect(manCry*165,1*200,165,160));
+               man[0].s_sprite.setPosition(man[0].s_sprite.getPosition().x,soldierCurrrentPosition.y);
 
               man[0].s_sprite.move(-manSpeed*my_clock.clock.getElapsedTime().asSeconds(),0);
                // s_man.move(-manSpeed*clock.getElapsedTime().asSeconds(),0);
@@ -2259,7 +2259,7 @@ else if(!menu)
         else  man[0].s_sprite.setTextureRect(IntRect(0*165,0*200,165,200));
 
 
-        if(man[0].s_sprite.getPosition().x-manNumber*110<= 10)
+        if(man[0].s_sprite.getPosition().x-manNumber*110<=0)
         {
             if(!ManDied)
             {
@@ -2272,7 +2272,6 @@ else if(!menu)
 
             ManRun=false;
             ManDied=false;
-            first_meet=false;
 
              ManHealth_level.x=100;
             ManHealth_rect.setFillColor(Color::Green);
@@ -2280,7 +2279,7 @@ else if(!menu)
 
             //man(&t_man,manCurrentPosition);
 
-            Vector2f manCurrentPosition(my_soldier.s_sprite.getPosition().x+500*manNumber,man[0].s_sprite.getPosition().y);
+            Vector2f manCurrentPosition(my_soldier.s_sprite.getPosition().x+500+500*manNumber,man[0].s_sprite.getPosition().y);
 
            if(manCurrentPosition.x>manNumber*110.0 && manCurrentPosition.x<screenWidth-200)
             {
