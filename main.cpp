@@ -104,6 +104,7 @@ float movespeed=230.0f;
 
     bool home=true;
     bool playy=false;
+    bool NewGame=false;
     bool challenge=false;
     bool soundd=false;
     bool instructions=false;
@@ -136,6 +137,14 @@ struct Load
   Clock clock;
   Time time;
 
+
+};
+
+class Instruction
+{
+public:
+     Font font1;
+     Text backk;
 
 };
 class winn
@@ -460,7 +469,7 @@ class game_menu
 {
    public:
   Font font1;
-  Text game_text, play_text,challenge_text,sound_txt,instruction_text,about_text,exit_text;
+  Text game_text, play_text,new_game,challenge_text,sound_txt,instruction_text,about_text,exit_text;
   Text c1,c2,c3,c4,c5,c6,c7,c8,c9,c10,backk;
   Text challenge_view,coin_view,man_view,coin_view2,man_view2,challenge_viewCount;
   Text go_back_man;
@@ -516,12 +525,23 @@ class game_menu
             play_text.setOutlineThickness(2);
           play_text.setOutlineColor(Color::Black);
 
+           new_game.setString("New Game");
+         new_game.setFont(font1);
+          new_game.setCharacterSize(40);
+          new_game.setScale(1.5f,1.5f);
+          //gametxt.setFillColor(Color::Red);
+          new_game.setPosition(400-25,100+text_y*2);
+          new_game.setFillColor(Color::Yellow);
+
+            new_game.setOutlineThickness(2);
+          new_game.setOutlineColor(Color::Black);
+
           challenge_text.setString("Challenge");
          challenge_text.setFont(font1);
           challenge_text.setCharacterSize(40);
           challenge_text.setScale(1.5f,1.5f);
           //gametxt.setFillColor(Color::Red);
-          challenge_text.setPosition(400-25,100+text_y*2);
+          challenge_text.setPosition(400-25,100+text_y*3);
           challenge_text.setFillColor(Color::Yellow);
 
            challenge_text.setOutlineThickness(2);
@@ -532,7 +552,7 @@ class game_menu
           sound_txt.setCharacterSize(40);
           sound_txt.setScale(1.5f,1.5f);
           //gametxt.setFillColor(Color::Red);
-          sound_txt.setPosition(400,100+text_y*3);
+          sound_txt.setPosition(400,100+text_y*4);
           sound_txt.setFillColor(Color::Yellow);
             sound_txt.setOutlineThickness(2);
             sound_txt.setOutlineColor(Color::Black);
@@ -543,7 +563,7 @@ class game_menu
           instruction_text.setCharacterSize(40);
           instruction_text.setScale(1.5f,1.5f);
           //gametxt.setFillColor(Color::Red);
-          instruction_text.setPosition(400-25,100+text_y*4);
+          instruction_text.setPosition(400-25,100+text_y*5);
           instruction_text.setFillColor(Color::Yellow);
 
           instruction_text.setOutlineThickness(2);
@@ -554,7 +574,7 @@ class game_menu
           about_text.setCharacterSize(40);
           about_text.setScale(1.5f,1.5f);
           //gametxt.setFillColor(Color::Red);
-          about_text.setPosition(400,100+text_y*5);
+          about_text.setPosition(400,100+text_y*6);
           about_text.setFillColor(Color::Yellow);
 
           about_text.setOutlineThickness(2);
@@ -565,7 +585,7 @@ class game_menu
           exit_text.setCharacterSize(40);
           exit_text.setScale(1.5f,1.5f);
           //gametxt.setFillColor(Color::Red);
-          exit_text.setPosition(400,100+text_y*6);
+          exit_text.setPosition(400,100+text_y*7);
           exit_text.setFillColor(Color::Yellow);
 
              exit_text.setOutlineThickness(2);
@@ -643,6 +663,7 @@ class game_menu
       {
 
       play_text.setFillColor(Color::Green);
+       new_game.setFillColor(Color::Green);
       challenge_text.setFillColor(Color::Green);
       sound_txt.setFillColor(Color::Green);
       instruction_text.setFillColor(Color::Green);
@@ -653,6 +674,7 @@ class game_menu
       else
       {
          play_text.setFillColor(Color::Yellow);
+          new_game.setFillColor(Color::Yellow);
       challenge_text.setFillColor(Color::Yellow);
       sound_txt.setFillColor(Color::Yellow);
       instruction_text.setFillColor(Color::Yellow);
@@ -666,6 +688,7 @@ class game_menu
 
       window.draw(game_text);
       window.draw(play_text);
+      window.draw(new_game);
       window.draw(challenge_text);
       window.draw(sound_txt);
       window.draw(instruction_text);
@@ -1078,6 +1101,7 @@ int main()
 
  if(menu)
   {
+
             music.menu_music.setLoop(true);
             menu_text.menu_background_show();
 
@@ -1105,10 +1129,10 @@ int main()
             {
                 menu_clock.restart();
 
-              if(playy)
+              if(NewGame)
               {
 
-                playy=false;
+                NewGame=false;
                 home=true;
 
               }
@@ -1142,9 +1166,9 @@ int main()
        else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Return) && key>0.2)
        {
           menu_clock.restart();
-          if(!playy && !challenge && !soundd && !instructions && !aboutt )
+          if(!playy && !challenge && !soundd && !instructions && !aboutt && !NewGame )
           {
-            if(menuselect%6==1)
+            if(menuselect%7==1)
             {
                menu=false;
                ///save soldier position
@@ -1154,28 +1178,33 @@ int main()
                music.game_music.play();
 
             }
-            else if(menuselect%6==2)
+            else if(menuselect%7==2)
+            {
+             play_Again();
+             menu=false;
+            }
+            else if(menuselect%7==3)
             {
               challenge=true;
               home=false;
               menuselect=1;
             }
-            else if(menuselect%6==3)
+            else if(menuselect%7==4)
             {
               soundd=true;
               home=false;
             }
-            else if(menuselect%6==4)
+            else if(menuselect%7==5)
             {
               instructions=true;
               home=false;
             }
-            else if(menuselect%6==5)
+            else if(menuselect%7==6)
             {
               aboutt=true;
               home=false;
             }
-            else if(menuselect%6==0)
+            else if(menuselect%7==0)
             {
               exitt=true;
               home=false;
@@ -1263,28 +1292,32 @@ int main()
     {
          menu_text.text_color('Y');
 
-        if(menuselect%6==1)
+        if(menuselect%7==1)
         {
           menu_text.play_text.setFillColor(Color::Green);
 
         }
-        else if(menuselect%6==2)
+        else if(menuselect%7==2)
+        {
+          menu_text.new_game.setFillColor(Color::Green);
+        }
+        else if(menuselect%7==3)
         {
           menu_text.challenge_text.setFillColor(Color::Green);
         }
-        else if(menuselect%6==3)
+        else if(menuselect%7==4)
         {
           menu_text.sound_txt.setFillColor(Color::Green);
         }
-        else if(menuselect%6==4)
+        else if(menuselect%7==5)
         {
           menu_text.instruction_text.setFillColor(Color::Green);
         }
-        else if(menuselect%6==5)
+        else if(menuselect%7==6)
         {
           menu_text.about_text.setFillColor(Color::Green);
         }
-       else if(menuselect%6==0)
+       else if(menuselect%7==0)
         {
           menu_text.exit_text.setFillColor(Color::Green);
         }
@@ -1570,7 +1603,7 @@ else if(!menu)
 
 
 
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape) || event.type == sf::Event::LostFocus)
           {
             menu=true;
             music.game_music.stop();
