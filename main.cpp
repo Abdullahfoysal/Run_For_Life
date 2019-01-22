@@ -144,7 +144,7 @@ class Instruction
 {
 public:
      Font font1;
-     Text backk,ins,pause,backspace;
+     Text backk,ins,pause,backspace,up;
 
      Texture texture;
      Sprite sprite;
@@ -171,8 +171,16 @@ public:
           pause.setCharacterSize(60);
           pause.setScale(1.f,1.f);
           //gametxt.setFillColor(Color::Red);
-          pause.setPosition(400+200,0);
-          pause.setFillColor(Color::Yellow);
+          pause.setPosition(400+200,0-25);
+          pause.setFillColor(Color::Magenta);
+
+           up.setString("Up arrow to SpeedUp");
+         up.setFont(font1);
+          up.setCharacterSize(60);
+          up.setScale(1.f,1.f);
+          //gametxt.setFillColor(Color::Red);
+          up.setPosition(400+200-40,0+10);
+          up.setFillColor(Color::Yellow);
 
             backspace.setString("'BACKSPACE' to Back");
          backspace.setFont(font1);
@@ -191,6 +199,7 @@ public:
          window.draw(ins);
          window.draw(pause);
          window.draw( backspace);
+         window.draw(up);
      }
 
 
@@ -209,12 +218,12 @@ class winn
     {
          font1.loadFromFile("Resources/Hunters.otf");
 
-         game_win_text.setString("Mission Win");
+         game_win_text.setString("Mission:   Win");
          game_win_text.setFont(font1);
           game_win_text.setCharacterSize(80);
           game_win_text.setScale(1.5f,1.5f);
           //gametxt.setFillColor(Color::Red);
-          game_win_text.setPosition(200+100,-30);
+          game_win_text.setPosition(200+80,-30);
           game_win_text.setFillColor(Color::Red);
 
 
@@ -222,8 +231,8 @@ class winn
           missionCount.setCharacterSize(80);
           missionCount.setScale(1.5f,1.5f);
           //gametxt.setFillColor(Color::Red);
-          missionCount.setPosition(200+100+50,-30);
-          missionCount.setFillColor(Color::Magenta);
+          missionCount.setPosition(200+100+300,-30);
+          missionCount.setFillColor(Color::Red);
 
            playAgain.setString("Play Again");
          playAgain.setFont(font1);
@@ -2111,7 +2120,7 @@ else if(!menu)
 
         for(int i=0;i<full_enemy.size();i++)
         {
-          if(enemybuletTime>0.5 && abs(full_enemy[i].s_enemy.getPosition().x-my_soldier.s_sprite.getPosition().x)<400 && abs(full_enemy[i].s_enemy.getPosition().x-my_soldier.s_sprite.getPosition().x)>100 && !enemy_died[i])
+          if(enemybuletTime>0.5 && abs(full_enemy[i].s_enemy.getPosition().x-my_soldier.s_sprite.getPosition().x)<500 && abs(full_enemy[i].s_enemy.getPosition().x-my_soldier.s_sprite.getPosition().x)>100 && !enemy_died[i])
           {
             if(my_soldier.s_sprite.getPosition().x < full_enemy[i].s_enemy.getPosition().x)
             {
@@ -2121,7 +2130,7 @@ else if(!menu)
 
             enemybuletTime=0;
 
-            music.enemyshoot.play();
+          music.enemyshoot.play();
           }
 
         }
