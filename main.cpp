@@ -150,7 +150,7 @@ class winn
           game_win_text.setScale(1.5f,1.5f);
           //gametxt.setFillColor(Color::Red);
           game_win_text.setPosition(200+80,-30);
-          game_win_text.setColor(Color::Magenta);
+          game_win_text.setFillColor(Color::Magenta);
 
            playAgain.setString("Play Again");
          playAgain.setFont(font1);
@@ -158,7 +158,7 @@ class winn
           playAgain.setScale(1.5f,1.5f);
           //gametxt.setFillColor(Color::Red);
           playAgain.setPosition(400,100+text_y*1);
-          playAgain.setColor(Color::Yellow);
+          playAgain.setFillColor(Color::Yellow);
 
 
 
@@ -168,7 +168,7 @@ class winn
           backk.setScale(1.5f,1.5f);
           //gametxt.setFillColor(Color::Red);
           backk.setPosition(400,100+text_y*2);
-          backk.setColor(Color::Yellow);
+          backk.setFillColor(Color::Yellow);
 
             exit_txt.setString("Exit");
          exit_txt.setFont(font1);
@@ -176,15 +176,15 @@ class winn
           exit_txt.setScale(1.5f,1.5f);
           //gametxt.setFillColor(Color::Red);
           exit_txt.setPosition(400,100+text_y*3);
-          exit_txt.setColor(Color::Yellow);
+          exit_txt.setFillColor(Color::Yellow);
 
         }
 
     void end_text_color()
     {
-       playAgain.setColor(Color::Yellow);
-       exit_txt.setColor(Color::Yellow);
-       backk.setColor(Color::Yellow);
+       playAgain.setFillColor(Color::Yellow);
+       exit_txt.setFillColor(Color::Yellow);
+       backk.setFillColor(Color::Yellow);
     }
     void show_end()
     {
@@ -218,7 +218,7 @@ public:
           gameover_text.setScale(1.5f,1.5f);
           //gametxt.setFillColor(Color::Red);
           gameover_text.setPosition(200,-30);
-          gameover_text.setColor(Color::Red);
+          gameover_text.setFillColor(Color::Red);
 
            playAgain.setString("Play Again");
          playAgain.setFont(font1);
@@ -226,7 +226,7 @@ public:
           playAgain.setScale(1.5f,1.5f);
           //gametxt.setFillColor(Color::Red);
           playAgain.setPosition(400,100+text_y*1);
-          playAgain.setColor(Color::Yellow);
+          playAgain.setFillColor(Color::Yellow);
 
 
 
@@ -236,7 +236,7 @@ public:
           backk.setScale(1.5f,1.5f);
           //gametxt.setFillColor(Color::Red);
           backk.setPosition(400,100+text_y*2);
-          backk.setColor(Color::Yellow);
+          backk.setFillColor(Color::Yellow);
 
             exit_txt.setString("Exit");
          exit_txt.setFont(font1);
@@ -244,7 +244,7 @@ public:
           exit_txt.setScale(1.5f,1.5f);
           //gametxt.setFillColor(Color::Red);
           exit_txt.setPosition(400,100+text_y*3);
-          exit_txt.setColor(Color::Yellow);
+          exit_txt.setFillColor(Color::Yellow);
 
 
 
@@ -254,9 +254,9 @@ public:
     }
     void end_text_color()
     {
-       playAgain.setColor(Color::Yellow);
-       exit_txt.setColor(Color::Yellow);
-       backk.setColor(Color::Yellow);
+       playAgain.setFillColor(Color::Yellow);
+       exit_txt.setFillColor(Color::Yellow);
+       backk.setFillColor(Color::Yellow);
     }
     void show_end()
     {
@@ -437,12 +437,13 @@ void init()
          enemyBack[i]=false;
       enemyBackAgain[i]=false;
     }
-     enemyHit=2;
+     enemyHit=3;
     full_enemy.clear();
      enemy_direction.clear();
       creatEnemy=enemyNumber;
 
-
+     /* creatENEMY=true;
+      creatEnemy<=3*/
 
 
 }
@@ -492,7 +493,7 @@ class game_menu
           game_text.setScale(1.5f,1.5f);
           //gametxt.setFillColor(Color::Red);
           game_text.setPosition(200,-30);
-          game_text.setColor(Color::Red);
+          game_text.setFillColor(Color::Red);
           game_text.setOutlineThickness(2);
           game_text.setOutlineColor(Color::Black);
 
@@ -502,7 +503,7 @@ class game_menu
           play_text.setScale(1.5f,1.5f);
           //gametxt.setFillColor(Color::Red);
           play_text.setPosition(400,100+text_y*1);
-          play_text.setColor(Color::Yellow);
+          play_text.setFillColor(Color::Yellow);
 
             play_text.setOutlineThickness(2);
           play_text.setOutlineColor(Color::Black);
@@ -513,7 +514,7 @@ class game_menu
           challenge_text.setScale(1.5f,1.5f);
           //gametxt.setFillColor(Color::Red);
           challenge_text.setPosition(400-25,100+text_y*2);
-          challenge_text.setColor(Color::Yellow);
+          challenge_text.setFillColor(Color::Yellow);
 
            challenge_text.setOutlineThickness(2);
            challenge_text.setOutlineColor(Color::Black);
@@ -524,7 +525,7 @@ class game_menu
           sound_txt.setScale(1.5f,1.5f);
           //gametxt.setFillColor(Color::Red);
           sound_txt.setPosition(400,100+text_y*3);
-          sound_txt.setColor(Color::Yellow);
+          sound_txt.setFillColor(Color::Yellow);
             sound_txt.setOutlineThickness(2);
             sound_txt.setOutlineColor(Color::Black);
 
@@ -535,7 +536,7 @@ class game_menu
           instruction_text.setScale(1.5f,1.5f);
           //gametxt.setFillColor(Color::Red);
           instruction_text.setPosition(400-25,100+text_y*4);
-          instruction_text.setColor(Color::Yellow);
+          instruction_text.setFillColor(Color::Yellow);
 
           instruction_text.setOutlineThickness(2);
             instruction_text.setOutlineColor(Color::Black);
@@ -546,7 +547,7 @@ class game_menu
           about_text.setScale(1.5f,1.5f);
           //gametxt.setFillColor(Color::Red);
           about_text.setPosition(400,100+text_y*5);
-          about_text.setColor(Color::Yellow);
+          about_text.setFillColor(Color::Yellow);
 
           about_text.setOutlineThickness(2);
             about_text.setOutlineColor(Color::Black);
@@ -557,7 +558,7 @@ class game_menu
           exit_text.setScale(1.5f,1.5f);
           //gametxt.setFillColor(Color::Red);
           exit_text.setPosition(400,100+text_y*6);
-          exit_text.setColor(Color::Yellow);
+          exit_text.setFillColor(Color::Yellow);
 
              exit_text.setOutlineThickness(2);
              exit_text.setOutlineColor(Color::Black);
@@ -568,7 +569,7 @@ class game_menu
           challenge_view.setCharacterSize(40);
           challenge_view.setScale(1.5f,1.5f);
           //gametxt.setFillColor(Color::Red);
-          challenge_view.setColor(Color::Red);
+          challenge_view.setFillColor(Color::Red);
 
             challenge_view.setOutlineThickness(2);
              challenge_view.setOutlineColor(Color::Black);
@@ -579,42 +580,42 @@ class game_menu
           challenge_viewCount.setCharacterSize(40);
           challenge_viewCount.setScale(1.5f,1.5f);
           //gametxt.setFillColor(Color::Red);
-          challenge_viewCount.setColor(Color::Red);
+          challenge_viewCount.setFillColor(Color::Red);
 
           coin_view.setString("Money :");
          coin_view.setFont(font1);
           coin_view.setCharacterSize(30);
           coin_view.setScale(1.5f,1.5f);
           //gametxt.setFillColor(Color::Red);
-          coin_view.setColor(Color::Yellow);
+          coin_view.setFillColor(Color::Yellow);
 
           man_view.setString("Man :");
           man_view.setFont(font1);
           man_view.setCharacterSize(30);
           man_view.setScale(1.5f,1.5f);
           //gametxt.setFillColor(Color::Red);
-          man_view.setColor(Color::Green);
+          man_view.setFillColor(Color::Green);
 
 
           coin_view2.setFont(font1);
           coin_view2.setCharacterSize(30);
           coin_view2.setScale(1.5f,1.5f);
           //gametxt.setFillColor(Color::Red);
-          coin_view2.setColor(Color::Red);
+          coin_view2.setFillColor(Color::Red);
 
 
           man_view2.setFont(font1);
           man_view2.setCharacterSize(30);
           man_view2.setScale(1.5f,1.5f);
           //gametxt.setFillColor(Color::Red);
-          man_view2.setColor(Color::Red);
+          man_view2.setFillColor(Color::Red);
 
            go_back_man.setString("Ready to Run.. ");
          go_back_man.setFont(font1);
           go_back_man.setCharacterSize(30);
           go_back_man.setScale(1.5f,1.5f);
           //gametxt.setFillColor(Color::Red);
-          go_back_man.setColor(Color::Green);
+          go_back_man.setFillColor(Color::Green);
 
 
 
@@ -633,22 +634,22 @@ class game_menu
        if(colour=='G')
       {
 
-      play_text.setColor(Color::Green);
-      challenge_text.setColor(Color::Green);
-      sound_txt.setColor(Color::Green);
-      instruction_text.setColor(Color::Green);
-      about_text.setColor(Color::Green);
-      exit_text.setColor(Color::Green);
+      play_text.setFillColor(Color::Green);
+      challenge_text.setFillColor(Color::Green);
+      sound_txt.setFillColor(Color::Green);
+      instruction_text.setFillColor(Color::Green);
+      about_text.setFillColor(Color::Green);
+      exit_text.setFillColor(Color::Green);
 
       }
       else
       {
-         play_text.setColor(Color::Yellow);
-      challenge_text.setColor(Color::Yellow);
-      sound_txt.setColor(Color::Yellow);
-      instruction_text.setColor(Color::Yellow);
-      about_text.setColor(Color::Yellow);
-      exit_text.setColor(Color::Yellow);
+         play_text.setFillColor(Color::Yellow);
+      challenge_text.setFillColor(Color::Yellow);
+      sound_txt.setFillColor(Color::Yellow);
+      instruction_text.setFillColor(Color::Yellow);
+      about_text.setFillColor(Color::Yellow);
+      exit_text.setFillColor(Color::Yellow);
 
       }
     }
@@ -672,7 +673,7 @@ class game_menu
           c1.setScale(1.5f,1.5f);
           //gametxt.setFillColor(Color::Red);
           c1.setPosition(100,100+text_y*1);
-          c1.setColor(Color::Yellow);
+          c1.setFillColor(Color::Yellow);
 
           c2.setString("Mission:2-> Escape 10 Man and Earn Coins 40");
          c2.setFont(font1);
@@ -680,7 +681,7 @@ class game_menu
           c2.setScale(1.5f,1.5f);
           //gametxt.setFillColor(Color::Red);
           c2.setPosition(100,100+text_y*2);
-          c2.setColor(Color::Yellow);
+          c2.setFillColor(Color::Yellow);
 
            c3.setString("Mission:3-> Escape 15 Man and Earn Coins 60");
          c3.setFont(font1);
@@ -688,7 +689,7 @@ class game_menu
           c3.setScale(1.5f,1.5f);
           //gametxt.setFillColor(Color::Red);
           c3.setPosition(100,100+text_y*3);
-          c3.setColor(Color::Yellow);
+          c3.setFillColor(Color::Yellow);
 
           c4.setString("Mission:4-> Escape 20 Man and Earn Coins 80");
           c4.setFont(font1);
@@ -696,7 +697,7 @@ class game_menu
           c4.setScale(1.5f,1.5f);
           //gametxt.setFillColor(Color::Red);
           c4.setPosition(100,100+text_y*4);
-          c4.setColor(Color::Yellow);
+          c4.setFillColor(Color::Yellow);
 
 
           c5.setString("Mission:5-> Escape 30 Man and Earn Coins 100");
@@ -705,7 +706,7 @@ class game_menu
           c5.setScale(1.5f,1.5f);
           //gametxt.setFillColor(Color::Red);
           c5.setPosition(100,100+text_y*5);
-          c5.setColor(Color::Yellow);
+          c5.setFillColor(Color::Yellow);
 
         backk.setString("Back");
          backk.setFont(font1);
@@ -713,16 +714,16 @@ class game_menu
           backk.setScale(1.5f,1.5f);
           //gametxt.setFillColor(Color::Red);
           backk.setPosition(400,100+text_y*6);
-          backk.setColor(Color::Yellow);
+          backk.setFillColor(Color::Yellow);
     }
     void challenge_text_color()
     {
-      c1.setColor(Color::Yellow);
-      c2.setColor(Color::Yellow);
-      c3.setColor(Color::Yellow);
-      c4.setColor(Color::Yellow);
-      c5.setColor(Color::Yellow);
-      backk.setColor(Color::Yellow);
+      c1.setFillColor(Color::Yellow);
+      c2.setFillColor(Color::Yellow);
+      c3.setFillColor(Color::Yellow);
+      c4.setFillColor(Color::Yellow);
+      c5.setFillColor(Color::Yellow);
+      backk.setFillColor(Color::Yellow);
 
     }
 
@@ -806,20 +807,39 @@ void play_Again()
      lifeCount=3;
     moneyCount=0;
 
-    ///strength full
+    ///strength full  ///man full strength
     strength_level.x=100;
+    my_soldier_hit=0;
+    diedTime=0.f;
+    my_soldier_died=false;
+     diedTime=0.f;
 
 //result ==0
     manEscaped=0;
    coinGain=0;
-///escaped man==0
+
+///escaped man[0]
+///man hit by enemy
+
    manESCPosition.clear();
+  ManRun=false;
+  ManHitted=3;
+  ManHitCount=0;
+  ManDied=false;
+
+ Vector2f ManHealth_level(100,10);
 
 ///coin=0
     cointPosition.clear();
     creatCoinNumber=4;///then creat coin
 
-//play again the same mission
+
+///clear all enemy and their direction and bullet
+     init();
+     ///clock restart
+
+
+
 
 
 
@@ -873,36 +893,36 @@ int main()
     life_text.setFont(font1);
     life_text.setCharacterSize(30);
     life_text.setScale(1.5f,1.5f);
-    life_text.setColor(Color::Green);
+    life_text.setFillColor(Color::Green);
 
 
      strength_text.setString("Strength :");
      strength_text.setFont(font1);
      strength_text.setCharacterSize(30);
      strength_text.setScale(1.5f,1.5f);
-     strength_text.setColor(Color::Magenta);
+     strength_text.setFillColor(Color::Magenta);
 
      coin_text.setString("Money:");
      coin_text.setFont(font1);
      coin_text.setCharacterSize(30);
      coin_text.setScale(1.5f,1.5f);
-     coin_text.setColor(Color::Yellow);
+     coin_text.setFillColor(Color::Yellow);
 
      coinCount_text.setFont(font1);
      coinCount_text.setCharacterSize(40);
      coinCount_text.setScale(1.f,1.f);
-     coinCount_text.setColor(Color::Yellow);
+     coinCount_text.setFillColor(Color::Yellow);
 
      manCount_text.setFont(font1);
      manCount_text.setCharacterSize(80);
      manCount_text.setScale(1.f,1.f);
-     manCount_text.setColor(Color::Green);
+     manCount_text.setFillColor(Color::Green);
 
      helpmetxt.setString("Help!");
      helpmetxt.setFont(font1);
      helpmetxt.setCharacterSize(30);
      helpmetxt.setScale(1.0f,1.0f);
-     helpmetxt.setColor(Color::White);
+     helpmetxt.setFillColor(Color::White);
 
     background[0].t_texture.loadFromFile("Resources/background.png");
     background[0].s_sprite.setTexture(background[0].t_texture);
@@ -1230,28 +1250,28 @@ int main()
 
         if(menuselect%6==1)
         {
-          menu_text.play_text.setColor(Color::Green);
+          menu_text.play_text.setFillColor(Color::Green);
 
         }
         else if(menuselect%6==2)
         {
-          menu_text.challenge_text.setColor(Color::Green);
+          menu_text.challenge_text.setFillColor(Color::Green);
         }
         else if(menuselect%6==3)
         {
-          menu_text.sound_txt.setColor(Color::Green);
+          menu_text.sound_txt.setFillColor(Color::Green);
         }
         else if(menuselect%6==4)
         {
-          menu_text.instruction_text.setColor(Color::Green);
+          menu_text.instruction_text.setFillColor(Color::Green);
         }
         else if(menuselect%6==5)
         {
-          menu_text.about_text.setColor(Color::Green);
+          menu_text.about_text.setFillColor(Color::Green);
         }
        else if(menuselect%6==0)
         {
-          menu_text.exit_text.setColor(Color::Green);
+          menu_text.exit_text.setFillColor(Color::Green);
         }
 
 
@@ -1263,36 +1283,36 @@ int main()
 
         if(menuselect%6==1)
         {
-          menu_text.c1.setColor(Color::Green);
+          menu_text.c1.setFillColor(Color::Green);
         }
         else if(menuselect%6==2)
         {
-          menu_text.c2.setColor(Color::Green);
+          menu_text.c2.setFillColor(Color::Green);
         }
         else if(menuselect%6==3)
         {
-          menu_text.c3.setColor(Color::Green);
+          menu_text.c3.setFillColor(Color::Green);
         }
         else if(menuselect%6==4)
         {
-          menu_text.c4.setColor(Color::Green);
+          menu_text.c4.setFillColor(Color::Green);
         }
         else if(menuselect%6==5)
         {
-          menu_text.c5.setColor(Color::Green);
+          menu_text.c5.setFillColor(Color::Green);
         }
         else if(menuselect%6==0)
         {
-          menu_text.backk.setColor(Color::Red);
+          menu_text.backk.setFillColor(Color::Red);
         }
 
 
 
-         if(challenge_select[1]) menu_text.c1.setColor(Color::Red);
-         else if(challenge_select[2]) menu_text.c2.setColor(Color::Red);
-         else if(challenge_select[3]) menu_text.c3.setColor(Color::Red);
-         else if(challenge_select[4]) menu_text.c4.setColor(Color::Red);
-         else if(challenge_select[5]) menu_text.c5.setColor(Color::Red);
+         if(challenge_select[1]) menu_text.c1.setFillColor(Color::Red);
+         else if(challenge_select[2]) menu_text.c2.setFillColor(Color::Red);
+         else if(challenge_select[3]) menu_text.c3.setFillColor(Color::Red);
+         else if(challenge_select[4]) menu_text.c4.setFillColor(Color::Red);
+         else if(challenge_select[5]) menu_text.c5.setFillColor(Color::Red);
 
          menu_text.challenge_text_show();
 
@@ -1339,7 +1359,7 @@ else if(win)
 
               if(menuselect%3==1)
               {
-                 Win.playAgain.setColor(Color::Red);
+                 Win.playAgain.setFillColor(Color::Red);
 
                  win=false;
                  menu=false;
@@ -1348,7 +1368,7 @@ else if(win)
               }
               else if(menuselect%3==2)
               {
-                Win.backk.setColor(Color::Red);
+                Win.backk.setFillColor(Color::Red);
                 home=true;
                 win=false;
                 menu=true;
@@ -1361,7 +1381,7 @@ else if(win)
               }
               else if(menuselect%3==0)
               {
-                Win.exit_txt.setColor(Color::Red);
+                Win.exit_txt.setFillColor(Color::Red);
                 window.close();
               }
 
@@ -1369,16 +1389,16 @@ else if(win)
 
             if(menuselect%3==1)
               {
-                 Win.playAgain.setColor(Color::Green);
+                 Win.playAgain.setFillColor(Color::Green);
               }
               else if(menuselect%3==2)
               {
-                Win.backk.setColor(Color::Red);
+                Win.backk.setFillColor(Color::Red);
 
               }
               else if(menuselect%3==0)
               {
-                Win.exit_txt.setColor(Color::Red);
+                Win.exit_txt.setFillColor(Color::Red);
 
               }
 
@@ -1455,16 +1475,20 @@ else if(gameover)
               menu_clock.restart();
               if(menuselect%3==1)
               {
-                 End.playAgain.setColor(Color::Red);
-                 play_Again();
+                 End.playAgain.setFillColor(Color::Red);
+              
                  gameover=false;
                  menu=false;
+
+                    play_Again();
+                  music.end_music.stop();
+                  music.game_music.play();
 
 
               }
               else if(menuselect%3==2)
               {
-                End.backk.setColor(Color::Red);
+                End.backk.setFillColor(Color::Red);
                 menu=true;
                 home=true;
                 gameover=false;
@@ -1478,23 +1502,23 @@ else if(gameover)
               }
               else if(menuselect%3==0)
               {
-                End.exit_txt.setColor(Color::Red);
+                End.exit_txt.setFillColor(Color::Red);
                 window.close();
               }
             }
 
              if(menuselect%3==1)
               {
-                 End.playAgain.setColor(Color::Green);
+                 End.playAgain.setFillColor(Color::Green);
               }
               else if(menuselect%3==2)
               {
-                End.backk.setColor(Color::Green);
+                End.backk.setFillColor(Color::Green);
 
               }
               else if(menuselect%3==0)
               {
-                End.exit_txt.setColor(Color::Green);
+                End.exit_txt.setFillColor(Color::Green);
 
               }
 
@@ -1513,6 +1537,8 @@ else if(!menu)
           music.game_music.stop();
           music.end_music.play();
           menuselect=1;
+             my_clock.clock.restart();
+             enemyTime=0.f;
         }
         else if(ManCount<=manEscaped && CoinCount<=coinGain)
         {
@@ -1520,6 +1546,9 @@ else if(!menu)
            win=true;
            music.game_music.stop();
            menuselect=1;
+
+              my_clock.clock.restart();
+              enemyTime=0.f;
 
         }
 
@@ -1902,7 +1931,7 @@ else if(!menu)
 
   enemyTime += my_clock.clock.getElapsedTime().asSeconds();
 
-if(creatENEMY)
+/*if(creatENEMY)
 {
   if(creatEnemy<=3)
   {
@@ -1911,7 +1940,7 @@ if(creatENEMY)
 
   }
   creatENEMY=false;
-}
+}*/
 
 
   if(enemyTime>5.0)///work for placing enemy
@@ -1948,7 +1977,7 @@ if(creatENEMY)
 
         for(int i=0;i<full_enemy.size();i++)
         {
-          if(enemybuletTime>0.5 && abs(full_enemy[i].s_enemy.getPosition().x-my_soldier.s_sprite.getPosition().x)<550 && abs(full_enemy[i].s_enemy.getPosition().x-my_soldier.s_sprite.getPosition().x)>100 && !enemy_died[i])
+          if(enemybuletTime>0.5 && abs(full_enemy[i].s_enemy.getPosition().x-my_soldier.s_sprite.getPosition().x)<500 && abs(full_enemy[i].s_enemy.getPosition().x-my_soldier.s_sprite.getPosition().x)>100 && !enemy_died[i])
           {
             if(my_soldier.s_sprite.getPosition().x < full_enemy[i].s_enemy.getPosition().x)
             {
@@ -1967,36 +1996,36 @@ if(creatENEMY)
         //enemy bulet set texture & move
         for(int i=0;i<full_enemy.size();i++)
         {
-          for(int j=0;j<enemybuletPosition[i].size();j++)
-        {
-            if(enemyBack[i])
-            {
+            for(int j=0;j<enemybuletPosition[i].size();j++)
+          {
+              if(enemyBack[i])
+              {
 
-               enemybuletPosition[i][j].s_enemybulet.setTexture(enemy_bulet[1].t_texture);
-               enemybuletPosition[i][j].s_enemybulet.move(enemyBuletSpeed,0.f);
-            }
-            else if(enemyBackAgain[i])
-            {
+                 enemybuletPosition[i][j].s_enemybulet.setTexture(enemy_bulet[1].t_texture);
+                 enemybuletPosition[i][j].s_enemybulet.move(enemyBuletSpeed,0.f);
+              }
+              else if(enemyBackAgain[i])
+              {
 
-                 enemybuletPosition[i][j].s_enemybulet.setTexture(enemy_bulet[0].t_texture);
-               enemybuletPosition[i][j].s_enemybulet.move(-enemyBuletSpeed,0.f);
-
-
-            }
-            else if(enemy_direction[i])
-            {
-
-                 enemybuletPosition[i][j].s_enemybulet.setTexture(enemy_bulet[0].t_texture);
-               enemybuletPosition[i][j].s_enemybulet.move(-enemyBuletSpeed,0.f);
-            }
-            else {
-
-                enemybuletPosition[i][j].s_enemybulet.setTexture(enemy_bulet[1].t_texture);
-               enemybuletPosition[i][j].s_enemybulet.move(enemyBuletSpeed,0.f);
-            }
+                   enemybuletPosition[i][j].s_enemybulet.setTexture(enemy_bulet[0].t_texture);
+                 enemybuletPosition[i][j].s_enemybulet.move(-enemyBuletSpeed,0.f);
 
 
-        }
+              }
+              else if(enemy_direction[i])
+              {
+
+                   enemybuletPosition[i][j].s_enemybulet.setTexture(enemy_bulet[0].t_texture);
+                 enemybuletPosition[i][j].s_enemybulet.move(-enemyBuletSpeed,0.f);
+              }
+              else {
+
+                  enemybuletPosition[i][j].s_enemybulet.setTexture(enemy_bulet[1].t_texture);
+                 enemybuletPosition[i][j].s_enemybulet.move(enemyBuletSpeed,0.f);
+              }
+
+
+          }
         }
 
 ///enemy bulet collision
@@ -2061,7 +2090,7 @@ if(creatENEMY)
             else
             full_enemy[i].s_enemy.setTextureRect(IntRect(soldier_source.x*110,1*180,110,180));
           }
-          else if(abs(full_enemy[i].s_enemy.getPosition().x-my_soldier.s_sprite.getPosition().x)<550)
+          else if(abs(full_enemy[i].s_enemy.getPosition().x-my_soldier.s_sprite.getPosition().x)<600)
           {
              if(enemyBack[i])
                 {
@@ -2071,20 +2100,20 @@ if(creatENEMY)
                 else if(enemyBackAgain[i])
                 {
                     full_enemy[i].s_enemy.setTextureRect(IntRect(soldier_source.x*110,7*180,110,180));
-              full_enemy[i].s_enemy.move(-enemySoldierSpeed*my_clock.clock.getElapsedTime().asSeconds(),0);
+                    full_enemy[i].s_enemy.move(-enemySoldierSpeed*my_clock.clock.getElapsedTime().asSeconds(),0);
                 }
 
-            else if(enemy_direction[i])
-            {
-              full_enemy[i].s_enemy.setTextureRect(IntRect(soldier_source.x*110,7*180,110,180));
-              full_enemy[i].s_enemy.move(-enemySoldierSpeed*my_clock.clock.getElapsedTime().asSeconds(),0);
-            }
-            else if(enemy_direction[i]==false)
-            {
+                else if(enemy_direction[i])
+                {
+                  full_enemy[i].s_enemy.setTextureRect(IntRect(soldier_source.x*110,7*180,110,180));
+                  full_enemy[i].s_enemy.move(-enemySoldierSpeed*my_clock.clock.getElapsedTime().asSeconds(),0);
+                }
+                else if(enemy_direction[i]==false)
+                {
 
-                full_enemy[i].s_enemy.setTextureRect(IntRect(soldier_source.x*110,2*180,110,180));
-                  full_enemy[i].s_enemy.move(enemySoldierSpeed*my_clock.clock.getElapsedTime().asSeconds(),0);
-            }
+                    full_enemy[i].s_enemy.setTextureRect(IntRect(soldier_source.x*110,2*180,110,180));
+                      full_enemy[i].s_enemy.move(enemySoldierSpeed*my_clock.clock.getElapsedTime().asSeconds(),0);
+                }
 
           }
           else
@@ -2269,7 +2298,7 @@ if(creatENEMY)
 
             if(happyMovement1>2){happyMovement1=0;}
 
-             menu_text.go_back_man.setColor(Color::Yellow);
+             menu_text.go_back_man.setFillColor(Color::Yellow);
 
 
 
@@ -2280,7 +2309,7 @@ if(creatENEMY)
              happyMovement2++;
              if(happyMovement2>2)happyMovement2=0;
 
-              menu_text.go_back_man.setColor(Color::Green);
+              menu_text.go_back_man.setFillColor(Color::Green);
 
         }
         for(int i=0;i<manESCPosition.size();i++)
@@ -2289,12 +2318,12 @@ if(creatENEMY)
         }
 
         man_time+=my_clock.clock.getElapsedTime().asSeconds();
-         helpmetxt.setColor(Color::White);
+         helpmetxt.setFillColor(Color::White);
         if(man_time>0.25)
         {
             man_time=0;
             manCry++;
-             helpmetxt.setColor(Color::Red);
+             helpmetxt.setFillColor(Color::Red);
             if(manCry>2)
             {
 
