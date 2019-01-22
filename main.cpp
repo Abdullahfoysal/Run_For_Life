@@ -144,7 +144,55 @@ class Instruction
 {
 public:
      Font font1;
-     Text backk;
+     Text backk,ins,pause,backspace;
+
+     Texture texture;
+     Sprite sprite;
+
+     void load_instruction()
+     {
+          font1.loadFromFile("Resources/Hunters.otf");
+
+         texture.loadFromFile("Resources/instruction.png");
+         sprite.setTexture(texture);
+         sprite.setPosition(0,170);
+          sprite.setScale(1.0,0.8);
+
+         ins.setString("Instruction:");
+         ins.setFont(font1);
+          ins.setCharacterSize(100);
+          ins.setScale(1.f,1.f);
+          //gametxt.setFillColor(Color::Red);
+          ins.setPosition(100-50,0-30);
+          ins.setFillColor(Color::Red);
+
+            pause.setString("'ESC' to Pause");
+         pause.setFont(font1);
+          pause.setCharacterSize(60);
+          pause.setScale(1.f,1.f);
+          //gametxt.setFillColor(Color::Red);
+          pause.setPosition(400+200,0);
+          pause.setFillColor(Color::Yellow);
+
+            backspace.setString("'BACKSPACE' to Back");
+         backspace.setFont(font1);
+          backspace.setCharacterSize(60);
+          backspace.setScale(1.f,1.f);
+          //gametxt.setFillColor(Color::Red);
+          backspace.setPosition(400+100,50);
+          backspace.setFillColor(Color::Magenta);
+
+
+     }
+     void instruction_draw()
+     {
+
+         window.draw(sprite);
+         window.draw(ins);
+         window.draw(pause);
+         window.draw( backspace);
+     }
+
 
 };
 class winn
@@ -152,7 +200,7 @@ class winn
   public:
   Font font1;
 
-  Text game_win_text,playAgain,exit_txt,backk;
+  Text game_win_text,playAgain,exit_txt,backk,missionCount;
 
 
 
@@ -161,13 +209,21 @@ class winn
     {
          font1.loadFromFile("Resources/Hunters.otf");
 
-         game_win_text.setString("Game Win");
+         game_win_text.setString("Mission Win");
          game_win_text.setFont(font1);
           game_win_text.setCharacterSize(80);
           game_win_text.setScale(1.5f,1.5f);
           //gametxt.setFillColor(Color::Red);
-          game_win_text.setPosition(200+80,-30);
-          game_win_text.setFillColor(Color::Magenta);
+          game_win_text.setPosition(200+100,-30);
+          game_win_text.setFillColor(Color::Red);
+
+
+         missionCount.setFont(font1);
+          missionCount.setCharacterSize(80);
+          missionCount.setScale(1.5f,1.5f);
+          //gametxt.setFillColor(Color::Red);
+          missionCount.setPosition(200+100+50,-30);
+          missionCount.setFillColor(Color::Magenta);
 
            playAgain.setString("Play Again");
          playAgain.setFont(font1);
@@ -206,9 +262,11 @@ class winn
     void show_end()
     {
       window.draw(game_win_text);
+      window.draw(missionCount);
       window.draw(playAgain);
       window.draw(exit_txt);
       window.draw(backk);
+
     }
 
 };
@@ -390,6 +448,7 @@ void my_soldier_died_Check()
             lifeCount--;
             my_soldier_died=true;
             strength_level.x=100;
+
           }
 
         }
@@ -472,7 +531,8 @@ class game_menu
   Text game_text, play_text,new_game,challenge_text,sound_txt,instruction_text,about_text,exit_text;
   Text c1,c2,c3,c4,c5,c6,c7,c8,c9,c10,backk;
   Text challenge_view,coin_view,man_view,coin_view2,man_view2,challenge_viewCount;
-  Text go_back_man;
+  Text go_back_man,pause;
+
 
   Texture t_menu[3];
   Sprite s_menu[3];
@@ -646,6 +706,15 @@ class game_menu
           go_back_man.setFillColor(Color::Green);
 
 
+            pause.setString("ESC=> Pause ");
+         pause.setFont(font1);
+          pause.setCharacterSize(30);
+          pause.setScale(1.f,1.f);
+          //gametxt.setFillColor(Color::Red);
+          pause.setFillColor(Color::Yellow);
+
+            pause.setOutlineThickness(2);
+             pause.setOutlineColor(Color::Black);
 
 
 
@@ -773,7 +842,7 @@ class game_menu
 class GameMusic
 {
    public:
-  Music menu_music,game_music,shoot_music,enemyshoot,enemystab,mystab,coin_music,end_music;
+  Music menu_music,game_music,shoot_music,enemyshoot,enemystab,mystab,coin_music,end_music,mydie,mywin;
 
   void load_music()
   {
@@ -799,6 +868,12 @@ class GameMusic
 
      end_music.openFromFile("Resources/endmusic.wav");
      end_music.setVolume(1000);
+
+      mydie.openFromFile("Resources/mysoldierdie.wav");
+     mydie.setVolume(1000);
+
+       mywin.openFromFile("Resources/myvictory.wav");
+     mywin.setVolume(1000);
 
 
 
@@ -1074,6 +1149,8 @@ int main()
 
          winn Win;
          Win.load_end();
+         Instruction instruction;
+         instruction.load_instruction();
 
 
        unsigned menuselect=1;
@@ -1112,12 +1189,14 @@ int main()
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && key>0.2)
             {
                 menuselect++;
+                menuselect=(menuselect+7)%7;
                 menu_clock.restart();
 
             }
         else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && key>0.2)
             {
                 menuselect--;
+                 menuselect=(menuselect+7)%7;
                menu_clock.restart();
             }
        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape) && key>0.2)
@@ -1371,7 +1450,7 @@ int main()
     }
     else if(instructions)
     {
-
+        instruction.instruction_draw();
     }
     else if(aboutt)
     {
@@ -1412,6 +1491,7 @@ else if(win)
                  win=false;
                  menu=false;
                  play_Again();
+                 music.mywin.stop();
                  music.game_music.play();
               }
               else if(menuselect%3==2)
@@ -1420,7 +1500,8 @@ else if(win)
                 home=true;
                 win=false;
                 menu=true;
-
+                    music.mywin.stop();
+                    music.menu_music.play();
                  play_Again();
                  menuselect=1;
 
@@ -1450,9 +1531,15 @@ else if(win)
 
               }
 
+for(int i=1;i<=5;i++)
+{
+    if(challenge_select[i])
+    {
+         Score_str=To_string(i);
+    }
+}
 
-
-
+ Win.missionCount.setString(Score_str);
   Win.show_end();
 
 
@@ -1570,9 +1657,6 @@ else if(gameover)
 
               }
 
-
-
-
   End.show_end();
 }
 else if(!menu)
@@ -1587,12 +1671,14 @@ else if(!menu)
           menuselect=1;
              my_clock.clock.restart();
              enemyTime=0.f;
+             music.mydie.play();
         }
         else if(ManCount<=manEscaped && CoinCount<=coinGain)
         {
            my_soldier.s_sprite.setPosition(soldierCurrrentPosition);
            win=true;
            music.game_music.stop();
+           music.mywin.play();
            menuselect=1;
 
               my_clock.clock.restart();
@@ -1625,6 +1711,7 @@ else if(!menu)
 
      if(my_soldier_died)
          {
+
              buletPosition.clear();
              soldier_buletDirection.clear();
          }
@@ -1636,6 +1723,7 @@ else if(!menu)
   //Down button
            if(my_soldier_died)
             {
+
               if(soldier_source.y==Right)
               my_soldier.s_sprite.setTextureRect(IntRect(5*110,12*180,170,180));
               else
@@ -1776,8 +1864,6 @@ else if(!menu)
                      my_buletclock.clock.restart();
 
                       music.shoot_music.play();
-
-
 
 
               }
@@ -2038,7 +2124,6 @@ else if(!menu)
             music.enemyshoot.play();
           }
 
-
         }
 
         //enemy bulet set texture & move
@@ -2076,7 +2161,7 @@ else if(!menu)
           }
         }
 
-///enemy bulet collision
+        ///enemy bulet collision
         ///my_soldier_hit
 
         for(int i=0;i<full_enemy.size();i++)
@@ -2598,6 +2683,9 @@ else if(!menu)
 ///mission no
          menu_text.challenge_view.setPosition(soldierPosition.x-60,0-30);
          window.draw(menu_text.challenge_view);
+
+         menu_text.pause.setPosition(soldierPosition.x+400-50,80);
+         window.draw(menu_text.pause);
 
 
          for(int i=1;i<=5;i++)
