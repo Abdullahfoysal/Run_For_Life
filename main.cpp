@@ -1741,7 +1741,7 @@ else if(!menu)
 
 ///move just close to last area my soldier
 
-        if(Keyboard::isKeyPressed(Keyboard::Right) && !Keyboard::isKeyPressed(Keyboard::Space) && !my_soldier_died)
+        if(Keyboard::isKeyPressed(Keyboard::Right) && !Keyboard::isKeyPressed(Keyboard::Space) && !Keyboard::isKeyPressed(Keyboard::Down) && !my_soldier_died)
         {
             if(my_soldier.s_sprite.getPosition().x+150<screenWidth)
             {
@@ -1755,7 +1755,7 @@ else if(!menu)
 
         }
 
-        if(Keyboard::isKeyPressed(Keyboard::Left) && !Keyboard::isKeyPressed(Keyboard::Space) && !my_soldier_died)
+        if(Keyboard::isKeyPressed(Keyboard::Left) && !Keyboard::isKeyPressed(Keyboard::Space) && !Keyboard::isKeyPressed(Keyboard::Down) && !my_soldier_died)
             {
                 if(my_soldier.s_sprite.getPosition().x>10)
                 {
