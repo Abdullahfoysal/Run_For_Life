@@ -4,6 +4,8 @@
 #include<SFML/Audio.hpp>
 #include<bits/stdc++.h>
 #include<math.h>
+#include "mouseClick.h"
+
 using namespace std;
 using namespace sf;
 
@@ -68,7 +70,7 @@ float movespeed=230.0f;
     float enemyBuletSpeed=1.0f;
 
    float enemyTime=0.f;
-   float enemySoldierSpeed=30.0f;
+   float enemySoldierSpeed=40.0f;
    bool enemyBack[50],enemyBackAgain[50];
    float  enemybuletTime=0.f;
    std::vector<bool>enemy_direction;
@@ -970,6 +972,7 @@ void play_Again()
 
 int main()
 {
+  MouseClick mouse;
   ///score
    challenge_select[1]=true;
 
@@ -1187,6 +1190,7 @@ int main()
 
  if(menu)
   {
+            mouse.check();
 
             music.menu_music.setLoop(true);
             menu_text.menu_background_show();
@@ -2007,8 +2011,8 @@ else if(!menu)
      {
        buletPosition[i].s_bulet.move(mybuletSpeed*1.f,0.f);
      }
-     else if(soldier_buletDirection[i]==false)  /// s_enemySoldier.getPosition().x<s_soldier.getPosition().x && soldier_source.y==Left
-        buletPosition[i].s_bulet.move(mybuletSpeed*-1.f,0.f);
+     else if(soldier_buletDirection[i]==false)  ///s_enemySoldier.getPosition().x<s_soldier.getPosition().x && soldier_source.y==Left
+     buletPosition[i].s_bulet.move(mybuletSpeed*-1.f,0.f);
 
 
   }
@@ -2087,7 +2091,7 @@ else if(!menu)
 
 
   if(enemyTime>enemyPlacingTime)///work for placing enemy enemyPlacingTime=4.0f;
-        {
+        {   
            //std::srand(time(NULL));
              int placeEnemySoldier=rand()%2;
              enemy_direction.push_back(placeEnemySoldier);//direction
@@ -2096,8 +2100,24 @@ else if(!menu)
             enemyTime=0.f;
 
 
+            if(ManRun && !ManDied)
+            {
+                if(placeEnemySoldier==1)
+                {
+                    Vector2f enemyPosition(man[0].s_sprite.getPosition().x+500,soldierCurrrentPosition.y);
+                    full_enemy.push_back(enemy(&enemy_soldier.t_texture,enemyPosition));
 
-            if(placeEnemySoldier==1)
+                }
+                else
+                {
+
+                  Vector2f enemyPosition(man[0].s_sprite.getPosition().x-500,soldierCurrrentPosition.y);
+
+                  full_enemy.push_back(enemy(&enemy_soldier.t_texture,enemyPosition));
+
+                }
+            }
+           else if(placeEnemySoldier==1)
             {
                 Vector2f enemyPosition(my_soldier.s_sprite.getPosition().x+550,soldierCurrrentPosition.y);
               full_enemy.push_back(enemy(&enemy_soldier.t_texture,enemyPosition));
@@ -2120,7 +2140,21 @@ else if(!menu)
 
         for(int i=0;i<full_enemy.size();i++)
         {
-          if(enemybuletTime>0.5 && abs(full_enemy[i].s_enemy.getPosition().x-my_soldier.s_sprite.getPosition().x)<500 && abs(full_enemy[i].s_enemy.getPosition().x-my_soldier.s_sprite.getPosition().x)>100 && !enemy_died[i])
+          if( ManRun && enemybuletTime>0.5 && !enemy_died[i] && abs(full_enemy[i].s_enemy.getPosition().x-man[0].s_sprite.getPosition().x )<400)
+          {
+                
+              if(man[0].s_sprite.getPosition().x < full_enemy[i].s_enemy.getPosition().x)
+               {
+                 enemybuletPosition[i].push_back(enemybulet(&enemy_bulet[1].t_texture,full_enemy[i].s_enemy.getPosition(),i));
+               }
+               else enemybuletPosition[i].push_back(enemybulet(&enemy_bulet[0].t_texture,full_enemy[i].s_enemy.getPosition(),i));
+
+               enemybuletTime=0;
+
+               music.enemyshoot.play();
+                    
+          }
+         else  if(enemybuletTime>0.5 && abs(full_enemy[i].s_enemy.getPosition().x-my_soldier.s_sprite.getPosition().x)<500 && abs(full_enemy[i].s_enemy.getPosition().x-my_soldier.s_sprite.getPosition().x)>100 && !enemy_died[i])
           {
             if(my_soldier.s_sprite.getPosition().x < full_enemy[i].s_enemy.getPosition().x)
             {
@@ -2130,7 +2164,8 @@ else if(!menu)
 
             enemybuletTime=0;
 
-          music.enemyshoot.play();
+            music.enemyshoot.play();
+
           }
 
         }
@@ -2177,14 +2212,13 @@ else if(!menu)
         {
           for(int j=0;j<enemybuletPosition[i].size();j++)
           {
-            if(Keyboard::isKeyPressed(Keyboard::Down));///do nothing with bulet
+            if(Keyboard::isKeyPressed(Keyboard::Down) && !Keyboard::isKeyPressed(Keyboard::S));///do nothing with bulet
 
             else if(!my_soldier_died && enemybuletPosition[i][j].s_enemybulet.getGlobalBounds().intersects(my_soldier.s_sprite.getGlobalBounds()))
             {
               enemybuletPosition[i].erase(enemybuletPosition[i].begin()+j);
               if(!my_soldier_died) my_soldier_hit++;//my soldier hit bulet
             }
-
             else if(enemybuletPosition[i][j].s_enemybulet.getPosition().x>my_soldier.s_sprite.getPosition().x+300 )
               {
                 enemybuletPosition[i].erase(enemybuletPosition[i].begin()+j);
@@ -2197,6 +2231,8 @@ else if(!menu)
 
 
         }
+
+
 
 
 
@@ -2236,7 +2272,7 @@ else if(!menu)
              if(enemyBack[i])
                 {
                     full_enemy[i].s_enemy.setTextureRect(IntRect(soldier_source.x*110,2*180,110,180));
-                  full_enemy[i].s_enemy.move(enemySoldierSpeed*my_clock.clock.getElapsedTime().asSeconds(),0);
+                    full_enemy[i].s_enemy.move(enemySoldierSpeed*my_clock.clock.getElapsedTime().asSeconds(),0);
                 }
                 else if(enemyBackAgain[i])
                 {
@@ -2313,7 +2349,20 @@ else if(!menu)
         if(ManRun)
         {
             for(int i=0;i<full_enemy.size();i++)
-            {
+            {     
+
+
+                  if(!enemy_died[i] && man[0].s_sprite.getGlobalBounds().intersects(full_enemy[i].s_enemy.getGlobalBounds()))
+                  {
+                            ManDied=true;
+
+                            ManHitCount=0;
+
+                            ManRun=false;
+                            ManHealth_level.x=5;
+                            ManHealth_rect.setFillColor(Color::Red);
+                  }
+
                 for(int j=0;j<enemybuletPosition[i].size();j++)
                 {
                     if(man[0].s_sprite.getGlobalBounds().intersects(enemybuletPosition[i][j].s_enemybulet.getGlobalBounds()))
