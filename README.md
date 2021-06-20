@@ -1,6 +1,9 @@
 # Project-2-GAME
 # RUN_FOR_LIFE
 It's a running and shooing Game
+
+[![GamePlayVideo](thumnail2.png)](http://www.youtube.com/watch?v=OE9-trGWcLA)
+
 <ol>
  <div>
    <h2>Rules</h2>
